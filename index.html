@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Matcher - Initial Draft</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header class="navbar">
+        <h1>🚀 AI Resume-Job Matcher</h1>
+        <p>Project Frontend Prototype - Week 1</p>
+    </header>
+
+    <main class="container">
+        <!-- Input Section -->
+        <section class="card input-section">
+            <h2>Let's evaluate your fit</h2>
+            <p>Upload your resume and the job description to see how well you match.</p>
+            
+            <div class="form-group">
+                <label for="resume-upload">1. Upload Resume (PDF)</label>
+                <div class="upload-box">
+                    <input type="file" id="resume-upload" accept=".pdf">
+                    <p class="help-text">Drag and drop your PDF here, or click to browse.</p>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="job-description">2. Job Description</label>
+                <textarea id="job-description" rows="6" placeholder="Paste the full job description here..."></textarea>
+            </div>
+
+            <button class="btn-primary" onclick="alert('Backend processing is not connected yet!')">Analyze Match</button>
+        </section>
+
+        <!-- Placeholder for Future Results -->
+        <section class="card results-placeholder">
+            <h3>📊 Analysis Results</h3>
+            <div class="skeleton-loader"></div>
+            <div class="skeleton-loader short"></div>
+            <p class="empty-state">Submit your resume and job description to see the AI analysis results here.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2026 Software Engineering Project. Frontend Phase 1.</p>
+    </footer>
+</body>
+</html>

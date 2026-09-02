@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feasibility Report - AI Resume-Job Matching System</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap');
+
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --primary-bg: #eff6ff;
+            --accent: #059669;
+            --accent-light: #d1fae5;
+            --danger: #dc2626;
+            --danger-light: #fef2f2;
+            --warning: #d97706;
+            --warning-light: #fffbeb;
+            --text: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+            --bg-alt: #f8fafc;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            color: var(--text);
+            background: var(--bg-alt);
+            line-height: 1.7;
+            font-size: 15px;
+        }
+
+        .report {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--bg);
+            box-shadow: 0 0 60px rgba(0,0,0,0.08);
+        }
+
+        /* Cover Page */
+        .cover {
+            background: linear-gradient(135deg, #1e3a5f 0%, #1e40af 50%, #3b82f6 100%);
+            color: white;
+            padding: 80px 60px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .cover::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        .cover h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+        .cover .subtitle {
+            font-size: 1.2rem;
+            font-weight: 300;
+            opacity: 0.9;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .cover-meta {
+            position: relative;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            text-align: left;
+            max-width: 500px;
+            margin: 0 auto;
+            font-size: 0.95rem;
+        }
+        .cover-meta dt { opacity: 0.7; font-weight: 300; }
+        .cover-meta dd { font-weight: 500; margin-bottom: 0.8rem; }
+
+        /* Content */
+        .content { padding: 50px 60px; }
+
+        h2 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin: 2.5rem 0 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid var(--primary-light);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        h2 .num {
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            color: var(--text);
+            margin: 1.5rem 0 0.5rem;
+        }
+
+        p { margin-bottom: 0.8rem; }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.2rem 0;
+            font-size: 0.9rem;
+        }
+        th, td {
+            padding: 10px 14px;
+            text-align: left;
+            border: 1px solid var(--border);
+        }
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+        tr:nth-child(even) { background: var(--bg-alt); }
+
+        /* Info Boxes */
+        .box {
+            padding: 1rem 1.2rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            border-left: 4px solid;
+        }
+        .box.info { background: var(--primary-bg); border-color: var(--primary-light); }
+        .box.success { background: var(--accent-light); border-color: var(--accent); }
+        .box.warning { background: var(--warning-light); border-color: var(--warning); }
+        .box.danger { background: var(--danger-light); border-color: var(--danger); }
+        .box strong { display: block; margin-bottom: 0.3rem; }
+
+        /* Tags */
+        .tag {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            margin: 2px;
+        }
+        .tag.green { background: #d1fae5; color: #065f46; }
+        .tag.blue { background: #dbeafe; color: #1e40af; }
+        .tag.yellow { background: #fef3c7; color: #92400e; }
+        .tag.red { background: #fee2e2; color: #991b1b; }
+
+        /* Diagrams */
+        .diagram {
+            margin: 2rem 0;
+            background: var(--bg-alt);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 2rem;
+        }
+        .diagram-title {
+            text-align: center;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            font-size: 1rem;
+        }
+
+        /* Architecture Diagram */
+        .arch-diagram {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .arch-layer {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            flex-wrap: wrap;
+            width: 100%;
+        }
+        .arch-box {
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 130px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .arch-box.frontend { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
+        .arch-box.api { background: #d1fae5; color: #065f46; border: 2px solid #6ee7b7; }
+        .arch-box.service { background: #fef3c7; color: #92400e; border: 2px solid #fcd34d; }
+        .arch-box.data { background: #e0e7ff; color: #3730a3; border: 2px solid #a5b4fc; }
+        .arch-box.external { background: #fce7f3; color: #9d174d; border: 2px solid #f9a8d4; }
+        .arch-box.infra { background: #f3e8ff; color: #6b21a8; border: 2px solid #c4b5fd; }
+
+        .arrow-down {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        /* Flow Diagram */
+        .flow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .flow-step {
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            text-align: center;
+            min-width: 100px;
+            background: white;
+            border: 2px solid var(--primary-light);
+            color: var(--primary);
+        }
+        .flow-arrow { color: var(--primary-light); font-size: 1.2rem; }
+
+        /* Timeline / Gantt */
+        .gantt { width: 100%; margin: 1rem 0; }
+        .gantt-row {
+            display: grid;
+            grid-template-columns: 120px 1fr;
+            align-items: center;
+            margin-bottom: 6px;
+            font-size: 0.82rem;
+        }
+        .gantt-label { font-weight: 600; color: var(--text); }
+        .gantt-track {
+            height: 28px;
+            background: #f1f5f9;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+        }
+        .gantt-bar {
+            position: absolute;
+            top: 3px;
+            height: 22px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        /* Risk Matrix */
+        .risk-matrix {
+            display: grid;
+            grid-template-columns: 80px repeat(3, 1fr);
+            gap: 4px;
+            margin: 1rem 0;
+            font-size: 0.78rem;
+            text-align: center;
+        }
+        .risk-matrix .header { background: #334155; color: white; padding: 8px; border-radius: 4px; font-weight: 600; }
+        .risk-matrix .label { background: #334155; color: white; padding: 8px; border-radius: 4px; font-weight: 600; display: flex; align-items: center; justify-content: center; }
+        .risk-cell {
+            padding: 8px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+        .risk-cell.low { background: #d1fae5; color: #065f46; }
+        .risk-cell.med { background: #fef3c7; color: #92400e; }
+        .risk-cell.high { background: #fee2e2; color: #991b1b; }
+
+        /* Pie Chart using CSS */
+        .pie-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+        }
+        .pie {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: conic-gradient(
+                #1e40af 0% 15%,
+                #3b82f6 15% 35%,
+                #059669 35% 55%,
+                #d97706 55% 75%,
+                #8b5cf6 75% 90%,
+                #ec4899 90% 100%
+            );
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .pie-legend {
+            font-size: 0.82rem;
+            line-height: 2;
+        }
+        .pie-legend span {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border-radius: 3px;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+
+        /* SWOT */
+        .swot {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin: 1rem 0;
+        }
+        .swot-box {
+            padding: 16px;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+        .swot-box h4 {
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+        .swot-box ul { padding-left: 1.2rem; }
+        .swot-box li { margin-bottom: 0.3rem; }
+        .swot-box.s { background: #d1fae5; border: 1px solid #6ee7b7; }
+        .swot-box.s h4 { color: #065f46; }
+        .swot-box.w { background: #fee2e2; border: 1px solid #fca5a5; }
+        .swot-box.w h4 { color: #991b1b; }
+        .swot-box.o { background: #dbeafe; border: 1px solid #93c5fd; }
+        .swot-box.o h4 { color: #1e40af; }
+        .swot-box.t { background: #fef3c7; border: 1px solid #fcd34d; }
+        .swot-box.t h4 { color: #92400e; }
+
+        /* Verdict */
+        .verdict {
+            text-align: center;
+            padding: 2rem;
+            margin: 2rem 0;
+            background: linear-gradient(135deg, #d1fae5 0%, #dbeafe 100%);
+            border-radius: 12px;
+            border: 2px solid #6ee7b7;
+        }
+        .verdict h3 {
+            color: #065f46;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        .verdict .check {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Footer */
+        .report-footer {
+            text-align: center;
+            padding: 2rem;
+            background: var(--bg-alt);
+            border-top: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Print */
+        @media print {
+            body { background: white; }
+            .report { box-shadow: none; }
+            .cover { break-after: page; }
+        }
+    </style>
+</head>
+<body>
+<div class="report">
+
+    <!-- ===== COVER PAGE ===== -->
+    <div class="cover">
+        <h1>Feasibility Report</h1>
+        <p class="subtitle">Intelligent Resume-Job Matching &amp; Skill Gap Advisory System</p>
+        <dl class="cover-meta">
+            <dt>Prepared By</dt>
+            <dd>Damanpreet Singh</dd>
+            <dt>Course</dt>
+            <dd>Software Engineering</dd>
+            <dt>Date</dt>
+            <dd>September 2026</dd>
+            <dt>Version</dt>
+            <dd>1.0</dd>
+        </dl>
+    </div>
+
+    <div class="content">
+
+        <!-- ===== TABLE OF CONTENTS ===== -->
+        <h2><span class="num">#</span> Table of Contents</h2>
+        <ol style="padding-left:1.5rem; line-height:2.2;">
+            <li>Executive Summary</li>
+            <li>Project Overview</li>
+            <li>System Architecture Diagram</li>
+            <li>Technical Feasibility</li>
+            <li>Economic Feasibility</li>
+            <li>Operational Feasibility</li>
+            <li>Schedule Feasibility</li>
+            <li>Data Flow Diagram</li>
+            <li>SWOT Analysis</li>
+            <li>Risk Assessment Matrix</li>
+            <li>Resource Allocation</li>
+            <li>Conclusion &amp; Recommendation</li>
+        </ol>
+
+        <!-- ===== 1. EXECUTIVE SUMMARY ===== -->
+        <h2><span class="num">1</span> Executive Summary</h2>
+        <p>
+            This feasibility report evaluates the viability of developing an <strong>Intelligent Resume-Job Matching &amp; Skill Gap Advisory System</strong> — an AI-powered full-stack application that automatically scores how well a candidate's resume matches a given job description, using a combination of <strong>dense vector similarity</strong>, <strong>sparse keyword matching (BM25)</strong>, and <strong>Large Language Model (LLM)</strong> analysis.
+        </p>
+        <p>
+            The system aims to solve a critical problem in the recruitment pipeline: the manual, time-consuming, and subjective process of evaluating resumes against job requirements. By automating this with AI, the system provides objective, quantifiable match scores and actionable skill-gap feedback for candidates.
+        </p>
+        <div class="box success">
+            <strong>✅ Overall Verdict: FEASIBLE</strong>
+            After thorough analysis across technical, economic, operational, and schedule dimensions, this project is deemed <strong>fully feasible</strong> for development within the proposed 7-week timeline using open-source technologies and free-tier cloud services.
+        </div>
+
+        <!-- ===== 2. PROJECT OVERVIEW ===== -->
+        <h2><span class="num">2</span> Project Overview</h2>
+
+        <h3>2.1 Problem Statement</h3>
+        <p>
+            Recruiters spend an average of 6–8 seconds scanning a resume. This leads to qualified candidates being overlooked and poor-fit candidates advancing. Candidates, on the other hand, have no way to objectively measure how well their resume matches a job before applying.
+        </p>
+
+        <h3>2.2 Proposed Solution</h3>
+        <p>
+            An AI-powered web application where users upload a resume (PDF) and paste a job description. The system then:
+        </p>
+        <ul style="padding-left:1.5rem; margin-bottom:1rem;">
+            <li>Extracts text and skills from the resume using NLP (spaCy)</li>
+            <li>Computes a <strong>dense match score</strong> using Sentence Transformers (vector embeddings)</li>
+            <li>Computes a <strong>sparse match score</strong> using BM25 keyword ranking</li>
+            <li>Generates a <strong>weighted hybrid score</strong> combining both methods</li>
+            <li>Uses Google Gemini LLM to provide personalized <strong>skill gap analysis</strong> and career advice</li>
+        </ul>
+
+        <h3>2.3 Key Features</h3>
+        <table>
+            <tr><th>Feature</th><th>Description</th><th>Status</th></tr>
+            <tr><td>PDF Resume Parsing</td><td>Extract text from uploaded PDF resumes using pdfplumber</td><td><span class="tag green">Implemented</span></td></tr>
+            <tr><td>Dense Matching</td><td>Sentence-BERT embeddings + cosine similarity</td><td><span class="tag green">Implemented</span></td></tr>
+            <tr><td>Sparse Matching</td><td>BM25 keyword-based ranking algorithm</td><td><span class="tag green">Implemented</span></td></tr>
+            <tr><td>AI Skill Gap Analysis</td><td>Google Gemini LLM generates personalized advice</td><td><span class="tag green">Implemented</span></td></tr>
+            <tr><td>React Dashboard</td><td>Interactive charts (Recharts) + modern UI</td><td><span class="tag green">Implemented</span></td></tr>
+            <tr><td>Background Processing</td><td>Celery + Redis for async heavy AI computations</td><td><span class="tag green">Implemented</span></td></tr>
+            <tr><td>Dockerized Deployment</td><td>Docker Compose orchestrating 5 microservices</td><td><span class="tag green">Implemented</span></td></tr>
+        </table>
+
+        <!-- ===== 3. SYSTEM ARCHITECTURE ===== -->
+        <h2><span class="num">3</span> System Architecture Diagram</h2>
+        <div class="diagram">
+            <div class="diagram-title">Multi-Tier Microservices Architecture</div>
+            <div class="arch-diagram">
+                <!-- Presentation Layer -->
+                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; letter-spacing:1px;">PRESENTATION LAYER</div>
+                <div class="arch-layer">
+                    <div class="arch-box frontend">🖥️ React Dashboard<br><small>Vite + TypeScript + Tailwind CSS</small></div>
+                    <div class="arch-box frontend">📊 Recharts<br><small>Interactive Visualizations</small></div>
+                </div>
+
+                <div class="arrow-down">⬇️ HTTP / REST API ⬇️</div>
+
+                <!-- Application Layer -->
+                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; letter-spacing:1px;">APPLICATION LAYER</div>
+                <div class="arch-layer">
+                    <div class="arch-box api">⚡ FastAPI Server<br><small>Async REST API + WebSockets</small></div>
+                    <div class="arch-box api">🔐 Auth Service<br><small>JWT + bcrypt</small></div>
+                    <div class="arch-box api">📄 Resume Parser<br><small>pdfplumber + spaCy NLP</small></div>
+                </div>
+
+                <div class="arrow-down">⬇️ Task Queue ⬇️</div>
+
+                <!-- Processing Layer -->
+                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; letter-spacing:1px;">PROCESSING LAYER</div>
+                <div class="arch-layer">
+                    <div class="arch-box service">🧠 Dense Matcher<br><small>Sentence-BERT Embeddings</small></div>
+                    <div class="arch-box service">🔍 Sparse Matcher<br><small>BM25 Ranking</small></div>
+                    <div class="arch-box service">⚙️ Celery Worker<br><small>Async Task Processing</small></div>
+                </div>
+
+                <div class="arrow-down">⬇️ Storage & External ⬇️</div>
+
+                <!-- Data Layer -->
+                <div style="font-size:0.75rem; color:var(--text-muted); font-weight:600; letter-spacing:1px;">DATA & INFRASTRUCTURE LAYER</div>
+                <div class="arch-layer">
+                    <div class="arch-box data">🐘 PostgreSQL<br><small>+ pgvector extension</small></div>
+                    <div class="arch-box data">🔴 Redis<br><small>Message Broker + Cache</small></div>
+                    <div class="arch-box external">🤖 Google Gemini<br><small>LLM API (Skill Gap AI)</small></div>
+                    <div class="arch-box infra">🐳 Docker Compose<br><small>5 Container Orchestration</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 4. TECHNICAL FEASIBILITY ===== -->
+        <h2><span class="num">4</span> Technical Feasibility</h2>
+        <p>
+            This section assesses whether the required technology, tools, and expertise are available and mature enough to build the system.
+        </p>
+
+        <h3>4.1 Technology Stack Assessment</h3>
+        <table>
+            <tr><th>Component</th><th>Technology</th><th>Maturity</th><th>Risk Level</th></tr>
+            <tr><td>Backend Framework</td><td>FastAPI (Python 3.12)</td><td>Production-Ready</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>Frontend Framework</td><td>React 18 + TypeScript + Vite</td><td>Industry Standard</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>Database</td><td>PostgreSQL 16 + pgvector</td><td>Enterprise-Grade</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>AI/ML Embeddings</td><td>Sentence-Transformers (SBERT)</td><td>Widely Adopted</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>LLM Integration</td><td>Google Gemini API</td><td>Production-Ready</td><td><span class="tag yellow">Medium</span></td></tr>
+            <tr><td>Task Queue</td><td>Celery + Redis</td><td>Battle-Tested</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>Containerization</td><td>Docker + Docker Compose</td><td>Industry Standard</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>Sparse Matching</td><td>BM25 (rank-bm25)</td><td>Well-Established</td><td><span class="tag green">Low</span></td></tr>
+        </table>
+
+        <div class="box info">
+            <strong>ℹ️ Technical Conclusion</strong>
+            All chosen technologies are open-source, well-documented, and production-ready. The tech stack follows industry best practices and is fully compatible. <strong>Technical feasibility is confirmed.</strong>
+        </div>
+
+        <h3>4.2 Hardware &amp; Software Requirements</h3>
+        <table>
+            <tr><th>Requirement</th><th>Specification</th><th>Available?</th></tr>
+            <tr><td>Development OS</td><td>Windows 11</td><td>✅ Yes</td></tr>
+            <tr><td>CPU</td><td>Intel Core Ultra 5 225H</td><td>✅ Yes</td></tr>
+            <tr><td>RAM</td><td>Minimum 8 GB (16 GB recommended)</td><td>✅ Yes</td></tr>
+            <tr><td>Docker Desktop</td><td>Version 4.x with WSL2</td><td>✅ Yes</td></tr>
+            <tr><td>Node.js</td><td>Version 20 LTS</td><td>✅ Yes</td></tr>
+            <tr><td>Python</td><td>3.12 (via Docker)</td><td>✅ Yes</td></tr>
+            <tr><td>Internet</td><td>Required for Gemini API calls</td><td>✅ Yes</td></tr>
+        </table>
+
+        <!-- ===== 5. ECONOMIC FEASIBILITY ===== -->
+        <h2><span class="num">5</span> Economic Feasibility</h2>
+        <p>
+            This section evaluates the cost-benefit analysis of the project development.
+        </p>
+
+        <h3>5.1 Development Cost Breakdown</h3>
+        <table>
+            <tr><th>Cost Category</th><th>Tool / Service</th><th>Cost</th></tr>
+            <tr><td>Backend Framework</td><td>FastAPI (Open Source)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>Frontend Framework</td><td>React + Vite (Open Source)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>Database</td><td>PostgreSQL + pgvector (Open Source)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>AI Embeddings</td><td>Sentence-Transformers (Open Source)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>LLM API</td><td>Google Gemini (Free Tier: 60 req/min)</td><td style="color:var(--accent); font-weight:600;">$0 (Free Tier)</td></tr>
+            <tr><td>Message Broker</td><td>Redis (Open Source)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>Containerization</td><td>Docker (Personal Use License)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>Version Control</td><td>GitHub (Private Repository)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr><td>IDE</td><td>VS Code (Open Source)</td><td style="color:var(--accent); font-weight:600;">$0 (Free)</td></tr>
+            <tr style="font-weight:700; background:#d1fae5;">
+                <td colspan="2">TOTAL DEVELOPMENT COST</td>
+                <td style="color:var(--accent); font-size:1.1rem;">$0</td>
+            </tr>
+        </table>
+
+        <div class="box success">
+            <strong>💰 Economic Conclusion</strong>
+            The entire project is built using open-source and free-tier services, resulting in <strong>zero monetary cost</strong>. For production-scale deployment, estimated hosting costs would be approximately $15–$30/month (cloud VPS). <strong>Economic feasibility is confirmed.</strong>
+        </div>
+
+        <h3>5.2 Cost Distribution Chart</h3>
+        <div class="diagram">
+            <div class="diagram-title">Development Effort Distribution (by Hours)</div>
+            <div class="pie-container">
+                <div class="pie"></div>
+                <div class="pie-legend">
+                    <div><span style="background:#1e40af;"></span> Backend API Development — 15%</div>
+                    <div><span style="background:#3b82f6;"></span> AI/ML Pipeline (Matching Engine) — 20%</div>
+                    <div><span style="background:#059669;"></span> Frontend Dashboard (React) — 20%</div>
+                    <div><span style="background:#d97706;"></span> Database &amp; Schema Design — 20%</div>
+                    <div><span style="background:#8b5cf6;"></span> Docker &amp; DevOps — 15%</div>
+                    <div><span style="background:#ec4899;"></span> Testing &amp; Debugging — 10%</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 6. OPERATIONAL FEASIBILITY ===== -->
+        <h2><span class="num">6</span> Operational Feasibility</h2>
+        <p>
+            This section assesses whether the system can be effectively operated by the intended users in a real-world environment.
+        </p>
+
+        <h3>6.1 User Interaction Flow</h3>
+        <div class="diagram">
+            <div class="diagram-title">User Workflow — Data Flow Diagram (Level 0)</div>
+            <div class="flow">
+                <div class="flow-step" style="background:var(--primary); color:white;">👤 User</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">📄 Upload<br>Resume</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step">📝 Paste Job<br>Description</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" style="background:#fef3c7;">⚙️ AI<br>Processing</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" style="background:#d1fae5;">📊 Match<br>Score</div>
+                <div class="flow-arrow">→</div>
+                <div class="flow-step" style="background:#d1fae5;">🎯 Skill Gap<br>Feedback</div>
+            </div>
+        </div>
+
+        <h3>6.2 Stakeholder Assessment</h3>
+        <table>
+            <tr><th>Stakeholder</th><th>Benefit</th><th>Adoption Risk</th></tr>
+            <tr><td>Job Seekers / Students</td><td>Objective resume feedback before applying</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>Recruiters / HR Teams</td><td>Faster, unbiased initial resume screening</td><td><span class="tag yellow">Medium</span></td></tr>
+            <tr><td>Career Counselors</td><td>Data-driven skill gap advisory tool</td><td><span class="tag green">Low</span></td></tr>
+            <tr><td>Educational Institutions</td><td>Curriculum alignment with industry demands</td><td><span class="tag green">Low</span></td></tr>
+        </table>
+
+        <div class="box info">
+            <strong>⚙️ Operational Conclusion</strong>
+            The system uses a simple web-based interface requiring no installation by end users. The upload-and-analyze workflow is intuitive and requires no technical training. <strong>Operational feasibility is confirmed.</strong>
+        </div>
+
+        <!-- ===== 7. SCHEDULE FEASIBILITY ===== -->
+        <h2><span class="num">7</span> Schedule Feasibility</h2>
+        <p>
+            The project follows a 7-week Agile development schedule, broken into weekly sprints with defined deliverables.
+        </p>
+
+        <h3>7.1 Development Timeline (Gantt Chart)</h3>
+        <div class="diagram">
+            <div class="diagram-title">7-Week Sprint Timeline</div>
+            <div class="gantt">
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 1</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:0%; width:14.28%; background:#1e40af;">DB Schema</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 2</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:14.28%; width:14.28%; background:#2563eb;">FastAPI Core</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 3</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:28.56%; width:14.28%; background:#3b82f6;">Resume Parser</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 4</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:42.84%; width:14.28%; background:#059669;">AI Matching</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 5</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:57.12%; width:14.28%; background:#d97706;">Celery + LLM</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 6</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:71.40%; width:14.28%; background:#8b5cf6;">React UI</div>
+                    </div>
+                </div>
+                <div class="gantt-row">
+                    <div class="gantt-label">Week 7</div>
+                    <div class="gantt-track">
+                        <div class="gantt-bar" style="left:85.68%; width:14.32%; background:#ec4899;">Docker + Deploy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="box success">
+            <strong>📅 Schedule Conclusion</strong>
+            All 7 weekly milestones have been successfully completed within the proposed timeline. <strong>Schedule feasibility is confirmed.</strong>
+        </div>
+
+        <!-- ===== 8. DATA FLOW DIAGRAM ===== -->
+        <h2><span class="num">8</span> Data Flow Diagram (Level 1)</h2>
+        <div class="diagram">
+            <div class="diagram-title">Detailed Data Flow — Resume Matching Pipeline</div>
+            <div class="arch-diagram">
+                <div class="arch-layer">
+                    <div class="arch-box frontend">📤 User Uploads PDF<br><small>via React Dashboard</small></div>
+                </div>
+                <div class="arrow-down">⬇️</div>
+                <div class="arch-layer">
+                    <div class="arch-box api">📄 FastAPI receives file<br><small>Saves to /uploads/ directory</small></div>
+                </div>
+                <div class="arrow-down">⬇️</div>
+                <div class="arch-layer">
+                    <div class="arch-box api">📝 pdfplumber extracts text<br><small>Raw text from all PDF pages</small></div>
+                    <div class="arch-box api">🏷️ spaCy extracts skills<br><small>NLP entity recognition</small></div>
+                </div>
+                <div class="arrow-down">⬇️ Sent to Celery Worker via Redis ⬇️</div>
+                <div class="arch-layer">
+                    <div class="arch-box service">🧠 Dense Score<br><small>SBERT → Cosine Similarity<br>Score: 0.0 – 1.0</small></div>
+                    <div class="arch-box service">🔍 Sparse Score<br><small>BM25 → Keyword Rank<br>Score: 0.0 – 1.0</small></div>
+                    <div class="arch-box external">🤖 Gemini LLM<br><small>Skill Gap Analysis<br>Career Advice</small></div>
+                </div>
+                <div class="arrow-down">⬇️ Results stored in PostgreSQL ⬇️</div>
+                <div class="arch-layer">
+                    <div class="arch-box data">🗄️ MatchEvaluation Table<br><small>dense_score, sparse_score, hybrid_score, feedback</small></div>
+                </div>
+                <div class="arrow-down">⬇️</div>
+                <div class="arch-layer">
+                    <div class="arch-box frontend">📊 React renders Recharts<br><small>Bar Charts + Skill Gap Cards</small></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== 9. SWOT ANALYSIS ===== -->
+        <h2><span class="num">9</span> SWOT Analysis</h2>
+        <div class="swot">
+            <div class="swot-box s">
+                <h4>💪 Strengths</h4>
+                <ul>
+                    <li>Hybrid AI matching (dense + sparse) for high accuracy</li>
+                    <li>Fully containerized — runs on any machine</li>
+                    <li>Zero-cost tech stack (100% open source)</li>
+                    <li>Modern, responsive React dashboard</li>
+                    <li>Async processing prevents UI blocking</li>
+                </ul>
+            </div>
+            <div class="swot-box w">
+                <h4>⚠️ Weaknesses</h4>
+                <ul>
+                    <li>Requires Docker for local setup</li>
+                    <li>LLM output quality depends on prompt engineering</li>
+                    <li>CPU-only inference is slower than GPU</li>
+                    <li>Single developer — limited bandwidth</li>
+                </ul>
+            </div>
+            <div class="swot-box o">
+                <h4>🚀 Opportunities</h4>
+                <ul>
+                    <li>Expand to multi-resume batch processing</li>
+                    <li>Add support for LinkedIn profile import</li>
+                    <li>Monetize via SaaS model for recruiters</li>
+                    <li>Integrate with ATS platforms (Greenhouse, Lever)</li>
+                </ul>
+            </div>
+            <div class="swot-box t">
+                <h4>🛡️ Threats</h4>
+                <ul>
+                    <li>Gemini API rate limits or pricing changes</li>
+                    <li>Competition from established ATS tools</li>
+                    <li>Data privacy concerns with resume uploads</li>
+                    <li>AI hallucination in skill gap advice</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ===== 10. RISK ASSESSMENT ===== -->
+        <h2><span class="num">10</span> Risk Assessment Matrix</h2>
+        <div class="diagram">
+            <div class="diagram-title">Risk Probability vs. Impact Matrix</div>
+            <div class="risk-matrix">
+                <div class="header"></div>
+                <div class="header">Low Impact</div>
+                <div class="header">Medium Impact</div>
+                <div class="header">High Impact</div>
+
+                <div class="label">High<br>Prob.</div>
+                <div class="risk-cell med">CRLF line-ending warnings</div>
+                <div class="risk-cell high">API rate limiting</div>
+                <div class="risk-cell high">Data privacy breach</div>
+
+                <div class="label">Med.<br>Prob.</div>
+                <div class="risk-cell low">Docker config drift</div>
+                <div class="risk-cell med">LLM hallucination</div>
+                <div class="risk-cell high">DB schema migration fail</div>
+
+                <div class="label">Low<br>Prob.</div>
+                <div class="risk-cell low">CSS layout bugs</div>
+                <div class="risk-cell low">Dependency deprecation</div>
+                <div class="risk-cell med">Complete service outage</div>
+            </div>
+        </div>
+
+        <h3>10.1 Risk Mitigation Strategies</h3>
+        <table>
+            <tr><th>Risk</th><th>Mitigation Strategy</th></tr>
+            <tr><td>Gemini API rate limiting</td><td>Implement request queuing via Celery; cache LLM responses in Redis</td></tr>
+            <tr><td>Data privacy concerns</td><td>Process resumes in-memory; auto-delete uploaded files after processing</td></tr>
+            <tr><td>LLM hallucination</td><td>Validate outputs with structured Pydantic schemas using the Instructor library</td></tr>
+            <tr><td>Dependency breaking changes</td><td>Pin all versions in requirements.txt; use Docker for reproducible builds</td></tr>
+            <tr><td>Database migration failures</td><td>Use Alembic for versioned, reversible migrations with rollback support</td></tr>
+        </table>
+
+        <!-- ===== 11. RESOURCE ALLOCATION ===== -->
+        <h2><span class="num">11</span> Resource Allocation</h2>
+        <table>
+            <tr><th>Resource</th><th>Allocation</th><th>Justification</th></tr>
+            <tr><td>Developer</td><td>1 Full-Stack Developer</td><td>Individual coursework project</td></tr>
+            <tr><td>Development Machine</td><td>Intel Core Ultra 5, Windows 11</td><td>Sufficient for Docker and local dev</td></tr>
+            <tr><td>Cloud Services</td><td>GitHub (Free), Gemini API (Free Tier)</td><td>Zero-cost during development phase</td></tr>
+            <tr><td>Development Duration</td><td>7 Weeks (Agile Sprints)</td><td>Aligns with coursework submission deadline</td></tr>
+            <tr><td>Testing Environment</td><td>Docker Compose (local)</td><td>Replicates production architecture locally</td></tr>
+        </table>
+
+        <!-- ===== 12. CONCLUSION ===== -->
+        <h2><span class="num">12</span> Conclusion &amp; Recommendation</h2>
+        <p>
+            Based on the comprehensive analysis conducted across all four feasibility dimensions, the following conclusions are drawn:
+        </p>
+
+        <table>
+            <tr><th>Feasibility Dimension</th><th>Status</th><th>Key Finding</th></tr>
+            <tr><td><strong>Technical</strong></td><td><span class="tag green">✅ Feasible</span></td><td>All technologies are mature, open-source, and well-documented</td></tr>
+            <tr><td><strong>Economic</strong></td><td><span class="tag green">✅ Feasible</span></td><td>Total development cost: $0 (all free/open-source tools)</td></tr>
+            <tr><td><strong>Operational</strong></td><td><span class="tag green">✅ Feasible</span></td><td>Intuitive web UI requires zero technical training for users</td></tr>
+            <tr><td><strong>Schedule</strong></td><td><span class="tag green">✅ Feasible</span></td><td>7-week Agile timeline completed successfully on schedule</td></tr>
+        </table>
+
+        <div class="verdict">
+            <div class="check">✅</div>
+            <h3>PROJECT IS FULLY FEASIBLE</h3>
+            <p>
+                The Intelligent Resume-Job Matching &amp; Skill Gap Advisory System is <strong>technically sound</strong>, 
+                <strong>economically viable</strong>, <strong>operationally practical</strong>, and was <strong>delivered on schedule</strong>. 
+                It is recommended to proceed with production deployment and further enhancements.
+            </p>
+        </div>
+
+    </div>
+
+    <div class="report-footer">
+        <p>Feasibility Report v1.0 &nbsp;|&nbsp; AI Resume-Job Matching System &nbsp;|&nbsp; Software Engineering Coursework &nbsp;|&nbsp; September 2026</p>
+        <p>Prepared by Damanpreet Singh</p>
+    </div>
+
+</div>
+</body>
+</html>
