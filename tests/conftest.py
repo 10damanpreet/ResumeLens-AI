@@ -1,6 +1,5 @@
 import os
 
-import pytest
 import pytest_asyncio
 from httpx import ASGITransport, AsyncClient
 
@@ -29,28 +28,3 @@ async def client():
     transport = ASGITransport(app=app)
     async with AsyncClient(transport=transport, base_url='http://test') as ac:
         yield ac
-
-
-def _db_is_available():
-    """Check if PostgreSQL is reachable (for integration tests)."""
-    try:
-        import asyncio
-        from sqlalchemy import text
-        from sqlalchemy.ext.asyncio import create_async_engine
-        engine = create_async_engine(os.environ['DATABASE_URL'])
-
-        async def _check():
-            async with engine.connect() as conn:
-                await conn.execute(text('SELECT 1'))
-            await engine.dispose()
-
-        asyncio.get_event_loop().run_until_complete(_check())
-        return True
-    except Exception:
-        return False
-
-
-requires_db = pytest.mark.skipif(
-    not _db_is_available(),
-    reason='PostgreSQL is not available'
-)
