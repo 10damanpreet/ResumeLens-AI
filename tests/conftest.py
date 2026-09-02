@@ -1,4 +1,3 @@
-import asyncio
 import os
 
 import pytest_asyncio
@@ -28,9 +27,16 @@ from app.main import app  # noqa: E402
 
 settings = get_settings()
 
-# Create test engine
-test_engine = create_async_engine(settings.DATABASE_URL, echo=False)
-test_session_factory = async_sessionmaker(test_engine, class_=AsyncSession, expire_on_commit=False)
+# Create test engine — use pool_size=5 so each test gets its own connection
+test_engine = create_async_engine(
+    settings.DATABASE_URL,
+    echo=False,
+    pool_size=5,
+    max_overflow=10,
+)
+test_session_factory = async_sessionmaker(
+    test_engine, class_=AsyncSession, expire_on_commit=False
+)
 
 
 async def override_get_db():
@@ -41,27 +47,19 @@ async def override_get_db():
 app.dependency_overrides[get_db] = override_get_db
 
 
-@pytest_asyncio.fixture(scope='session')
-def event_loop():
-    loop = asyncio.new_event_loop()
-    yield loop
-    loop.close()
-
-
-@pytest_asyncio.fixture(scope='session', autouse=True)
+@pytest_asyncio.fixture(autouse=True)
 async def setup_database():
-    """Create all tables before tests, drop after."""
+    """Create all tables before each test, drop after."""
     async with test_engine.begin() as conn:
-        # Create pgvector extension if it exists (skip if not available)
+        # Create pgvector extension if available
         try:
             await conn.execute(text('CREATE EXTENSION IF NOT EXISTS vector'))
         except Exception:
-            pass  # pgvector not available in test env, tests will still work for non-vector features
+            pass
         await conn.run_sync(Base.metadata.create_all)
     yield
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
-    await test_engine.dispose()
 
 
 @pytest_asyncio.fixture

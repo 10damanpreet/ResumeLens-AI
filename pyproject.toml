@@ -14,4 +14,5 @@ ignore = ["F821", "E501", "B008", "B904", "SIM105"]
 
 [tool.pytest.ini_options]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
