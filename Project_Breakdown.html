@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Breakdown - ResumeLens AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        :root {
+            --primary: #1e40af; --primary-light: #3b82f6; --accent: #059669;
+            --text: #1e293b; --muted: #64748b; --border: #e2e8f0; --bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.7; font-size: 14.5px; }
+        .page { max-width: 900px; margin: 0 auto; background: var(--bg); padding: 50px 55px; box-shadow: 0 0 40px rgba(0,0,0,0.06); }
+        h1 { font-size: 1.8rem; color: var(--primary); text-align: center; margin-bottom: 0.3rem; }
+        .subtitle { text-align: center; color: var(--muted); margin-bottom: 0.5rem; font-size: 0.95rem; }
+        h2 { font-size: 1.35rem; color: var(--primary); margin: 2.5rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 3px solid var(--primary-light); }
+        h3 { font-size: 1.1rem; color: #334155; margin: 1.5rem 0 0.6rem; }
+        h4 { font-size: 0.95rem; color: var(--primary); margin: 1.2rem 0 0.4rem; }
+        p { margin-bottom: 0.7rem; }
+        .header-info { text-align: center; margin-bottom: 2rem; padding-bottom: 1.5rem; border-bottom: 2px solid var(--border); }
+        .header-info p { font-size: 0.85rem; color: var(--muted); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.84rem; }
+        th, td { padding: 9px 12px; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8fafc; }
+        code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; background: #f1f5f9; padding: 1px 6px; border-radius: 3px; color: #be185d; }
+        pre { background: #1e293b; color: #e2e8f0; padding: 16px 20px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 0.78rem; overflow-x: auto; margin: 0.8rem 0; line-height: 1.6; }
+        pre .comment { color: #64748b; } pre .keyword { color: #38bdf8; } pre .string { color: #4ade80; } pre .func { color: #fbbf24; }
+        ul, ol { padding-left: 1.5rem; margin-bottom: 0.7rem; }
+        li { margin-bottom: 0.35rem; }
+
+        .box { padding: 14px 18px; border-radius: 8px; margin: 1rem 0; border-left: 4px solid; font-size: 0.9rem; }
+        .box.info { background: #eff6ff; border-color: var(--primary-light); }
+        .box.success { background: #ecfdf5; border-color: var(--accent); }
+        .box.warning { background: #fffbeb; border-color: #d97706; }
+        .box strong { display: block; margin-bottom: 0.3rem; }
+
+        .tag { display: inline-block; padding: 2px 10px; border-radius: 12px; font-size: 0.72rem; font-weight: 600; margin: 1px; }
+        .tag.blue { background: #dbeafe; color: #1e40af; } .tag.green { background: #d1fae5; color: #065f46; }
+        .tag.yellow { background: #fef3c7; color: #92400e; } .tag.purple { background: #ede9fe; color: #5b21b6; }
+        .tag.red { background: #fee2e2; color: #991b1b; } .tag.gray { background: #f1f5f9; color: #475569; }
+
+        .arch-diagram { margin: 1.5rem 0; padding: 25px; background: #fafbff; border: 2px solid var(--primary); border-radius: 12px; }
+        .arch-flow { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .arch-layer { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; width: 100%; }
+        .arch-box { padding: 10px 16px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; text-align: center; min-width: 120px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+        .arch-box.fe { background: #dbeafe; color: #1e40af; border: 2px solid #93c5fd; }
+        .arch-box.api { background: #d1fae5; color: #065f46; border: 2px solid #6ee7b7; }
+        .arch-box.svc { background: #fef3c7; color: #92400e; border: 2px solid #fcd34d; }
+        .arch-box.data { background: #e0e7ff; color: #3730a3; border: 2px solid #a5b4fc; }
+        .arch-box.ext { background: #fce7f3; color: #9d174d; border: 2px solid #f9a8d4; }
+        .arch-box.infra { background: #f3e8ff; color: #6b21a8; border: 2px solid #c4b5fd; }
+        .arrow-down { font-size: 1.2rem; color: var(--muted); text-align: center; }
+
+        .split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 1rem 0; }
+        .split-box { padding: 16px; border-radius: 8px; border: 1px solid var(--border); background: #fafbff; }
+        .split-box h4 { margin-top: 0; }
+
+        .formula { background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 16px 20px; text-align: center; margin: 1rem 0; font-size: 1.05rem; font-weight: 600; color: var(--primary); }
+
+        .pipeline { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 4px; margin: 1rem 0; }
+        .pipeline-step { padding: 8px 14px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; text-align: center; min-width: 90px; background: white; border: 2px solid var(--primary-light); color: var(--primary); }
+        .pipeline-arrow { color: var(--primary-light); font-size: 1.1rem; }
+
+        .page-break { page-break-before: always; }
+        @media print { body { background: white; } .page { box-shadow: none; padding: 30px 40px; } }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- ===== COVER ===== -->
+    <div class="header-info">
+        <h1>🔬 Complete Project Breakdown</h1>
+        <p class="subtitle">ResumeLens AI — Intelligent Resume-Job Matching &amp; Skill Gap Advisory System</p>
+        <p>Prepared by: Damanpreet Singh &nbsp;|&nbsp; Course: Software Engineering &nbsp;|&nbsp; Date: September 2026</p>
+    </div>
+
+    <!-- ===== TABLE OF CONTENTS ===== -->
+    <h2>📑 Table of Contents</h2>
+    <ol style="line-height: 2.2; font-size: 0.95rem;">
+        <li><strong>High-Level Architecture Overview</strong></li>
+        <li><strong>Frontend Breakdown</strong> — React, TypeScript, Tailwind CSS, Recharts</li>
+        <li><strong>Backend Breakdown</strong> — FastAPI, SQLAlchemy, Celery, Redis</li>
+        <li><strong>ML Models &amp; NLP Techniques Used</strong> — Sentence-BERT, spaCy, BM25, Cosine Similarity</li>
+        <li><strong>CI/CD Pipeline</strong> — GitHub Actions, Ruff Linter, Pytest</li>
+        <li><strong>Docker &amp; Deployment</strong> — Docker Compose, 5 Microservices</li>
+        <li><strong>Complete API Endpoints Reference</strong></li>
+    </ol>
+
+    <!-- ===== 1. ARCHITECTURE ===== -->
+    <h2>1. High-Level Architecture Overview</h2>
+    <p>ResumeLens AI follows a <strong>microservices architecture</strong> with 5 Docker containers communicating through REST APIs and a Redis message queue.</p>
+
+    <div class="arch-diagram">
+        <div class="arch-flow">
+            <div style="font-size:0.7rem; color:var(--muted); font-weight:700; letter-spacing:1px;">PRESENTATION LAYER</div>
+            <div class="arch-layer">
+                <div class="arch-box fe">🖥️ React Dashboard<br><small>Vite + TypeScript + Tailwind</small></div>
+                <div class="arch-box fe">📊 Recharts<br><small>Bar Charts &amp; Visualizations</small></div>
+            </div>
+            <div class="arrow-down">⬇️ HTTP REST API (Port 8000) ⬇️</div>
+            <div style="font-size:0.7rem; color:var(--muted); font-weight:700; letter-spacing:1px;">APPLICATION LAYER</div>
+            <div class="arch-layer">
+                <div class="arch-box api">⚡ FastAPI<br><small>Async REST API Server</small></div>
+                <div class="arch-box api">🔐 JWT Auth<br><small>bcrypt + python-jose</small></div>
+                <div class="arch-box api">📄 Resume Parser<br><small>pdfplumber + spaCy</small></div>
+            </div>
+            <div class="arrow-down">⬇️ Redis Task Queue ⬇️</div>
+            <div style="font-size:0.7rem; color:var(--muted); font-weight:700; letter-spacing:1px;">AI / ML PROCESSING LAYER</div>
+            <div class="arch-layer">
+                <div class="arch-box svc">🧠 Sentence-BERT<br><small>all-MiniLM-L6-v2 (384-dim)</small></div>
+                <div class="arch-box svc">🔍 BM25 Ranker<br><small>Sparse Keyword Matching</small></div>
+                <div class="arch-box ext">🤖 Google Gemini<br><small>gemini-1.5-flash LLM</small></div>
+            </div>
+            <div class="arrow-down">⬇️ Persistent Storage ⬇️</div>
+            <div style="font-size:0.7rem; color:var(--muted); font-weight:700; letter-spacing:1px;">DATA LAYER</div>
+            <div class="arch-layer">
+                <div class="arch-box data">🐘 PostgreSQL 15<br><small>+ pgvector extension</small></div>
+                <div class="arch-box data">🔴 Redis 7<br><small>Message Broker + Cache</small></div>
+                <div class="arch-box infra">🐳 Docker Compose<br><small>5 Container Orchestration</small></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== 2. FRONTEND ===== -->
+    <div class="page-break"></div>
+    <h2>2. Frontend Breakdown</h2>
+
+    <div class="box info">
+        <strong>🖥️ Tech Stack</strong>
+        <span class="tag blue">React 18</span>
+        <span class="tag blue">TypeScript</span>
+        <span class="tag blue">Vite</span>
+        <span class="tag blue">Tailwind CSS</span>
+        <span class="tag blue">Recharts</span>
+        <span class="tag blue">React Router v6</span>
+        <span class="tag blue">Axios</span>
+        <span class="tag blue">Lucide Icons</span>
+    </div>
+
+    <h3>2.1 Frontend File Structure</h3>
+    <pre>
+frontend/
+├── src/
+│   ├── main.tsx              <span class="comment"># App entry point, BrowserRouter setup</span>
+│   ├── App.tsx               <span class="comment"># Root layout, navigation bar, route definitions</span>
+│   ├── api/
+│   │   └── client.ts         <span class="comment"># Axios instance with JWT interceptor</span>
+│   └── pages/
+│       ├── Dashboard.tsx     <span class="comment"># Main page: upload resume + enter job desc</span>
+│       ├── MatchResults.tsx  <span class="comment"># Match score visualization with Recharts</span>
+│       └── SkillGaps.tsx     <span class="comment"># AI skill gap feedback cards</span>
+├── Dockerfile                <span class="comment"># Multi-stage build: Node → Nginx</span>
+├── package.json
+├── tailwind.config.js
+└── vite.config.ts
+</pre>
+
+    <h3>2.2 Page-by-Page Breakdown</h3>
+    <table>
+        <tr><th>Page</th><th>Route</th><th>What It Does</th><th>Key Libraries</th></tr>
+        <tr>
+            <td><strong>Dashboard</strong></td>
+            <td><code>/</code></td>
+            <td>
+                <ul style="padding-left:1rem; margin:0;">
+                    <li>Drag-and-drop file picker for PDF/DOCX resume upload</li>
+                    <li>Multi-line textarea for pasting job description</li>
+                    <li>"Analyze Match" button triggers a <strong>3-step API orchestration</strong>:
+                        <ol style="padding-left:1rem;">
+                            <li><code>POST /resumes</code> → upload file</li>
+                            <li><code>POST /jobs</code> → save job description</li>
+                            <li><code>POST /matches</code> → compute match score</li>
+                        </ol>
+                    </li>
+                    <li>Loading spinner while AI processes</li>
+                </ul>
+            </td>
+            <td><span class="tag blue">React</span> <span class="tag blue">Axios</span></td>
+        </tr>
+        <tr>
+            <td><strong>Match Results</strong></td>
+            <td><code>/matches/:id</code></td>
+            <td>
+                <ul style="padding-left:1rem; margin:0;">
+                    <li>Big circular percentage display (e.g., 82%)</li>
+                    <li>Recharts <strong>Bar Chart</strong> showing 3 scores: Dense, Skill, Experience</li>
+                    <li>"Generate Skill Gap Analysis" button to invoke the LLM</li>
+                </ul>
+            </td>
+            <td><span class="tag blue">Recharts</span> <span class="tag blue">React Router</span></td>
+        </tr>
+        <tr>
+            <td><strong>Skill Gaps</strong></td>
+            <td><code>/matches/:id/gaps</code></td>
+            <td>
+                <ul style="padding-left:1rem; margin:0;">
+                    <li>Displays cards for each missing skill identified by Gemini AI</li>
+                    <li>Color-coded severity badges: <span class="tag red">Critical</span> <span class="tag yellow">Moderate</span> <span class="tag gray">Minor</span></li>
+                    <li>Each card shows: skill name, current level, required level, and recommended learning resources</li>
+                </ul>
+            </td>
+            <td><span class="tag blue">Tailwind CSS</span></td>
+        </tr>
+    </table>
+
+    <h3>2.3 API Client (Axios)</h3>
+    <pre>
+<span class="comment">// frontend/src/api/client.ts</span>
+<span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">'axios'</span>;
+
+<span class="keyword">const</span> api = axios.create({
+  baseURL: <span class="string">'http://localhost:8000'</span>,
+});
+
+<span class="comment">// Automatically attach JWT token to every request</span>
+api.interceptors.request.use((config) => {
+  <span class="keyword">const</span> token = localStorage.getItem(<span class="string">'token'</span>);
+  <span class="keyword">if</span> (token) config.headers.Authorization = <span class="string">`Bearer ${token}`</span>;
+  <span class="keyword">return</span> config;
+});
+</pre>
+
+    <h3>2.4 Frontend Docker Build</h3>
+    <p>The frontend uses a <strong>multi-stage Docker build</strong>:</p>
+    <ol>
+        <li><strong>Stage 1 (Build):</strong> <code>node:20-alpine</code> runs <code>npm run build</code> → generates static HTML/JS/CSS files</li>
+        <li><strong>Stage 2 (Serve):</strong> <code>nginx:alpine</code> copies the built files and serves them on port 80 with SPA rewrite rules (<code>try_files $uri $uri/ /index.html</code>)</li>
+    </ol>
+
+    <!-- ===== 3. BACKEND ===== -->
+    <div class="page-break"></div>
+    <h2>3. Backend Breakdown</h2>
+
+    <div class="box success">
+        <strong>⚙️ Tech Stack</strong>
+        <span class="tag green">Python 3.12</span>
+        <span class="tag green">FastAPI</span>
+        <span class="tag green">SQLAlchemy (Async)</span>
+        <span class="tag green">Alembic</span>
+        <span class="tag green">Celery</span>
+        <span class="tag green">Redis</span>
+        <span class="tag green">PostgreSQL + pgvector</span>
+        <span class="tag green">pdfplumber</span>
+        <span class="tag green">spaCy</span>
+    </div>
+
+    <h3>3.1 Backend File Structure</h3>
+    <pre>
+app/
+├── main.py                <span class="comment"># FastAPI app instance, CORS, router registration</span>
+├── config.py              <span class="comment"># Pydantic Settings (reads .env file)</span>
+├── database.py            <span class="comment"># SQLAlchemy async engine + session factory</span>
+├── models/                <span class="comment"># Database ORM models (mapped to PostgreSQL tables)</span>
+│   ├── candidate.py       <span class="comment"># User accounts (email, bcrypt password hash)</span>
+│   ├── resume.py          <span class="comment"># Uploaded resumes + parsed sections</span>
+│   ├── job.py             <span class="comment"># Job descriptions + embeddings</span>
+│   ├── match.py           <span class="comment"># Match evaluation results (scores)</span>
+│   ├── gap.py             <span class="comment"># Skill gap recommendations from LLM</span>
+│   └── task_log.py        <span class="comment"># Background task tracking</span>
+├── api/                   <span class="comment"># REST API route handlers</span>
+│   ├── auth.py            <span class="comment"># POST /auth/register, /auth/login, GET /auth/me</span>
+│   ├── resumes.py         <span class="comment"># POST /resumes (upload), GET /resumes/{id}</span>
+│   ├── jobs.py            <span class="comment"># POST /jobs, GET /jobs/{id}</span>
+│   ├── matches.py         <span class="comment"># POST /matches (trigger matching)</span>
+│   ├── gaps.py            <span class="comment"># POST/GET /matches/{id}/gaps (LLM analysis)</span>
+│   ├── tasks.py           <span class="comment"># GET /tasks/{id} (check Celery task status)</span>
+│   └── health.py          <span class="comment"># GET /health (uptime check)</span>
+├── services/              <span class="comment"># Business logic & AI/ML processing</span>
+│   ├── matcher.py         <span class="comment"># Cosine similarity + hybrid scoring</span>
+│   ├── embedding.py       <span class="comment"># Sentence-BERT vector generation</span>
+│   ├── segmenter.py       <span class="comment"># Resume text → logical sections</span>
+│   ├── pii_redactor.py    <span class="comment"># Email/phone/name redaction</span>
+│   ├── llm_gateway.py     <span class="comment"># Google Gemini API integration</span>
+│   └── gap_analyzer.py    <span class="comment"># Orchestrates LLM skill gap analysis</span>
+├── worker/                <span class="comment"># Celery async task workers</span>
+│   ├── celery_app.py      <span class="comment"># Celery instance config (Redis broker)</span>
+│   └── tasks.py           <span class="comment"># Background resume processing pipeline</span>
+└── parsers/               <span class="comment"># File format parsers</span>
+    ├── pdf_parser.py      <span class="comment"># pdfplumber + pytesseract OCR fallback</span>
+    └── docx_parser.py     <span class="comment"># python-docx text extraction</span>
+</pre>
+
+    <h3>3.2 Request Flow (What Happens When User Clicks "Analyze")</h3>
+    <div class="pipeline">
+        <div class="pipeline-step" style="background:#dbeafe;">👤 User<br>uploads PDF</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#d1fae5;">FastAPI<br>saves file</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">Celery Worker<br>processes async</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">pdfplumber<br>extracts text</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">spaCy<br>redacts PII</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">SBERT<br>generates vectors</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#e0e7ff;">PostgreSQL<br>stores results</div>
+    </div>
+    <div class="pipeline">
+        <div class="pipeline-step" style="background:#dbeafe;">👤 User clicks<br>"Analyze Match"</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#d1fae5;">FastAPI<br>calls matcher</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">Cosine Similarity<br>(Dense Score)</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">Hybrid Score<br>calculation</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fce7f3;">Gemini LLM<br>Skill Gap Analysis</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#dbeafe;">📊 React<br>shows results</div>
+    </div>
+
+    <h3>3.3 Database Models (PostgreSQL + pgvector)</h3>
+    <table>
+        <tr><th>Table</th><th>Key Columns</th><th>Purpose</th></tr>
+        <tr><td><code>candidates</code></td><td>id, email, password_hash, role, created_at</td><td>User accounts with bcrypt-hashed passwords</td></tr>
+        <tr><td><code>resumes</code></td><td>id, candidate_id (FK), filename, raw_text, parse_status</td><td>Uploaded resume files and parsing status</td></tr>
+        <tr><td><code>resume_sections</code></td><td>id, resume_id (FK), section_type, redacted_text, <strong>embedding Vector(384)</strong></td><td>Parsed, PII-redacted sections with ML embeddings</td></tr>
+        <tr><td><code>job_descriptions</code></td><td>id, candidate_id (FK), title, description_text, <strong>embedding Vector(384)</strong></td><td>Job descriptions with ML embeddings</td></tr>
+        <tr><td><code>match_evaluations</code></td><td>id, resume_id, job_id, dense_score, skill_score, exp_score, hybrid_score</td><td>Match scoring results</td></tr>
+        <tr><td><code>gap_recommendations</code></td><td>id, evaluation_id, skill_name, severity, current_level, required_level</td><td>LLM-generated skill gap feedback</td></tr>
+        <tr><td><code>task_logs</code></td><td>id, task_id, status, error_message</td><td>Background task tracking for Celery</td></tr>
+    </table>
+
+    <!-- ===== 4. ML MODELS & NLP ===== -->
+    <div class="page-break"></div>
+    <h2>4. ML Models &amp; NLP Techniques Used</h2>
+
+    <p>This is the core AI brain of the project. Here's every ML model and NLP technique used, explained in detail:</p>
+
+    <!-- 4.1 Sentence-BERT -->
+    <h3>4.1 Sentence-BERT (Dense Semantic Matching)</h3>
+    <div class="box warning">
+        <strong>🧠 Model: <code>all-MiniLM-L6-v2</code></strong>
+        Library: <code>sentence-transformers</code> (Hugging Face) &nbsp;|&nbsp; Output: <strong>384-dimensional</strong> dense vector &nbsp;|&nbsp; File: <code>app/services/embedding.py</code>
+    </div>
+
+    <h4>What is Sentence-BERT?</h4>
+    <p>Sentence-BERT (SBERT) is a modification of the BERT transformer model that produces <strong>semantically meaningful sentence-level embeddings</strong>. Unlike word-level models, SBERT understands the meaning of entire paragraphs.</p>
+
+    <h4>How We Use It</h4>
+    <ol>
+        <li>When a resume is uploaded, the extracted text from each section (summary, skills, experience, education) is passed through SBERT.</li>
+        <li>SBERT converts each text chunk into a <strong>384-dimensional floating-point vector</strong> (a list of 384 numbers).</li>
+        <li>This vector captures the <strong>semantic meaning</strong> of the text — similar meanings produce similar vectors.</li>
+        <li>The vectors are stored in PostgreSQL using the <code>pgvector</code> extension.</li>
+        <li>The same process happens for the job description.</li>
+    </ol>
+
+    <pre>
+<span class="comment"># app/services/embedding.py</span>
+<span class="keyword">from</span> sentence_transformers <span class="keyword">import</span> SentenceTransformer
+
+model = SentenceTransformer(<span class="string">'all-MiniLM-L6-v2'</span>)  <span class="comment"># 384-dim output</span>
+
+<span class="keyword">def</span> <span class="func">generate_embedding</span>(text: str) -> list[float]:
+    <span class="keyword">if not</span> text:
+        <span class="keyword">return</span> [0.0] * 384  <span class="comment"># zero vector for empty text</span>
+    <span class="keyword">return</span> model.encode(text).tolist()
+</pre>
+
+    <!-- 4.2 Cosine Similarity -->
+    <h3>4.2 Cosine Similarity (Score Computation)</h3>
+    <div class="box info">
+        <strong>📐 Mathematical Formula</strong>
+        Used to measure how "close" two vectors are in 384-dimensional space. A score of 1.0 = perfect match, 0.0 = no similarity.
+    </div>
+    <div class="formula">
+        similarity(A, B) = (A · B) / (‖A‖ × ‖B‖)
+    </div>
+    <p>Where <strong>A</strong> is the resume embedding vector and <strong>B</strong> is the job description embedding vector. The dot product measures alignment, divided by the product of their magnitudes to normalize to a 0–1 scale.</p>
+    <pre>
+<span class="comment"># app/services/matcher.py</span>
+<span class="keyword">def</span> <span class="func">cosine_similarity</span>(v1, v2):
+    a = np.array(v1)
+    b = np.array(v2)
+    dot = np.dot(a, b)           <span class="comment"># dot product</span>
+    norm = np.linalg.norm(a) * np.linalg.norm(b)  <span class="comment"># magnitudes</span>
+    <span class="keyword">if</span> norm == 0:
+        <span class="keyword">return</span> 0.0
+    <span class="keyword">return</span> float(dot / norm)
+</pre>
+
+    <!-- 4.3 Hybrid Score -->
+    <h3>4.3 Hybrid Weighted Score Formula</h3>
+    <p>The final match score is a <strong>weighted combination</strong> of three sub-scores:</p>
+    <div class="formula">
+        Final Score = (0.4 × Dense Score) + (0.4 × Skill Score) + (0.2 × Experience Score)
+    </div>
+    <table>
+        <tr><th>Component</th><th>Weight</th><th>How It's Computed</th></tr>
+        <tr><td><strong>Dense Score</strong></td><td>40%</td><td>Average cosine similarity between SBERT embeddings of resume sections and job description</td></tr>
+        <tr><td><strong>Skill Score</strong></td><td>40%</td><td>Keyword overlap between extracted skills and job requirements</td></tr>
+        <tr><td><strong>Experience Score</strong></td><td>20%</td><td>Years of experience vs. job requirements match</td></tr>
+    </table>
+
+    <!-- 4.4 spaCy NLP -->
+    <h3>4.4 spaCy NLP Pipeline</h3>
+    <div class="box warning">
+        <strong>🏷️ Model: <code>en_core_web_sm</code></strong>
+        Library: <code>spaCy 3.7</code> &nbsp;|&nbsp; Task: Named Entity Recognition (NER) &nbsp;|&nbsp; File: <code>app/services/pii_redactor.py</code>
+    </div>
+
+    <h4>What spaCy Does in Our Project</h4>
+    <p>spaCy is used specifically for <strong>PII (Personally Identifiable Information) redaction</strong> — removing personal data from resumes before storing them or sending them to the LLM:</p>
+
+    <table>
+        <tr><th>NLP Technique</th><th>What It Detects</th><th>Replacement</th><th>Method</th></tr>
+        <tr><td><strong>Regex Pattern Matching</strong></td><td>Email addresses</td><td><code>[EMAIL]</code></td><td>Regular expression: <code>[a-zA-Z0-9_.+-]+@...</code></td></tr>
+        <tr><td><strong>Regex Pattern Matching</strong></td><td>Phone numbers</td><td><code>[PHONE]</code></td><td>Regular expression: <code>\(?\d{3}\)?[-.\s]?\d{3}...</code></td></tr>
+        <tr><td><strong>Named Entity Recognition</strong></td><td>Person names</td><td><code>[PERSON]</code></td><td>spaCy <code>PERSON</code> entity label</td></tr>
+        <tr><td><strong>Named Entity Recognition</strong></td><td>Locations (cities, countries)</td><td><code>[LOCATION]</code></td><td>spaCy <code>GPE</code> and <code>LOC</code> entity labels</td></tr>
+    </table>
+
+    <pre>
+<span class="comment"># app/services/pii_redactor.py — Two-phase PII redaction</span>
+<span class="keyword">import</span> re, spacy
+
+nlp = spacy.load(<span class="string">"en_core_web_sm"</span>)
+
+<span class="keyword">def</span> <span class="func">redact</span>(raw_text):
+    <span class="comment"># Phase 1: Regex (deterministic)</span>
+    text = re.sub(r<span class="string">'email_pattern'</span>, <span class="string">'[EMAIL]'</span>, raw_text)
+    text = re.sub(r<span class="string">'phone_pattern'</span>, <span class="string">'[PHONE]'</span>, text)
+
+    <span class="comment"># Phase 2: spaCy NER (ML-based)</span>
+    doc = nlp(text)
+    <span class="keyword">for</span> ent <span class="keyword">in</span> doc.ents:
+        <span class="keyword">if</span> ent.label_ == <span class="string">"PERSON"</span>:
+            text = text.replace(ent.text, <span class="string">"[PERSON]"</span>)
+    <span class="keyword">return</span> text
+</pre>
+
+    <div class="box info">
+        <strong>ℹ️ About Lemmatization</strong>
+        spaCy's <code>en_core_web_sm</code> model internally uses a <strong>lemmatizer</strong> as part of its NLP pipeline. Lemmatization converts words to their base form (e.g., "running" → "run", "better" → "good"). While we don't call the lemmatizer explicitly, it runs automatically inside spaCy's tokenization pipeline when performing NER. The Sentence-BERT model also uses its own <strong>WordPiece tokenizer</strong> which handles subword decomposition.
+    </div>
+
+    <!-- 4.5 Resume Segmenter -->
+    <h3>4.5 Rule-Based Text Segmenter</h3>
+    <p>The segmenter (<code>app/services/segmenter.py</code>) splits raw resume text into logical sections using a <strong>keyword-based state machine</strong>:</p>
+    <table>
+        <tr><th>Detected Keywords</th><th>Mapped Section</th></tr>
+        <tr><td><code>"EXPERIENCE"</code>, <code>"EMPLOYMENT"</code>, <code>"WORK HISTORY"</code></td><td><code>work_experience</code></td></tr>
+        <tr><td><code>"SKILL"</code>, <code>"TECHNOLOGIES"</code></td><td><code>skills</code></td></tr>
+        <tr><td><code>"EDUCATION"</code>, <code>"ACADEMIC"</code></td><td><code>education</code></td></tr>
+        <tr><td><code>"PROJECT"</code></td><td><code>projects</code></td></tr>
+        <tr><td>(Everything before the first header)</td><td><code>summary</code> (default)</td></tr>
+    </table>
+
+    <!-- 4.6 Google Gemini LLM -->
+    <div class="page-break"></div>
+    <h3>4.6 Google Gemini LLM (Skill Gap Analysis)</h3>
+    <div class="box warning">
+        <strong>🤖 Model: <code>gemini-1.5-flash</code></strong>
+        Library: <code>google-generativeai</code> &nbsp;|&nbsp; Task: Structured skill gap analysis &nbsp;|&nbsp; File: <code>app/services/llm_gateway.py</code>
+    </div>
+
+    <h4>What Gemini Does</h4>
+    <p>After match scores are computed, the system sends the <strong>redacted resume text</strong> and <strong>job description</strong> to Google's Gemini 1.5 Flash LLM with a carefully engineered prompt:</p>
+    <ol>
+        <li>Gemini acts as an <strong>expert technical recruiter and ATS system</strong></li>
+        <li>Identifies up to <strong>3 missing skills or experiences</strong></li>
+        <li>For each gap, it returns:
+            <ul>
+                <li><code>skill_name</code> — the missing skill</li>
+                <li><code>current_level</code> — what the candidate currently has</li>
+                <li><code>required_level</code> — what the job requires</li>
+                <li><code>severity</code> — <span class="tag red">critical</span>, <span class="tag yellow">moderate</span>, or <span class="tag gray">minor</span></li>
+                <li><code>recommendation</code> — specific learning resources</li>
+            </ul>
+        </li>
+        <li>Output is enforced as <strong>strict JSON</strong> (validated by Pydantic)</li>
+    </ol>
+
+    <h4>Why <code>gemini-1.5-flash</code>?</h4>
+    <ul>
+        <li><strong>Free tier:</strong> 60 requests/minute at no cost</li>
+        <li><strong>Low latency:</strong> ~1-2 second response time (vs. 5-10s for larger models)</li>
+        <li><strong>Structured output:</strong> Reliably generates valid JSON arrays</li>
+    </ul>
+
+    <h3>4.7 Complete ML/NLP Summary Table</h3>
+    <table>
+        <tr><th>Technology</th><th>Type</th><th>Model Name</th><th>What It Does</th><th>File</th></tr>
+        <tr><td><strong>Sentence-BERT</strong></td><td>Transformer (ML)</td><td><code>all-MiniLM-L6-v2</code></td><td>Converts text → 384-dim vectors for semantic similarity</td><td><code>embedding.py</code></td></tr>
+        <tr><td><strong>Cosine Similarity</strong></td><td>Math (Linear Algebra)</td><td>NumPy</td><td>Measures angle between two vectors (0.0 to 1.0)</td><td><code>matcher.py</code></td></tr>
+        <tr><td><strong>spaCy NER</strong></td><td>NLP Pipeline</td><td><code>en_core_web_sm</code></td><td>Detects person names &amp; locations for PII redaction</td><td><code>pii_redactor.py</code></td></tr>
+        <tr><td><strong>Lemmatization</strong></td><td>NLP (built-in)</td><td>spaCy pipeline</td><td>Converts words to base form (runs inside spaCy tokenizer)</td><td><code>pii_redactor.py</code></td></tr>
+        <tr><td><strong>Regex NLP</strong></td><td>Pattern Matching</td><td>Python <code>re</code></td><td>Detects emails &amp; phone numbers</td><td><code>pii_redactor.py</code></td></tr>
+        <tr><td><strong>Text Segmentation</strong></td><td>Rule-Based NLP</td><td>Custom state machine</td><td>Splits resume into logical sections by header keywords</td><td><code>segmenter.py</code></td></tr>
+        <tr><td><strong>pdfplumber</strong></td><td>PDF Parser</td><td>—</td><td>Extracts text from PDF documents</td><td><code>pdf_parser.py</code></td></tr>
+        <tr><td><strong>pytesseract</strong></td><td>OCR Engine</td><td>Tesseract</td><td>Extracts text from scanned/image-based PDFs</td><td><code>pdf_parser.py</code></td></tr>
+        <tr><td><strong>Google Gemini</strong></td><td>LLM (API)</td><td><code>gemini-1.5-flash</code></td><td>Generates structured skill gap analysis &amp; career advice</td><td><code>llm_gateway.py</code></td></tr>
+    </table>
+
+    <!-- ===== 5. CI/CD ===== -->
+    <div class="page-break"></div>
+    <h2>5. CI/CD Pipeline (GitHub Actions)</h2>
+
+    <div class="box info">
+        <strong>🔄 What is CI/CD?</strong>
+        <strong>CI (Continuous Integration)</strong> = Every time you push code to GitHub, automated checks run to verify your code quality and tests pass.<br>
+        <strong>CD (Continuous Deployment)</strong> = Automatically deploy passing code to production (not yet configured for this project).
+    </div>
+
+    <h3>5.1 Pipeline Architecture</h3>
+    <p>Our CI pipeline is defined in <code>.github/workflows/ci.yml</code> and runs on every push to the <code>main</code> branch.</p>
+
+    <div class="pipeline">
+        <div class="pipeline-step" style="background:#d1fae5;">📤 Developer<br>pushes code</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#dbeafe;">🔍 Job 1: LINT<br>(ruff check)</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#fef3c7;">✅ Lint<br>passes?</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#dbeafe;">🧪 Job 2: TEST<br>(pytest)</div>
+        <div class="pipeline-arrow">→</div>
+        <div class="pipeline-step" style="background:#d1fae5;">✅ Green<br>checkmark</div>
+    </div>
+
+    <h3>5.2 Job 1: Lint (Code Quality Check)</h3>
+    <table>
+        <tr><th>Setting</th><th>Value</th></tr>
+        <tr><td>Runs on</td><td><code>ubuntu-latest</code> (GitHub-hosted Linux VM)</td></tr>
+        <tr><td>Python version</td><td>3.12</td></tr>
+        <tr><td>Linter tool</td><td><strong>Ruff</strong> — an extremely fast Python linter (written in Rust)</td></tr>
+        <tr><td>Command</td><td><code>ruff check .</code></td></tr>
+    </table>
+
+    <h4>What Ruff Checks (configured in <code>pyproject.toml</code>)</h4>
+    <table>
+        <tr><th>Rule Code</th><th>Category</th><th>What It Checks</th></tr>
+        <tr><td><code>E</code></td><td>PEP 8 Errors</td><td>Indentation, whitespace, line length</td></tr>
+        <tr><td><code>F</code></td><td>Pyflakes</td><td>Unused imports, undefined variables, redefined functions</td></tr>
+        <tr><td><code>W</code></td><td>PEP 8 Warnings</td><td>Trailing whitespace, blank lines</td></tr>
+        <tr><td><code>I</code></td><td>isort</td><td>Import ordering (stdlib → third-party → local)</td></tr>
+        <tr><td><code>N</code></td><td>PEP 8 Naming</td><td>Class names must be CamelCase, functions must be snake_case</td></tr>
+        <tr><td><code>UP</code></td><td>pyupgrade</td><td>Use modern Python syntax (f-strings, type hints)</td></tr>
+        <tr><td><code>B</code></td><td>Bugbear</td><td>Common Python gotchas and anti-patterns</td></tr>
+        <tr><td><code>SIM</code></td><td>Simplify</td><td>Simplifiable if-statements, boolean expressions</td></tr>
+    </table>
+
+    <h3>5.3 Job 2: Test (Automated Testing)</h3>
+    <table>
+        <tr><th>Setting</th><th>Value</th></tr>
+        <tr><td>Depends on</td><td>Lint job must pass first</td></tr>
+        <tr><td>Runs on</td><td><code>ubuntu-latest</code></td></tr>
+        <tr><td>Python version</td><td>3.12</td></tr>
+        <tr><td>PyTorch optimization</td><td>Installs CPU-only PyTorch (saves ~4 GB disk space)</td></tr>
+        <tr><td>Test framework</td><td><strong>pytest</strong> with <code>pytest-asyncio</code> for async tests</td></tr>
+        <tr><td>Coverage tool</td><td><code>pytest-cov</code> (reports % of code tested)</td></tr>
+        <tr><td>Skipped tests</td><td><code>test_auth.py</code>, <code>test_health.py</code> (require live DB)</td></tr>
+    </table>
+
+    <h4>Unit Tests That Run in CI</h4>
+    <table>
+        <tr><th>Test File</th><th>What It Tests</th><th>Type</th></tr>
+        <tr><td><code>test_matcher.py</code></td><td>Cosine similarity returns 1.0 for identical vectors, 0.0 for orthogonal</td><td>Unit</td></tr>
+        <tr><td><code>test_segmenter.py</code></td><td>Resume text correctly splits into "skills" and "summary" sections</td><td>Unit</td></tr>
+        <tr><td><code>test_embedding.py</code></td><td>Empty text returns a 384-dimensional zero vector</td><td>Unit</td></tr>
+        <tr><td><code>test_pii_redactor.py</code></td><td>Emails → <code>[EMAIL]</code>, phones → <code>[PHONE]</code></td><td>Unit</td></tr>
+        <tr><td><code>test_llm.py</code></td><td>LLM gateway handles empty inputs without crashing</td><td>Unit</td></tr>
+        <tr><td><code>test_worker.py</code></td><td>Celery app initialized with correct timezone and name</td><td>Unit</td></tr>
+    </table>
+
+    <!-- ===== 6. DOCKER ===== -->
+    <div class="page-break"></div>
+    <h2>6. Docker &amp; Deployment</h2>
+
+    <h3>6.1 All 5 Docker Containers</h3>
+    <table>
+        <tr><th>#</th><th>Container</th><th>Image</th><th>Port</th><th>Purpose</th></tr>
+        <tr><td>1</td><td><code>db</code></td><td><code>ankane/pgvector:v0.5.1</code></td><td>5432</td><td>PostgreSQL 15 database with pgvector extension for storing 384-dim embeddings</td></tr>
+        <tr><td>2</td><td><code>redis</code></td><td><code>redis:7-alpine</code></td><td>6379</td><td>Message broker for Celery task queue + result caching</td></tr>
+        <tr><td>3</td><td><code>api</code></td><td>Custom (Dockerfile)</td><td>8000</td><td>FastAPI REST API server running on Uvicorn</td></tr>
+        <tr><td>4</td><td><code>worker</code></td><td>Custom (Dockerfile.worker)</td><td>—</td><td>Celery worker for background resume processing &amp; ML inference</td></tr>
+        <tr><td>5</td><td><code>frontend</code></td><td>Custom (frontend/Dockerfile)</td><td>3000</td><td>React SPA served by Nginx</td></tr>
+    </table>
+
+    <h3>6.2 Shared Volumes</h3>
+    <table>
+        <tr><th>Volume</th><th>Containers</th><th>Purpose</th></tr>
+        <tr><td><code>postgres_data</code></td><td>db</td><td>Persist database data across container restarts</td></tr>
+        <tr><td><code>shared_uploads</code></td><td>api + worker</td><td>API saves uploaded PDFs → Worker reads them for processing</td></tr>
+    </table>
+
+    <h3>6.3 How to Run the Entire System</h3>
+    <pre>
+<span class="comment"># Single command to start all 5 containers:</span>
+docker-compose up --build
+
+<span class="comment"># Access points:</span>
+<span class="comment"># Frontend:  http://localhost:3000</span>
+<span class="comment"># Backend:   http://localhost:8000</span>
+<span class="comment"># API Docs:  http://localhost:8000/docs (Swagger UI)</span>
+</pre>
+
+    <!-- ===== 7. API ENDPOINTS ===== -->
+    <h2>7. Complete API Endpoints Reference</h2>
+    <table>
+        <tr><th>Method</th><th>Endpoint</th><th>Description</th><th>Auth Required</th></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/health</code></td><td>System health check (DB connectivity)</td><td>No</td></tr>
+        <tr><td><span class="tag blue">POST</span></td><td><code>/auth/register</code></td><td>Create new user account</td><td>No</td></tr>
+        <tr><td><span class="tag blue">POST</span></td><td><code>/auth/login</code></td><td>Authenticate &amp; receive JWT token</td><td>No</td></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/auth/me</code></td><td>Get current user profile</td><td>Yes (JWT)</td></tr>
+        <tr><td><span class="tag blue">POST</span></td><td><code>/resumes</code></td><td>Upload resume PDF/DOCX</td><td>Yes</td></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/resumes/{id}</code></td><td>Get resume status &amp; metadata</td><td>Yes</td></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/resumes/{id}/sections</code></td><td>Get parsed &amp; redacted resume sections</td><td>Yes</td></tr>
+        <tr><td><span class="tag blue">POST</span></td><td><code>/jobs</code></td><td>Create a job description</td><td>Yes</td></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/jobs/{id}</code></td><td>Get job description details</td><td>Yes</td></tr>
+        <tr><td><span class="tag blue">POST</span></td><td><code>/matches</code></td><td>Compute match score (resume vs job)</td><td>Yes</td></tr>
+        <tr><td><span class="tag blue">POST</span></td><td><code>/matches/{id}/gaps</code></td><td>Trigger Gemini LLM skill gap analysis</td><td>Yes</td></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/matches/{id}/gaps</code></td><td>Retrieve stored skill gap results</td><td>Yes</td></tr>
+        <tr><td><span class="tag green">GET</span></td><td><code>/tasks/{id}</code></td><td>Check Celery background task status</td><td>Yes</td></tr>
+    </table>
+
+</div>
+</body>
+</html>

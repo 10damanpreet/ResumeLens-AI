@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Use Case Diagram &amp; Scenarios - ResumeLens AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --accent: #059669;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.6; }
+        .page {
+            max-width: 850px; margin: 0 auto; background: var(--bg);
+            padding: 50px 55px; box-shadow: 0 0 40px rgba(0,0,0,0.06);
+        }
+        h1 { font-size: 1.8rem; color: var(--primary); text-align: center; margin-bottom: 0.3rem; }
+        .subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+        h2 { font-size: 1.3rem; color: var(--primary); margin: 2rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--primary-light); }
+        h3 { font-size: 1.05rem; color: var(--text); margin: 1.5rem 0 0.5rem; }
+        p { margin-bottom: 0.7rem; font-size: 0.92rem; }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+        th, td { padding: 9px 12px; border: 1px solid var(--border); text-align: left; }
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8fafc; }
+        .header-info { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .header-info p { font-size: 0.85rem; color: var(--muted); }
+
+        /* Use Case Diagram */
+        .ucd-container {
+            border: 2px solid var(--primary); border-radius: 12px; padding: 30px 20px;
+            margin: 1.5rem 0; position: relative; background: #fafbff;
+        }
+        .ucd-title {
+            position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+            background: var(--primary); color: white; padding: 4px 20px; border-radius: 20px;
+            font-size: 0.8rem; font-weight: 600;
+        }
+        .ucd-layout { display: flex; gap: 20px; align-items: flex-start; }
+        .ucd-actors { display: flex; flex-direction: column; gap: 40px; flex-shrink: 0; }
+        .ucd-actor {
+            text-align: center; width: 80px;
+        }
+        .actor-icon {
+            font-size: 2.5rem; line-height: 1;
+        }
+        .actor-label { font-size: 0.75rem; font-weight: 600; margin-top: 4px; }
+        .ucd-cases { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+        .ucd-case {
+            border: 2px solid var(--primary-light); border-radius: 24px; padding: 8px 16px;
+            text-align: center; font-size: 0.78rem; font-weight: 500; background: white;
+            color: var(--primary);
+        }
+        .ucd-case.highlight { background: #dbeafe; border-color: var(--primary); }
+        .ucd-line { display: flex; align-items: center; gap: 8px; margin: 3px 0; }
+        .ucd-line .dash { flex: 0 0 30px; border-top: 2px dashed var(--muted); }
+        .ucd-line .solid { flex: 0 0 30px; border-top: 2px solid var(--primary); }
+
+        .scenario-box {
+            background: #f8fafc; border: 1px solid var(--border); border-radius: 8px;
+            padding: 16px 20px; margin: 1rem 0;
+        }
+        .scenario-box h4 {
+            color: var(--primary); margin-bottom: 0.5rem; font-size: 0.95rem;
+        }
+        ol, ul { padding-left: 1.4rem; margin-bottom: 0.5rem; font-size: 0.88rem; }
+        li { margin-bottom: 0.3rem; }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: white; }
+            .page { box-shadow: none; padding: 30px 40px; }
+            .page-break { page-break-before: always; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <div class="header-info">
+        <h1>Use Case Diagram &amp; Scenarios</h1>
+        <p class="subtitle">ResumeLens AI — Intelligent Resume-Job Matching &amp; Skill Gap Advisory System</p>
+        <p>Prepared by: Damanpreet Singh &nbsp;|&nbsp; Course: Software Engineering &nbsp;|&nbsp; Date: September 2026</p>
+    </div>
+
+    <!-- ===== USE CASE DIAGRAM ===== -->
+    <h2>1. Use Case Diagram</h2>
+
+    <div class="ucd-container">
+        <div class="ucd-title">ResumeLens AI System</div>
+        <div style="display: grid; grid-template-columns: 90px 1fr 90px; gap: 15px; align-items: center;">
+
+            <!-- LEFT ACTOR: Job Seeker -->
+            <div class="ucd-actor">
+                <div class="actor-icon">🧑‍💻</div>
+                <div class="actor-label">Job Seeker</div>
+            </div>
+
+            <!-- USE CASES (Center) -->
+            <div class="ucd-cases">
+                <div class="ucd-case highlight">UC-01: Register Account</div>
+                <div class="ucd-case highlight">UC-02: Login</div>
+                <div class="ucd-case highlight">UC-03: Upload Resume (PDF)</div>
+                <div class="ucd-case highlight">UC-04: Enter Job Description</div>
+                <div class="ucd-case highlight">UC-05: View Match Score</div>
+                <div class="ucd-case highlight">UC-06: View Skill Gap Analysis</div>
+                <div class="ucd-case">UC-07: Parse Resume Text (NLP)</div>
+                <div class="ucd-case">UC-08: Compute Dense Score (SBERT)</div>
+                <div class="ucd-case">UC-09: Compute Sparse Score (BM25)</div>
+                <div class="ucd-case">UC-10: Generate Skill Gap Feedback (LLM)</div>
+                <div class="ucd-case">UC-11: Store Results in Database</div>
+            </div>
+
+            <!-- RIGHT ACTOR: System/AI -->
+            <div class="ucd-actor">
+                <div class="actor-icon">🤖</div>
+                <div class="actor-label">AI System</div>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div style="margin-top: 20px; display: flex; gap: 20px; justify-content: center; font-size: 0.75rem; color: var(--muted);">
+            <div>━━ Association (Actor ↔ Use Case)</div>
+            <div style="background:#dbeafe; padding:2px 10px; border-radius:10px; border:1px solid var(--primary-light);">User-initiated Use Case</div>
+            <div style="background:white; padding:2px 10px; border-radius:10px; border:1px solid var(--primary-light);">System-initiated Use Case</div>
+        </div>
+    </div>
+
+    <h3>Actor Descriptions</h3>
+    <table>
+        <tr><th>Actor</th><th>Description</th><th>Interactions</th></tr>
+        <tr>
+            <td><strong>Job Seeker</strong></td>
+            <td>A candidate who uploads their resume and a job description to evaluate how well they match the position.</td>
+            <td>UC-01 through UC-06</td>
+        </tr>
+        <tr>
+            <td><strong>AI System</strong></td>
+            <td>The backend AI engine that processes resumes, computes match scores, and generates skill gap feedback.</td>
+            <td>UC-07 through UC-11</td>
+        </tr>
+    </table>
+
+    <!-- ===== USE CASE SCENARIOS ===== -->
+    <div class="page-break"></div>
+    <h2>2. Use Case Scenarios</h2>
+
+    <!-- UC-01 -->
+    <div class="scenario-box">
+        <h4>UC-01: Register Account</h4>
+        <table>
+            <tr><th style="width:160px;">Field</th><th>Description</th></tr>
+            <tr><td><strong>Use Case ID</strong></td><td>UC-01</td></tr>
+            <tr><td><strong>Primary Actor</strong></td><td>Job Seeker</td></tr>
+            <tr><td><strong>Precondition</strong></td><td>User is not registered in the system.</td></tr>
+            <tr><td><strong>Postcondition</strong></td><td>User account is created and stored in the PostgreSQL database.</td></tr>
+            <tr><td><strong>Trigger</strong></td><td>User navigates to the registration page.</td></tr>
+        </table>
+        <h4 style="margin-top:0.8rem;">Main Success Scenario</h4>
+        <ol>
+            <li>User opens the ResumeLens AI web application.</li>
+            <li>User clicks "Register" and enters email and password.</li>
+            <li>System validates the email format and password strength (min 8 characters).</li>
+            <li>System hashes the password using bcrypt.</li>
+            <li>System stores the new candidate record in the <code>candidates</code> table.</li>
+            <li>System returns a success message with HTTP 201 status.</li>
+        </ol>
+        <h4 style="margin-top:0.8rem;">Alternative Flows</h4>
+        <ul>
+            <li><strong>3a.</strong> Email already registered → System returns HTTP 409 "Email already exists."</li>
+            <li><strong>3b.</strong> Invalid email format → System returns HTTP 422 validation error.</li>
+            <li><strong>3c.</strong> Password too short → System returns HTTP 422 "Password must be at least 8 characters."</li>
+        </ul>
+    </div>
+
+    <!-- UC-03 -->
+    <div class="scenario-box">
+        <h4>UC-03: Upload Resume (PDF)</h4>
+        <table>
+            <tr><th style="width:160px;">Field</th><th>Description</th></tr>
+            <tr><td><strong>Use Case ID</strong></td><td>UC-03</td></tr>
+            <tr><td><strong>Primary Actor</strong></td><td>Job Seeker</td></tr>
+            <tr><td><strong>Precondition</strong></td><td>User is logged in with a valid JWT token.</td></tr>
+            <tr><td><strong>Postcondition</strong></td><td>Resume PDF is saved on the server and text is extracted via NLP.</td></tr>
+            <tr><td><strong>Trigger</strong></td><td>User clicks "Upload Resume" on the dashboard.</td></tr>
+        </table>
+        <h4 style="margin-top:0.8rem;">Main Success Scenario</h4>
+        <ol>
+            <li>User selects a PDF file from their computer.</li>
+            <li>System validates the file type (must be .pdf) and size (&lt; 10 MB).</li>
+            <li>System saves the PDF to the <code>/uploads/</code> directory using <code>aiofiles</code>.</li>
+            <li>System extracts raw text from the PDF using <code>pdfplumber</code>.</li>
+            <li>System uses <code>spaCy</code> NLP to extract skills, experience, and education sections.</li>
+            <li>System generates a 384-dimensional embedding vector using Sentence-BERT.</li>
+            <li>System stores the resume metadata, extracted text, and embedding in PostgreSQL (with pgvector).</li>
+            <li>System returns the resume ID and extracted summary with HTTP 201.</li>
+        </ol>
+        <h4 style="margin-top:0.8rem;">Alternative Flows</h4>
+        <ul>
+            <li><strong>2a.</strong> File is not a PDF → System returns HTTP 400 "Only PDF files are accepted."</li>
+            <li><strong>2b.</strong> File exceeds 10 MB → System returns HTTP 413 "File too large."</li>
+            <li><strong>4a.</strong> PDF is image-based (scanned) → System uses OCR (pytesseract) as a fallback.</li>
+        </ul>
+    </div>
+
+    <!-- UC-05 -->
+    <div class="page-break"></div>
+    <div class="scenario-box">
+        <h4>UC-05: View Match Score</h4>
+        <table>
+            <tr><th style="width:160px;">Field</th><th>Description</th></tr>
+            <tr><td><strong>Use Case ID</strong></td><td>UC-05</td></tr>
+            <tr><td><strong>Primary Actor</strong></td><td>Job Seeker</td></tr>
+            <tr><td><strong>Precondition</strong></td><td>Resume and Job Description have been submitted.</td></tr>
+            <tr><td><strong>Postcondition</strong></td><td>Match scores (dense, sparse, hybrid) are displayed on the dashboard.</td></tr>
+            <tr><td><strong>Trigger</strong></td><td>User clicks "Analyze Match" after providing both inputs.</td></tr>
+        </table>
+        <h4 style="margin-top:0.8rem;">Main Success Scenario</h4>
+        <ol>
+            <li>User clicks "Analyze Match" on the React Dashboard.</li>
+            <li>Frontend sends a POST request to <code>/matches/evaluate</code> endpoint.</li>
+            <li>FastAPI dispatches the heavy computation to a <strong>Celery worker</strong> via Redis.</li>
+            <li>Celery worker computes the <strong>Dense Score</strong> (cosine similarity of SBERT vectors).</li>
+            <li>Celery worker computes the <strong>Sparse Score</strong> (BM25 keyword ranking).</li>
+            <li>System calculates the <strong>Hybrid Score</strong>: <code>0.6 × dense + 0.4 × sparse</code>.</li>
+            <li>Results are saved to the <code>match_evaluations</code> table in PostgreSQL.</li>
+            <li>React Dashboard renders the scores as interactive bar charts using Recharts.</li>
+        </ol>
+        <h4 style="margin-top:0.8rem;">Alternative Flows</h4>
+        <ul>
+            <li><strong>3a.</strong> Celery worker is offline → System returns HTTP 503 "Service temporarily unavailable."</li>
+            <li><strong>4a.</strong> Resume text is empty → Dense score defaults to 0.0.</li>
+        </ul>
+    </div>
+
+    <!-- UC-06 -->
+    <div class="scenario-box">
+        <h4>UC-06: View Skill Gap Analysis</h4>
+        <table>
+            <tr><th style="width:160px;">Field</th><th>Description</th></tr>
+            <tr><td><strong>Use Case ID</strong></td><td>UC-06</td></tr>
+            <tr><td><strong>Primary Actor</strong></td><td>Job Seeker</td></tr>
+            <tr><td><strong>Precondition</strong></td><td>Match evaluation has been computed (UC-05 completed).</td></tr>
+            <tr><td><strong>Postcondition</strong></td><td>Personalized skill gap feedback is displayed on the dashboard.</td></tr>
+            <tr><td><strong>Trigger</strong></td><td>System automatically generates feedback after match scoring.</td></tr>
+        </table>
+        <h4 style="margin-top:0.8rem;">Main Success Scenario</h4>
+        <ol>
+            <li>After match scoring completes, system sends the resume text and job description to <strong>Google Gemini LLM</strong>.</li>
+            <li>Gemini API analyzes the gap between the candidate's skills and job requirements.</li>
+            <li>LLM returns a structured JSON response with: skill name, current level, required level, severity, and recommended resources.</li>
+            <li>System validates the LLM response using <code>Pydantic</code> schemas.</li>
+            <li>Skill gap data is stored in the database.</li>
+            <li>React Dashboard renders skill gap cards with severity indicators (High / Medium / Low).</li>
+        </ol>
+        <h4 style="margin-top:0.8rem;">Alternative Flows</h4>
+        <ul>
+            <li><strong>1a.</strong> Gemini API is rate-limited → System returns cached/empty feedback with a warning.</li>
+            <li><strong>3a.</strong> LLM returns malformed JSON → System falls back to empty skill gap list.</li>
+        </ul>
+    </div>
+
+    <!-- UC-02 & UC-04 Summary -->
+    <div class="page-break"></div>
+    <div class="scenario-box">
+        <h4>UC-02: Login</h4>
+        <table>
+            <tr><th style="width:160px;">Field</th><th>Description</th></tr>
+            <tr><td><strong>Use Case ID</strong></td><td>UC-02</td></tr>
+            <tr><td><strong>Primary Actor</strong></td><td>Job Seeker</td></tr>
+            <tr><td><strong>Precondition</strong></td><td>User has a registered account (UC-01 completed).</td></tr>
+            <tr><td><strong>Postcondition</strong></td><td>User receives a JWT access token for authenticated API access.</td></tr>
+        </table>
+        <h4 style="margin-top:0.8rem;">Main Success Scenario</h4>
+        <ol>
+            <li>User enters email and password on the login form.</li>
+            <li>System retrieves the user record from the database.</li>
+            <li>System verifies the password against the stored bcrypt hash using <code>passlib</code>.</li>
+            <li>System generates a JWT token (signed with HS256, valid for 60 minutes).</li>
+            <li>System returns the token to the client with HTTP 200.</li>
+        </ol>
+        <h4 style="margin-top:0.8rem;">Alternative Flows</h4>
+        <ul>
+            <li><strong>2a.</strong> Email not found → System returns HTTP 401 "Invalid credentials."</li>
+            <li><strong>3a.</strong> Wrong password → System returns HTTP 401 "Invalid credentials."</li>
+        </ul>
+    </div>
+
+    <div class="scenario-box">
+        <h4>UC-04: Enter Job Description</h4>
+        <table>
+            <tr><th style="width:160px;">Field</th><th>Description</th></tr>
+            <tr><td><strong>Use Case ID</strong></td><td>UC-04</td></tr>
+            <tr><td><strong>Primary Actor</strong></td><td>Job Seeker</td></tr>
+            <tr><td><strong>Precondition</strong></td><td>User is logged in.</td></tr>
+            <tr><td><strong>Postcondition</strong></td><td>Job description text and its embedding vector are stored in the database.</td></tr>
+        </table>
+        <h4 style="margin-top:0.8rem;">Main Success Scenario</h4>
+        <ol>
+            <li>User pastes the full job description text into the textarea on the dashboard.</li>
+            <li>System validates the input is non-empty and under 50,000 characters.</li>
+            <li>System generates a 384-dimensional embedding vector using Sentence-BERT.</li>
+            <li>System stores the job description and its embedding in the <code>job_descriptions</code> table.</li>
+            <li>System returns the job description ID with HTTP 201.</li>
+        </ol>
+    </div>
+
+    <h2>3. Use Case Summary Table</h2>
+    <table>
+        <tr><th>UC ID</th><th>Use Case Name</th><th>Actor</th><th>Priority</th><th>Complexity</th></tr>
+        <tr><td>UC-01</td><td>Register Account</td><td>Job Seeker</td><td>High</td><td>Low</td></tr>
+        <tr><td>UC-02</td><td>Login</td><td>Job Seeker</td><td>High</td><td>Low</td></tr>
+        <tr><td>UC-03</td><td>Upload Resume (PDF)</td><td>Job Seeker</td><td>High</td><td>Medium</td></tr>
+        <tr><td>UC-04</td><td>Enter Job Description</td><td>Job Seeker</td><td>High</td><td>Low</td></tr>
+        <tr><td>UC-05</td><td>View Match Score</td><td>Job Seeker</td><td>High</td><td>High</td></tr>
+        <tr><td>UC-06</td><td>View Skill Gap Analysis</td><td>Job Seeker</td><td>High</td><td>High</td></tr>
+        <tr><td>UC-07</td><td>Parse Resume Text (NLP)</td><td>AI System</td><td>High</td><td>Medium</td></tr>
+        <tr><td>UC-08</td><td>Compute Dense Score</td><td>AI System</td><td>High</td><td>High</td></tr>
+        <tr><td>UC-09</td><td>Compute Sparse Score</td><td>AI System</td><td>Medium</td><td>Medium</td></tr>
+        <tr><td>UC-10</td><td>Generate Skill Gap Feedback</td><td>AI System</td><td>High</td><td>High</td></tr>
+        <tr><td>UC-11</td><td>Store Results in Database</td><td>AI System</td><td>High</td><td>Low</td></tr>
+    </table>
+
+</div>
+</body>
+</html>

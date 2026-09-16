@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Diagram - ResumeLens AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --accent: #059669;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.6; }
+        .page {
+            max-width: 900px; margin: 0 auto; background: var(--bg);
+            padding: 50px 55px; box-shadow: 0 0 40px rgba(0,0,0,0.06);
+        }
+        h1 { font-size: 1.8rem; color: var(--primary); text-align: center; margin-bottom: 0.3rem; }
+        .subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+        h2 { font-size: 1.3rem; color: var(--primary); margin: 2rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--primary-light); }
+        h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; }
+        p { margin-bottom: 0.7rem; font-size: 0.92rem; }
+        .header-info { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .header-info p { font-size: 0.85rem; color: var(--muted); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+        th, td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8fafc; }
+
+        /* Activity Diagram */
+        .activity-container {
+            margin: 1.5rem 0; padding: 30px 20px; background: #fafbff;
+            border: 2px solid var(--primary); border-radius: 12px;
+        }
+        .activity-flow {
+            display: flex; flex-direction: column; align-items: center; gap: 0;
+        }
+        .node-start, .node-end {
+            width: 30px; height: 30px; border-radius: 50%;
+            background: #1e293b; border: 3px solid #1e293b;
+        }
+        .node-end {
+            background: #1e293b;
+            position: relative;
+        }
+        .node-end::after {
+            content: '';
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border-radius: 50%;
+            border: 2px solid white;
+        }
+        .arrow {
+            width: 2px; height: 24px; background: #475569; position: relative;
+        }
+        .arrow::after {
+            content: '▼'; position: absolute; bottom: -10px; left: 50%; transform: translateX(-50%);
+            color: #475569; font-size: 0.6rem;
+        }
+        .action {
+            border: 2px solid #334155; border-radius: 24px; padding: 10px 24px;
+            font-size: 0.82rem; font-weight: 500; text-align: center;
+            background: white; min-width: 200px; max-width: 400px;
+        }
+        .action.user { border-color: var(--primary-light); color: var(--primary); background: #eff6ff; }
+        .action.system { border-color: #059669; color: #065f46; background: #ecfdf5; }
+        .action.ai { border-color: #d97706; color: #92400e; background: #fffbeb; }
+        .action.error { border-color: #dc2626; color: #991b1b; background: #fef2f2; }
+
+        .decision {
+            width: 140px; height: 70px; position: relative; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .decision-diamond {
+            width: 100%; height: 100%;
+            background: #fef3c7;
+            border: 2px solid #d97706;
+            transform: rotate(45deg);
+            position: absolute;
+        }
+        .decision-text {
+            position: relative; z-index: 1;
+            font-size: 0.72rem; font-weight: 600; text-align: center;
+            color: #92400e;
+        }
+
+        .fork-bar {
+            width: 300px; height: 6px; background: #1e293b; border-radius: 3px;
+        }
+
+        .parallel-box {
+            display: flex; gap: 16px; justify-content: center; align-items: flex-start;
+        }
+        .parallel-lane {
+            display: flex; flex-direction: column; align-items: center; gap: 0;
+            border: 1px dashed var(--border); border-radius: 8px; padding: 12px 8px;
+            background: rgba(255,255,255,0.6);
+        }
+        .parallel-label {
+            font-size: 0.7rem; font-weight: 600; color: var(--muted);
+            margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        .branch-container {
+            display: flex; gap: 30px; justify-content: center;
+        }
+        .branch {
+            display: flex; flex-direction: column; align-items: center; gap: 0;
+        }
+        .branch-label {
+            font-size: 0.7rem; font-weight: 600; color: var(--muted);
+            background: #f1f5f9; padding: 2px 10px; border-radius: 10px; margin-bottom: 4px;
+        }
+
+        .swimlane-container {
+            display: grid; grid-template-columns: 90px 1fr 1fr 1fr;
+            border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+            margin: 1rem 0;
+        }
+        .swimlane-header {
+            padding: 8px; font-size: 0.75rem; font-weight: 700; text-align: center;
+            writing-mode: vertical-lr; transform: rotate(180deg);
+            min-height: 100px;
+        }
+        .swimlane-col {
+            border-left: 1px solid var(--border); padding: 12px 8px;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+        }
+        .swim-step {
+            border: 1px solid #d1d5db; border-radius: 16px; padding: 6px 12px;
+            font-size: 0.72rem; text-align: center; background: white;
+            width: 100%;
+        }
+        .swim-arrow { color: #94a3b8; font-size: 0.7rem; }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: white; }
+            .page { box-shadow: none; padding: 30px 40px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <div class="header-info">
+        <h1>Activity Diagram</h1>
+        <p class="subtitle">ResumeLens AI — Intelligent Resume-Job Matching &amp; Skill Gap Advisory System</p>
+        <p>Prepared by: Damanpreet Singh &nbsp;|&nbsp; Course: Software Engineering &nbsp;|&nbsp; Date: September 2026</p>
+    </div>
+
+    <!-- ===== ACTIVITY DIAGRAM 1: Resume Matching Flow ===== -->
+    <h2>1. Activity Diagram — Resume Matching Workflow</h2>
+    <p>This diagram represents the complete flow from user login to receiving AI-generated match scores and skill gap feedback.</p>
+
+    <div class="activity-container">
+        <div class="activity-flow">
+
+            <!-- Start -->
+            <div class="node-start"></div>
+            <div class="arrow"></div>
+
+            <div class="action user">User opens ResumeLens AI web app</div>
+            <div class="arrow"></div>
+
+            <!-- Decision: Logged in? -->
+            <div class="decision">
+                <div class="decision-diamond"></div>
+                <div class="decision-text">Has<br>Account?</div>
+            </div>
+            <div class="arrow"></div>
+
+            <div class="branch-container">
+                <div class="branch">
+                    <div class="branch-label">[No]</div>
+                    <div class="action user" style="font-size:0.75rem;">Register with email &amp; password</div>
+                </div>
+                <div class="branch">
+                    <div class="branch-label">[Yes]</div>
+                    <div class="action user" style="font-size:0.75rem;">Login with credentials</div>
+                </div>
+            </div>
+            <div class="arrow"></div>
+
+            <div class="action system">System authenticates user &amp; issues JWT token</div>
+            <div class="arrow"></div>
+
+            <div class="action user">User uploads Resume (PDF file)</div>
+            <div class="arrow"></div>
+
+            <!-- Decision: Valid PDF? -->
+            <div class="decision">
+                <div class="decision-diamond"></div>
+                <div class="decision-text">Valid<br>PDF?</div>
+            </div>
+            <div class="arrow"></div>
+
+            <div class="branch-container">
+                <div class="branch">
+                    <div class="branch-label">[No]</div>
+                    <div class="action error" style="font-size:0.75rem;">Return error: "Invalid file type"</div>
+                </div>
+                <div class="branch">
+                    <div class="branch-label">[Yes]</div>
+                    <div class="action system" style="font-size:0.75rem;">Save PDF &amp; extract text (pdfplumber)</div>
+                </div>
+            </div>
+            <div class="arrow"></div>
+
+            <div class="action system">spaCy NLP extracts skills &amp; sections from resume text</div>
+            <div class="arrow"></div>
+
+            <div class="action user">User enters Job Description text</div>
+            <div class="arrow"></div>
+
+            <div class="action user">User clicks "Analyze Match"</div>
+            <div class="arrow"></div>
+
+            <div class="action system">FastAPI dispatches task to Celery Worker (via Redis)</div>
+            <div class="arrow"></div>
+
+            <!-- Fork Bar -->
+            <div class="fork-bar"></div>
+            <div style="height: 8px;"></div>
+
+            <!-- Parallel Activities -->
+            <div class="parallel-box">
+                <div class="parallel-lane">
+                    <div class="parallel-label">Thread 1</div>
+                    <div class="action ai" style="font-size:0.75rem; min-width:150px;">Compute Dense Score<br>(SBERT cosine similarity)</div>
+                </div>
+                <div class="parallel-lane">
+                    <div class="parallel-label">Thread 2</div>
+                    <div class="action ai" style="font-size:0.75rem; min-width:150px;">Compute Sparse Score<br>(BM25 keyword ranking)</div>
+                </div>
+                <div class="parallel-lane">
+                    <div class="parallel-label">Thread 3</div>
+                    <div class="action ai" style="font-size:0.75rem; min-width:150px;">Generate Skill Gaps<br>(Google Gemini LLM)</div>
+                </div>
+            </div>
+
+            <div style="height: 8px;"></div>
+            <!-- Join Bar -->
+            <div class="fork-bar"></div>
+            <div class="arrow"></div>
+
+            <div class="action system">Calculate Hybrid Score = 0.6 × Dense + 0.4 × Sparse</div>
+            <div class="arrow"></div>
+
+            <div class="action system">Store all results in PostgreSQL database</div>
+            <div class="arrow"></div>
+
+            <div class="action user">React Dashboard displays match scores (Recharts bar charts)</div>
+            <div class="arrow"></div>
+
+            <div class="action user">React Dashboard displays skill gap cards with severity levels</div>
+            <div class="arrow"></div>
+
+            <!-- End -->
+            <div class="node-end"></div>
+
+        </div>
+    </div>
+
+    <!-- ===== ACTIVITY DIAGRAM 2: Swimlane ===== -->
+    <div class="page-break"></div>
+    <h2>2. Swimlane Activity Diagram</h2>
+    <p>This swimlane diagram partitions activities by the responsible component (User, Backend API, AI Engine).</p>
+
+    <div class="swimlane-container">
+        <!-- Headers -->
+        <div style="background: #f8fafc; padding: 10px; font-size: 0.8rem; font-weight: 700; text-align: center; border-bottom: 2px solid var(--border);">
+            Phase
+        </div>
+        <div style="background: #eff6ff; padding: 10px; font-size: 0.8rem; font-weight: 700; text-align: center; border-bottom: 2px solid var(--border); border-left: 1px solid var(--border);">
+            🧑‍💻 User (Frontend)
+        </div>
+        <div style="background: #ecfdf5; padding: 10px; font-size: 0.8rem; font-weight: 700; text-align: center; border-bottom: 2px solid var(--border); border-left: 1px solid var(--border);">
+            ⚙️ Backend (FastAPI)
+        </div>
+        <div style="background: #fffbeb; padding: 10px; font-size: 0.8rem; font-weight: 700; text-align: center; border-bottom: 2px solid var(--border); border-left: 1px solid var(--border);">
+            🤖 AI Engine (Celery)
+        </div>
+
+        <!-- Row 1: Auth -->
+        <div style="padding: 10px; font-size: 0.75rem; font-weight: 600; text-align: center; background: #f8fafc; border-top: 1px solid var(--border);">
+            Auth
+        </div>
+        <div class="swimlane-col" style="background: #fafcff;">
+            <div class="swim-step">Enter email &amp; password</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Click "Login"</div>
+        </div>
+        <div class="swimlane-col" style="background: #fafffe;">
+            <div class="swim-step">Validate credentials</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Generate JWT token</div>
+        </div>
+        <div class="swimlane-col" style="background: #fffefb;">
+            <div class="swim-step" style="opacity:0.3;">—</div>
+        </div>
+
+        <!-- Row 2: Input -->
+        <div style="padding: 10px; font-size: 0.75rem; font-weight: 600; text-align: center; background: #f8fafc; border-top: 1px solid var(--border);">
+            Input
+        </div>
+        <div class="swimlane-col" style="background: #fafcff;">
+            <div class="swim-step">Upload resume PDF</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Paste job description</div>
+        </div>
+        <div class="swimlane-col" style="background: #fafffe;">
+            <div class="swim-step">Save PDF to disk</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Extract text (pdfplumber)</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">NLP skill extraction (spaCy)</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Generate embeddings (SBERT)</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Store in PostgreSQL + pgvector</div>
+        </div>
+        <div class="swimlane-col" style="background: #fffefb;">
+            <div class="swim-step" style="opacity:0.3;">—</div>
+        </div>
+
+        <!-- Row 3: Processing -->
+        <div style="padding: 10px; font-size: 0.75rem; font-weight: 600; text-align: center; background: #f8fafc; border-top: 1px solid var(--border);">
+            Process
+        </div>
+        <div class="swimlane-col" style="background: #fafcff;">
+            <div class="swim-step">Click "Analyze Match"</div>
+        </div>
+        <div class="swimlane-col" style="background: #fafffe;">
+            <div class="swim-step">Dispatch task to Celery via Redis</div>
+        </div>
+        <div class="swimlane-col" style="background: #fffefb;">
+            <div class="swim-step">Dense match (cosine similarity)</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Sparse match (BM25)</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Hybrid score calculation</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">LLM skill gap analysis (Gemini)</div>
+        </div>
+
+        <!-- Row 4: Output -->
+        <div style="padding: 10px; font-size: 0.75rem; font-weight: 600; text-align: center; background: #f8fafc; border-top: 1px solid var(--border);">
+            Output
+        </div>
+        <div class="swimlane-col" style="background: #fafcff;">
+            <div class="swim-step">View match score charts</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">View skill gap cards</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Download report</div>
+        </div>
+        <div class="swimlane-col" style="background: #fafffe;">
+            <div class="swim-step">Fetch results from DB</div>
+            <div class="swim-arrow">↓</div>
+            <div class="swim-step">Return JSON via REST API</div>
+        </div>
+        <div class="swimlane-col" style="background: #fffefb;">
+            <div class="swim-step">Store results in DB</div>
+        </div>
+    </div>
+
+    <!-- ===== Notation Legend ===== -->
+    <h2>3. Activity Diagram Notation Legend</h2>
+    <table>
+        <tr><th style="width:150px;">Symbol</th><th>Name</th><th>Description</th></tr>
+        <tr>
+            <td style="text-align:center;"><div style="width:24px;height:24px;background:#1e293b;border-radius:50%;display:inline-block;vertical-align:middle;"></div></td>
+            <td><strong>Initial Node</strong></td>
+            <td>The starting point of the activity flow.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;"><div style="width:24px;height:24px;background:#1e293b;border-radius:50%;display:inline-block;vertical-align:middle;position:relative;"><div style="position:absolute;top:4px;left:4px;right:4px;bottom:4px;border-radius:50%;border:2px solid white;"></div></div></td>
+            <td><strong>Final Node</strong></td>
+            <td>The ending point of the activity flow.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;"><span style="display:inline-block;border:2px solid #334155;border-radius:20px;padding:3px 12px;font-size:0.75rem;">Action</span></td>
+            <td><strong>Action / Activity</strong></td>
+            <td>A single step or task in the workflow (rounded rectangle).</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;"><span style="display:inline-block;width:30px;height:16px;background:#fef3c7;border:2px solid #d97706;transform:rotate(45deg);"></span></td>
+            <td><strong>Decision Node</strong></td>
+            <td>A conditional branch point with guard conditions [Yes]/[No].</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;"><span style="display:inline-block;width:60px;height:5px;background:#1e293b;border-radius:3px;"></span></td>
+            <td><strong>Fork / Join Bar</strong></td>
+            <td>Fork: splits flow into parallel threads. Join: synchronizes parallel threads back together.</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;">
+                <span style="display:inline-block;border:2px solid var(--primary-light);border-radius:14px;padding:2px 8px;font-size:0.7rem;color:var(--primary);background:#eff6ff;">User</span>
+            </td>
+            <td><strong>User Action</strong></td>
+            <td>An action performed by the human user (blue).</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;">
+                <span style="display:inline-block;border:2px solid #059669;border-radius:14px;padding:2px 8px;font-size:0.7rem;color:#065f46;background:#ecfdf5;">System</span>
+            </td>
+            <td><strong>System Action</strong></td>
+            <td>An action performed by the backend system (green).</td>
+        </tr>
+        <tr>
+            <td style="text-align:center;">
+                <span style="display:inline-block;border:2px solid #d97706;border-radius:14px;padding:2px 8px;font-size:0.7rem;color:#92400e;background:#fffbeb;">AI</span>
+            </td>
+            <td><strong>AI Action</strong></td>
+            <td>An action performed by the AI/ML engine (amber).</td>
+        </tr>
+    </table>
+
+</div>
+</body>
+</html>

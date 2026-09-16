@@ -1,0 +1,18 @@
+[project]
+name = "resume-matcher"
+version = "0.1.0"
+description = "Intelligent Resume <-> Job Matching & Skill Gap Advisory System"
+requires-python = ">=3.12"
+
+[tool.ruff]
+target-version = "py312"
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM"]
+ignore = ["F821", "E501", "B008", "B904", "SIM105"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+testpaths = ["tests"]

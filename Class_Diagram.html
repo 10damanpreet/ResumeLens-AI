@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Diagram - ResumeLens AI</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+        :root {
+            --primary: #1e40af;
+            --primary-light: #3b82f6;
+            --accent: #059669;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --bg: #ffffff;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Inter', sans-serif; color: var(--text); background: #f8fafc; line-height: 1.6; }
+        .page {
+            max-width: 900px; margin: 0 auto; background: var(--bg);
+            padding: 50px 55px; box-shadow: 0 0 40px rgba(0,0,0,0.06);
+        }
+        h1 { font-size: 1.8rem; color: var(--primary); text-align: center; margin-bottom: 0.3rem; }
+        .subtitle { text-align: center; color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; }
+        h2 { font-size: 1.3rem; color: var(--primary); margin: 2rem 0 1rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--primary-light); }
+        h3 { font-size: 1.05rem; margin: 1.5rem 0 0.5rem; }
+        p { margin-bottom: 0.7rem; font-size: 0.92rem; }
+        .header-info { text-align: center; margin-bottom: 2rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+        .header-info p { font-size: 0.85rem; color: var(--muted); }
+        table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+        th, td { padding: 8px 12px; border: 1px solid var(--border); text-align: left; }
+        th { background: var(--primary); color: white; font-weight: 600; }
+        tr:nth-child(even) { background: #f8fafc; }
+        code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; background: #f1f5f9; padding: 1px 5px; border-radius: 3px; }
+
+        /* Class Diagram Styling */
+        .diagram-container {
+            margin: 1.5rem 0; padding: 25px; background: #fafbff;
+            border: 2px solid var(--primary); border-radius: 12px;
+        }
+        .class-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+        }
+        .class-box {
+            border: 2px solid #334155; border-radius: 4px; background: white;
+            font-size: 0.78rem; overflow: hidden;
+        }
+        .class-box.full-width { grid-column: 1 / -1; max-width: 380px; margin: 0 auto; }
+        .class-name {
+            background: #334155; color: white; text-align: center;
+            padding: 6px 10px; font-weight: 700; font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+        .class-name.model { background: #1e40af; }
+        .class-name.service { background: #059669; }
+        .class-name.config { background: #7c3aed; }
+        .class-section {
+            padding: 8px 12px; border-top: 1px solid #d1d5db;
+            font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; line-height: 1.7;
+        }
+        .class-section .attr { color: #1e293b; }
+        .class-section .type { color: var(--primary); }
+        .class-section .method { color: #059669; }
+        .class-section .vis { color: #dc2626; font-weight: 700; }
+        .class-section .vis-pub { color: #059669; font-weight: 700; }
+
+        /* Relationship lines */
+        .relationships {
+            margin: 1.5rem 0; padding: 16px; background: #f8fafc;
+            border: 1px solid var(--border); border-radius: 8px;
+        }
+        .rel-row {
+            display: grid; grid-template-columns: 150px 80px 150px 1fr;
+            gap: 8px; align-items: center; margin-bottom: 4px;
+            font-size: 0.8rem;
+        }
+        .rel-arrow { text-align: center; color: var(--primary); font-weight: 600; }
+
+        .page-break { page-break-before: always; }
+
+        @media print {
+            body { background: white; }
+            .page { box-shadow: none; padding: 30px 40px; }
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <div class="header-info">
+        <h1>Class Diagram</h1>
+        <p class="subtitle">ResumeLens AI — Intelligent Resume-Job Matching &amp; Skill Gap Advisory System</p>
+        <p>Prepared by: Damanpreet Singh &nbsp;|&nbsp; Course: Software Engineering &nbsp;|&nbsp; Date: September 2026</p>
+    </div>
+
+    <h2>1. Class Diagram</h2>
+    <p>The following diagram represents the core domain model classes, service classes, and their relationships in the ResumeLens AI system. The system follows a layered architecture pattern with Models, Services, and API layers.</p>
+
+    <div class="diagram-container">
+
+        <div class="class-grid">
+
+            <!-- Candidate -->
+            <div class="class-box">
+                <div class="class-name model">Candidate</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">id</span>: <span class="type">UUID (PK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">email</span>: <span class="type">String (unique)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">password_hash</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">role</span>: <span class="type">Enum (candidate|admin)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">created_at</span>: <span class="type">DateTime</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">verify_password(plain: str): bool</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">set_password(plain: str): void</span></div>
+                </div>
+            </div>
+
+            <!-- Resume -->
+            <div class="class-box">
+                <div class="class-name model">Resume</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">id</span>: <span class="type">UUID (PK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">candidate_id</span>: <span class="type">UUID (FK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">filename</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">raw_text</span>: <span class="type">Text</span></div>
+                    <div><span class="vis">-</span> <span class="attr">skills_json</span>: <span class="type">JSON</span></div>
+                    <div><span class="vis">-</span> <span class="attr">embedding</span>: <span class="type">Vector(384)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">uploaded_at</span>: <span class="type">DateTime</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">get_skills(): List[str]</span></div>
+                </div>
+            </div>
+
+            <!-- JobDescription -->
+            <div class="class-box">
+                <div class="class-name model">JobDescription</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">id</span>: <span class="type">UUID (PK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">candidate_id</span>: <span class="type">UUID (FK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">title</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">description_text</span>: <span class="type">Text</span></div>
+                    <div><span class="vis">-</span> <span class="attr">embedding</span>: <span class="type">Vector(384)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">created_at</span>: <span class="type">DateTime</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">get_requirements(): List[str]</span></div>
+                </div>
+            </div>
+
+            <!-- MatchEvaluation -->
+            <div class="class-box">
+                <div class="class-name model">MatchEvaluation</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">id</span>: <span class="type">UUID (PK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">resume_id</span>: <span class="type">UUID (FK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">job_id</span>: <span class="type">UUID (FK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">dense_score</span>: <span class="type">Float</span></div>
+                    <div><span class="vis">-</span> <span class="attr">sparse_score</span>: <span class="type">Float</span></div>
+                    <div><span class="vis">-</span> <span class="attr">hybrid_score</span>: <span class="type">Float</span></div>
+                    <div><span class="vis">-</span> <span class="attr">created_at</span>: <span class="type">DateTime</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">compute_hybrid(): Float</span></div>
+                </div>
+            </div>
+
+            <!-- SkillGap -->
+            <div class="class-box">
+                <div class="class-name model">SkillGap</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">id</span>: <span class="type">UUID (PK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">evaluation_id</span>: <span class="type">UUID (FK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">skill_name</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">current_level</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">required_level</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">severity</span>: <span class="type">Enum (high|med|low)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">recommendation</span>: <span class="type">Text</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">to_dict(): Dict</span></div>
+                </div>
+            </div>
+
+            <!-- AtsReport -->
+            <div class="class-box">
+                <div class="class-name model">AtsReport</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">id</span>: <span class="type">UUID (PK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">evaluation_id</span>: <span class="type">UUID (FK)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">formatting_score</span>: <span class="type">Float</span></div>
+                    <div><span class="vis">-</span> <span class="attr">keyword_density</span>: <span class="type">Float</span></div>
+                    <div><span class="vis">-</span> <span class="attr">suggestions</span>: <span class="type">JSON</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">to_dict(): Dict</span></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="page-break"></div>
+
+    <h2>2. Service Classes</h2>
+    <div class="diagram-container">
+        <div class="class-grid">
+
+            <!-- Matcher Service -->
+            <div class="class-box">
+                <div class="class-name service">MatcherService</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">model</span>: <span class="type">SentenceTransformer</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">cosine_similarity(v1, v2): float</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">dense_match(resume, job): float</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">sparse_match(resume, job): float</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">hybrid_score(dense, sparse): float</span></div>
+                </div>
+            </div>
+
+            <!-- Embedding Service -->
+            <div class="class-box">
+                <div class="class-name service">EmbeddingService</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">model_name</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">dimension</span>: <span class="type">int = 384</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">generate_embedding(text): List[float]</span></div>
+                </div>
+            </div>
+
+            <!-- LLM Gateway -->
+            <div class="class-box">
+                <div class="class-name service">LLMGateway</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">api_key</span>: <span class="type">String</span></div>
+                    <div><span class="vis">-</span> <span class="attr">model</span>: <span class="type">String = "gemini-pro"</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">generate_skill_gap_feedback(</span></div>
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="method">resume_text, job_text): List[Dict]</span></div>
+                </div>
+            </div>
+
+            <!-- Resume Parser -->
+            <div class="class-box">
+                <div class="class-name service">ResumeParser</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">nlp</span>: <span class="type">spacy.Language</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">extract_text(pdf_path): str</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">extract_skills(text): List[str]</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">segment(text): Dict[str, str]</span></div>
+                    <div><span class="vis-pub">+</span> <span class="method">redact_pii(text): str</span></div>
+                </div>
+            </div>
+
+            <!-- Celery Worker -->
+            <div class="class-box">
+                <div class="class-name service">CeleryWorker</div>
+                <div class="class-section">
+                    <div><span class="vis">-</span> <span class="attr">broker_url</span>: <span class="type">String (Redis)</span></div>
+                    <div><span class="vis">-</span> <span class="attr">timezone</span>: <span class="type">String = "UTC"</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">run_evaluation_pipeline(</span></div>
+                    <div>&nbsp;&nbsp;&nbsp;&nbsp;<span class="method">resume_id, job_id): UUID</span></div>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="class-box">
+                <div class="class-name config">Settings</div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="attr">DATABASE_URL</span>: <span class="type">String</span></div>
+                    <div><span class="vis-pub">+</span> <span class="attr">REDIS_URL</span>: <span class="type">String</span></div>
+                    <div><span class="vis-pub">+</span> <span class="attr">JWT_SECRET_KEY</span>: <span class="type">String</span></div>
+                    <div><span class="vis-pub">+</span> <span class="attr">GEMINI_API_KEY</span>: <span class="type">String</span></div>
+                    <div><span class="vis-pub">+</span> <span class="attr">APP_NAME</span>: <span class="type">String</span></div>
+                </div>
+                <div class="class-section">
+                    <div><span class="vis-pub">+</span> <span class="method">get_settings(): Settings</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <h2>3. Class Relationships</h2>
+    <table>
+        <tr><th>Relationship</th><th>Type</th><th>Cardinality</th><th>Description</th></tr>
+        <tr><td>Candidate → Resume</td><td>Composition (has)</td><td>1 : 0..*</td><td>A candidate can upload zero or more resumes.</td></tr>
+        <tr><td>Candidate → JobDescription</td><td>Composition (has)</td><td>1 : 0..*</td><td>A candidate can create zero or more job descriptions.</td></tr>
+        <tr><td>Resume → MatchEvaluation</td><td>Association</td><td>1 : 0..*</td><td>A resume can be evaluated against multiple jobs.</td></tr>
+        <tr><td>JobDescription → MatchEvaluation</td><td>Association</td><td>1 : 0..*</td><td>A job description can be matched with multiple resumes.</td></tr>
+        <tr><td>MatchEvaluation → SkillGap</td><td>Composition (has)</td><td>1 : 0..*</td><td>Each evaluation produces zero or more skill gaps.</td></tr>
+        <tr><td>MatchEvaluation → AtsReport</td><td>Composition (has)</td><td>1 : 0..1</td><td>Each evaluation may produce one ATS compatibility report.</td></tr>
+        <tr><td>MatcherService → EmbeddingService</td><td>Dependency (uses)</td><td>—</td><td>Matcher uses the embedding service for vector generation.</td></tr>
+        <tr><td>CeleryWorker → MatcherService</td><td>Dependency (uses)</td><td>—</td><td>Worker invokes the matcher for score computation.</td></tr>
+        <tr><td>CeleryWorker → LLMGateway</td><td>Dependency (uses)</td><td>—</td><td>Worker invokes the LLM for skill gap analysis.</td></tr>
+    </table>
+
+    <h2>4. Class Legend</h2>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; font-size: 0.82rem; margin: 0.5rem 0;">
+        <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:18px; height:18px; background:#1e40af; border-radius:3px;"></span>
+            <strong>Model (Entity)</strong> — Database ORM classes mapped to PostgreSQL tables
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:18px; height:18px; background:#059669; border-radius:3px;"></span>
+            <strong>Service</strong> — Business logic classes (stateless)
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+            <span style="display:inline-block; width:18px; height:18px; background:#7c3aed; border-radius:3px;"></span>
+            <strong>Configuration</strong> — Application settings (Pydantic)
+        </div>
+    </div>
+    <div style="font-size: 0.82rem; margin: 0.5rem 0;">
+        <strong>Visibility:</strong> &nbsp;
+        <span style="color:#dc2626; font-weight:700;">-</span> Private &nbsp;&nbsp;
+        <span style="color:#059669; font-weight:700;">+</span> Public
+    </div>
+
+</div>
+</body>
+</html>

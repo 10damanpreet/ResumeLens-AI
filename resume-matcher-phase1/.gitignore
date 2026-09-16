@@ -1,0 +1,36 @@
+# Security & Environment Variables
+.env
+.env.*
+*.pem
+
+# Python
+__pycache__/
+*.py[cod]
+*.class
+venv/
+env/
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# Node.js & React (Frontend)
+frontend/node_modules/
+frontend/dist/
+frontend/.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Project Specific (Uploads & Logs)
+uploads/
+*.pdf
+*.docx
+*.log
+
+# OS & Editor Files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
