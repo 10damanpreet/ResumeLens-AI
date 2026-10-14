@@ -1,16 +1,23 @@
 import os
 
-import pytest_asyncio
+import pytest
 from httpx import ASGITransport, AsyncClient
+
+try:
+    import pytest_asyncio
+
+    fixture_decorator = pytest_asyncio.fixture
+except ImportError:
+    fixture_decorator = pytest.fixture
 
 # Set test environment variables BEFORE importing app
 os.environ['DATABASE_URL'] = os.environ.get(
     'DATABASE_URL',
-    'postgresql+asyncpg://postgres:postgres@localhost:5432/resume_matcher_test'
+    'sqlite+aiosqlite:///./test.db',
 )
 os.environ['DATABASE_URL_SYNC'] = os.environ.get(
     'DATABASE_URL_SYNC',
-    'postgresql://postgres:postgres@localhost:5432/resume_matcher_test'
+    'sqlite:///./test.db',
 )
 os.environ['REDIS_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/1')
 os.environ['JWT_SECRET_KEY'] = 'test-secret-key-for-testing'
@@ -22,7 +29,7 @@ os.environ['APP_NAME'] = 'Resume Matcher Test'
 from app.main import app  # noqa: E402
 
 
-@pytest_asyncio.fixture
+@fixture_decorator
 async def client():
     """Async HTTP client for testing FastAPI endpoints."""
     transport = ASGITransport(app=app)
