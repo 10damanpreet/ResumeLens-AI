@@ -30,21 +30,9 @@ class GapRecommendationOut(BaseModel):
     """A single skill gap recommendation."""
     model_config = ConfigDict(from_attributes=True)
 
-    skill_name: str
+    id: uuid.UUID
+    skill_name: str | None
     severity: str  # critical | moderate | minor
-    target_proficiency: str | None
-    course_title: str | None
-    course_url: str | None
-    course_provider: str | None
-    estimated_hours: int | None
-
-
-class GapReportOut(BaseModel):
-    """Complete skill gap analysis report."""
-    match_id: uuid.UUID
-    final_match_score: float
-    total_gaps: int
-    critical_count: int
-    moderate_count: int
-    minor_count: int
-    gaps: list[GapRecommendationOut]
+    target_proficiency: str | None = None
+    estimated_hours: int | None = None
+    llm_model_version: str | None = None

@@ -34,14 +34,12 @@ class GapRecommendation(Base):
 
     id: Mapped[uuid.UUID] = mapped_column(primary_key=True, default=uuid.uuid4)
     match_evaluation_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('match_evaluations.id'), nullable=False)
-    skill_id: Mapped[uuid.UUID] = mapped_column(ForeignKey('skills_taxonomy.id'), nullable=False)
+    # skill_name stored directly (no FK to skills_taxonomy required for basic operation)
+    skill_name: Mapped[str | None] = mapped_column(String(150), nullable=True)
     severity: Mapped[str] = mapped_column(String(10), nullable=False)
     target_proficiency: Mapped[str | None] = mapped_column(String(30), nullable=True)
-    course_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey('course_catalog.id'), nullable=True)
     estimated_hours: Mapped[int | None] = mapped_column(Integer, nullable=True)
     llm_model_version: Mapped[str | None] = mapped_column(String(40), nullable=True)
     generated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
 
     match_evaluation: Mapped['MatchEvaluation'] = relationship(back_populates='gap_recommendations')
-    skill: Mapped['SkillsTaxonomy'] = relationship()
-    course: Mapped['CourseCatalog'] = relationship()

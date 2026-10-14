@@ -1,11 +1,12 @@
 import axios from 'axios';
 
-// The FastAPI backend runs on 8000
+// Use relative URL — Vite dev server proxies /auth, /resumes, /jobs etc. to localhost:8000
+// This means no CORS issues and no hardcoded ports
 export const api = axios.create({
-  baseURL: 'http://localhost:8000',
+  baseURL: '/',
 });
 
-// Mock interceptor for auth if needed later
+// Attach JWT token to every request automatically
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token && config.headers) {
@@ -13,3 +14,30 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+// Auto-redirect to login on 401
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response?.status === 401) {
+      localStorage.removeItem('token');
+      if (window.location.pathname !== '/login' && window.location.pathname !== '/register') {
+        window.location.href = '/login';
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
+export function getErrorMessage(err: any): string {
+  if (!err) return 'An unexpected error occurred.';
+  const detail = err.response?.data?.detail;
+  if (typeof detail === 'string') return detail;
+  if (Array.isArray(detail)) {
+    return detail.map((d: any) => d.msg || JSON.stringify(d)).join('; ');
+  }
+  if (typeof detail === 'object' && detail !== null) {
+    return JSON.stringify(detail);
+  }
+  return err.message || 'An unexpected error occurred.';
+}

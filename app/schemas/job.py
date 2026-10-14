@@ -8,7 +8,7 @@ class JobCreateRequest(BaseModel):
     """Request to create a job description."""
     title: str | None = None
     company: str | None = None
-    raw_text: str = Field(min_length=50, description="Full job description text")
+    raw_text: str = Field(min_length=5, description="Full job description text")
 
 
 class JobOut(BaseModel):

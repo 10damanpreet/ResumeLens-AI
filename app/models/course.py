@@ -1,7 +1,6 @@
 import uuid
 from datetime import UTC, datetime
 
-from pgvector.sqlalchemy import Vector
 from sqlalchemy import Boolean, DateTime, ForeignKey, String, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -17,7 +16,8 @@ class CourseCatalog(Base):
     url: Mapped[str] = mapped_column(Text, nullable=False)
     skill_id: Mapped[uuid.UUID | None] = mapped_column(ForeignKey('skills_taxonomy.id'), nullable=True)
     syllabus_text: Mapped[str | None] = mapped_column(Text, nullable=True)
-    syllabus_embedding = mapped_column(Vector(384), nullable=True)
+    # Store embedding as JSON text — SQLite compatible
+    syllabus_embedding: Mapped[str | None] = mapped_column(Text, nullable=True)
     verified: Mapped[bool] = mapped_column(Boolean, nullable=False, default=True)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
 

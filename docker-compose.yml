@@ -38,6 +38,7 @@ services:
       - DATABASE_URL_SYNC=postgresql://postgres:postgrespassword@db:5432/resume_matcher
       - REDIS_URL=redis://redis:6379/0
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-change-in-production}
     depends_on:
       db:
         condition: service_healthy
@@ -57,6 +58,7 @@ services:
       - DATABASE_URL_SYNC=postgresql://postgres:postgrespassword@db:5432/resume_matcher
       - REDIS_URL=redis://redis:6379/0
       - GEMINI_API_KEY=${GEMINI_API_KEY:-}
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-your-secret-key-change-in-production}
     depends_on:
       db:
         condition: service_healthy

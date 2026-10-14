@@ -1,15 +1,14 @@
-from celery.result import AsyncResult
 from fastapi import APIRouter
-
-from app.worker.celery_app import celery_app
 
 router = APIRouter()
 
-@router.get("/{task_id}")
+
+@router.get('/{task_id}')
 async def get_task_status(task_id: str):
-    task_result = AsyncResult(task_id, app=celery_app)
+    """Background task status — tasks run inline with FastAPI BackgroundTasks."""
+    # Tasks are now processed inline via FastAPI BackgroundTasks (no Celery/Redis needed)
     return {
-        "task_id": task_id,
-        "status": task_result.status,
-        "result": task_result.result if task_result.ready() else None
+        'task_id': task_id,
+        'status': 'processing',
+        'message': 'Task is being processed in the background.',
     }

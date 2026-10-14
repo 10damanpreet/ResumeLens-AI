@@ -15,62 +15,71 @@ from app.worker.tasks import process_resume_task
 
 router = APIRouter()
 
-UPLOAD_DIR = "uploads"
+UPLOAD_DIR = 'uploads'
 os.makedirs(UPLOAD_DIR, exist_ok=True)
 
-@router.post("", response_model=ResumeUploadResponse)
+
+@router.post('', response_model=ResumeUploadResponse)
 async def upload_resume(
     file: UploadFile = File(...),
     db: AsyncSession = Depends(get_db),
-    current_user: Candidate = Depends(get_current_user)
+    current_user: Candidate = Depends(get_current_user),
 ):
-    # Determine format
     ext = file.filename.split('.')[-1].lower()
     if ext not in ['pdf', 'docx']:
-        raise HTTPException(status_code=400, detail="Only PDF and DOCX supported")
+        raise HTTPException(status_code=400, detail='Only PDF and DOCX supported')
 
-    file_path = os.path.join(UPLOAD_DIR, f"{uuid.uuid4()}_{file.filename}")
+    file_path = os.path.join(UPLOAD_DIR, f'{uuid.uuid4()}_{file.filename}')
 
-    # Save file
     async with aiofiles.open(file_path, 'wb') as out_file:
         content = await file.read()
         await out_file.write(content)
 
-    # Create DB entry
     db_resume = Resume(
         candidate_id=current_user.id,
         original_filename=file.filename,
         file_format=ext,
         storage_path=file_path,
-        parse_status="processing"
+        parse_status='processing',
     )
     db.add(db_resume)
     await db.commit()
     await db.refresh(db_resume)
 
-    # Trigger Celery Background Task (Week 3 Async Processing)
-    task = process_resume_task.delay(str(db_resume.id), file_path, ext)
+    # Process resume synchronously so sections & embeddings are ready immediately
+    task_id = str(uuid.uuid4())
+    await process_resume_task(db_resume.id, file_path, ext)
 
     return ResumeUploadResponse(
         resume_id=db_resume.id,
-        parse_status="processing",
-        message="Resume uploaded. Parsing started in background.",
-        task_id=task.id
+        parse_status='parsed',
+        message='Resume uploaded and processed successfully.',
+        task_id=task_id,
     )
 
-@router.get("/{resume_id}", response_model=ResumeOut)
-async def get_resume(resume_id: uuid.UUID, db: AsyncSession = Depends(get_db), current_user: Candidate = Depends(get_current_user)):
+
+@router.get('/{resume_id}', response_model=ResumeOut)
+async def get_resume(
+    resume_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: Candidate = Depends(get_current_user),
+):
     result = await db.execute(select(Resume).where(Resume.id == resume_id, Resume.candidate_id == current_user.id))
     resume = result.scalar_one_or_none()
     if not resume:
-        raise HTTPException(status_code=404, detail="Resume not found")
+        raise HTTPException(status_code=404, detail='Resume not found')
     return resume
 
-@router.get("/{resume_id}/sections", response_model=list[ResumeSectionOut])
-async def get_resume_sections(resume_id: uuid.UUID, db: AsyncSession = Depends(get_db), current_user: Candidate = Depends(get_current_user)):
+
+@router.get('/{resume_id}/sections', response_model=list[ResumeSectionOut])
+async def get_resume_sections(
+    resume_id: uuid.UUID,
+    db: AsyncSession = Depends(get_db),
+    current_user: Candidate = Depends(get_current_user),
+):
     result = await db.execute(select(Resume).where(Resume.id == resume_id, Resume.candidate_id == current_user.id))
     if not result.scalar_one_or_none():
-        raise HTTPException(status_code=404, detail="Resume not found")
+        raise HTTPException(status_code=404, detail='Resume not found')
 
     sections_result = await db.execute(select(ResumeSection).where(ResumeSection.resume_id == resume_id))
     return sections_result.scalars().all()
