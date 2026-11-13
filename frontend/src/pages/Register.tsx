@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Sparkles, Mail, Lock, Loader2, ArrowRight, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { Sparkles, Mail, Lock, Loader2, ArrowRight, Eye, EyeOff, CheckCircle2, ShieldCheck } from 'lucide-react';
 import { api, getErrorMessage } from '../api/client';
+import { useToast } from '../components/Toast';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,81 +20,88 @@ export default function Register() {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Passwords do not match.');
+      showToast('Passwords do not match', 'error');
       return;
     }
     if (password.length < 8) {
       setError('Password must be at least 8 characters.');
+      showToast('Password must be at least 8 characters', 'error');
       return;
     }
+
     setLoading(true);
     setError('');
+
     try {
       await api.post('/auth/register', { email, password });
       setSuccess(true);
-      // Auto-login after registration
+      showToast('Account created successfully! Logging you in...', 'success');
+
+      // Auto-login
       const loginResp = await api.post('/auth/login', { email, password });
       localStorage.setItem('token', loginResp.data.access_token);
-      setTimeout(() => navigate('/'), 1200);
+      setTimeout(() => navigate('/'), 1000);
     } catch (err: any) {
-      setError(getErrorMessage(err));
+      const msg = getErrorMessage(err);
+      setError(msg);
+      showToast(msg, 'error');
       setLoading(false);
     }
   };
 
-  const passwordStrength = () => {
+  const getStrength = () => {
     if (password.length === 0) return null;
-    if (password.length < 6) return { label: 'Weak', color: 'bg-red-500', width: 'w-1/4' };
-    if (password.length < 10) return { label: 'Fair', color: 'bg-amber-500', width: 'w-2/4' };
-    if (password.length < 14) return { label: 'Good', color: 'bg-blue-500', width: 'w-3/4' };
-    return { label: 'Strong', color: 'bg-emerald-500', width: 'w-full' };
+    if (password.length < 6) return { label: 'Weak', color: 'bg-red-500', width: '25%' };
+    if (password.length < 10) return { label: 'Moderate', color: 'bg-amber-500', width: '50%' };
+    if (password.length < 14) return { label: 'Good', color: 'bg-sky-500', width: '75%' };
+    return { label: 'Strong', color: 'bg-emerald-500', width: '100%' };
   };
-  const strength = passwordStrength();
+
+  const strength = getStrength();
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center px-4 py-12">
-      {/* Background orbs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-violet-600/20 rounded-full blur-3xl animate-pulse-slow" />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-indigo-600/20 rounded-full blur-3xl animate-pulse-slow" style={{ animationDelay: '1.5s' }} />
-      </div>
-
+    <div className="min-h-[calc(100vh-5rem)] flex items-center justify-center px-4 py-10 sm:py-16">
       <div className="w-full max-w-md relative">
-        {/* Logo */}
+        {/* Brand Header */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-500 to-indigo-600 shadow-xl shadow-violet-500/30 mb-4 animate-float">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-xl shadow-violet-500/30 mb-4 animate-float">
             <Sparkles className="w-7 h-7 text-white" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-1">Get started free</h1>
-          <p className="text-white/50">Create your ResumeMatcher AI account</p>
+          <h1 className="text-3xl font-extrabold text-white tracking-tight">Create an Account</h1>
+          <p className="text-white/50 text-sm mt-1">Get free career intelligence and gap advisories</p>
         </div>
 
-        {/* Card */}
-        <div className="glass-strong rounded-2xl p-8 shadow-2xl shadow-black/30">
+        {/* Auth Card */}
+        <div className="glass-card rounded-3xl p-7 sm:p-8 shadow-2xl border-white/10">
           {success ? (
-            <div className="text-center py-6">
-              <CheckCircle className="w-14 h-14 text-emerald-400 mx-auto mb-4" />
-              <h3 className="text-xl font-bold text-white mb-2">Account created!</h3>
-              <p className="text-white/50 text-sm">Redirecting you to the dashboard...</p>
+            <div className="text-center py-8">
+              <div className="w-16 h-16 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center mx-auto mb-4 animate-bounce">
+                <CheckCircle2 className="w-8 h-8 text-emerald-400" />
+              </div>
+              <h3 className="text-2xl font-bold text-white mb-2">Account Ready!</h3>
+              <p className="text-white/50 text-sm">Logging you in and redirecting to dashboard...</p>
             </div>
           ) : (
             <>
               {error && (
-                <div className="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-6 text-red-300 text-sm flex items-center gap-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-red-400 flex-shrink-0" />
-                  {error}
+                <div className="bg-red-500/10 border border-red-500/30 rounded-2xl px-4 py-3 mb-6 text-red-200 text-sm flex items-center gap-2.5 animate-slide-up">
+                  <span className="w-2 h-2 rounded-full bg-red-400 flex-shrink-0" />
+                  <span>{error}</span>
                 </div>
               )}
 
-              <form onSubmit={handleSubmit} className="space-y-5">
+              <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Email address</label>
+                  <label className="block text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
+                    Email Address
+                  </label>
                   <div className="relative">
                     <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      placeholder="you@example.com"
+                      placeholder="name@company.com"
                       required
                       className="input-field pl-10"
                     />
@@ -99,37 +109,48 @@ export default function Register() {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Password</label>
+                  <label className="block text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
+                    Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                     <input
                       type={showPassword ? 'text' : 'password'}
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      placeholder="Min. 8 characters"
+                      placeholder="At least 8 characters"
                       required
                       className="input-field pl-10 pr-10"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
-                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-white/30 hover:text-white/60 transition-colors p-1"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
+
                   {strength && (
-                    <div className="mt-2">
-                      <div className="h-1 bg-white/10 rounded-full overflow-hidden">
-                        <div className={`h-full rounded-full transition-all duration-300 ${strength.color} ${strength.width}`} />
+                    <div className="mt-2.5">
+                      <div className="flex justify-between items-center text-[10px] text-white/50 mb-1">
+                        <span>Password Strength:</span>
+                        <span className="font-semibold text-white/80">{strength.label}</span>
                       </div>
-                      <p className="text-xs text-white/40 mt-1">{strength.label} password</p>
+                      <div className="h-1.5 w-full bg-white/10 rounded-full overflow-hidden">
+                        <div
+                          className={`h-full ${strength.color} transition-all duration-300 rounded-full`}
+                          style={{ width: strength.width }}
+                        />
+                      </div>
                     </div>
                   )}
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-white/70 mb-2">Confirm password</label>
+                  <label className="block text-xs font-semibold text-white/70 uppercase tracking-wider mb-2">
+                    Confirm Password
+                  </label>
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-white/30" />
                     <input
@@ -138,28 +159,33 @@ export default function Register() {
                       onChange={(e) => setConfirmPassword(e.target.value)}
                       placeholder="Repeat your password"
                       required
-                      className={`input-field pl-10 ${
-                        confirmPassword && confirmPassword !== password ? 'border-red-500/50 focus:ring-red-500/50' : ''
-                      }`}
+                      className="input-field pl-10"
                     />
                   </div>
                 </div>
 
-                <button type="submit" disabled={loading} className="btn-primary w-full py-3.5 mt-2">
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="btn-primary w-full py-3.5 mt-2"
+                >
                   {loading ? (
                     <Loader2 className="w-4 h-4 animate-spin" />
                   ) : (
                     <>
-                      Create account
-                      <ArrowRight className="w-4 h-4" />
+                      Create Free Account
+                      <ArrowRight className="w-4 h-4 ml-1" />
                     </>
                   )}
                 </button>
               </form>
 
-              <p className="text-center text-white/40 text-sm mt-6">
-                Already have an account?{' '}
-                <Link to="/login" className="text-violet-400 hover:text-violet-300 font-medium transition-colors">
+              <p className="text-center text-white/50 text-sm mt-6">
+                Already registered?{' '}
+                <Link
+                  to="/login"
+                  className="text-violet-400 hover:text-violet-300 font-semibold transition-colors"
+                >
                   Sign in
                 </Link>
               </p>
@@ -167,13 +193,10 @@ export default function Register() {
           )}
         </div>
 
-        {/* Features */}
-        <div className="mt-6 grid grid-cols-3 gap-3 text-center">
-          {['AI-Powered Matching', 'Skill Gap Analysis', 'LLM Insights'].map((feature) => (
-            <div key={feature} className="glass rounded-xl p-3">
-              <p className="text-white/50 text-xs font-medium">{feature}</p>
-            </div>
-          ))}
+        {/* Security Footer Note */}
+        <div className="flex items-center justify-center gap-2 mt-6 text-xs text-white/40">
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          <span>Encrypted with SHA-256 bcrypt &bull; Privacy protected</span>
         </div>
       </div>
     </div>

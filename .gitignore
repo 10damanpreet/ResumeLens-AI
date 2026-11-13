@@ -1,6 +1,7 @@
 # Security & Environment Variables
 .env
 .env.*
+!.env.example
 *.pem
 
 # Local Databases

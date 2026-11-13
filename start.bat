@@ -1,10 +1,10 @@
 @echo off
 cd /d "%~dp0"
-title ResumeMatcher AI - Launcher
+title ResumeLens AI - Launcher
 color 0A
 echo.
 echo  ============================================================
-echo               RESUMEMATCHER AI - LAUNCHER
+echo               RESUMELENS AI - LAUNCHER
 echo  ============================================================
 echo  No Docker needed! Running directly with SQLite and FastAPI.
 echo.
