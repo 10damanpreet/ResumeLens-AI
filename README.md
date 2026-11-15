@@ -3,6 +3,7 @@
 ### Enterprise-Grade Career Intelligence, Recruiter Talent Acquisition & Generative AI Matching Platform
 
 [![CI](https://github.com/10damanpreet/ResumeLens-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/10damanpreet/ResumeLens-AI/actions)
+[![Tests](https://img.shields.io/badge/Tests-21%2F21%20Passing-success.svg)](tests/)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%20%7C%203.14-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![React 18](https://img.shields.io/badge/React-18.2-61DAFB.svg?logo=react)](https://react.dev)
@@ -11,6 +12,19 @@
 [![Database](https://img.shields.io/badge/Database-SQLite%20(Default)%20%7C%20Postgres%2016%20pgvector-003B57.svg?logo=postgresql)](https://sqlite.org)
 [![Generative AI](https://img.shields.io/badge/GenAI-Gemini%203.6%20Flash%20%7C%20Flash%20Lite-8E75C2.svg?logo=google)](https://deepmind.google/technologies/gemini/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+---
+
+## ⚡ Quick Evaluation & Demo Access
+
+For course instructors, academic evaluators, and recruitment demonstrations, pre-configured roles are available out of the box:
+
+| Role / Portal | Demo Email | Password | Access Capabilities |
+| :--- | :--- | :--- | :--- |
+| **Candidate Portal** (`/`) | `student@resumelens.ai` *(or test@example.com)* | `Password123!` | PII redaction, Tri-factor match, AI Resume Tailor (XYZ), Cover Letter, Application Tracker |
+| **Recruiter Suite** (`/recruiter`) | `recruiter@resumelens.ai` | `Password123!` | Tier-1 requisitions (Google, Microsoft, Amazon), Bulk screening, Ranked Leaderboards, Status Workflow |
+
+> **Enterprise Recruiter Keys**: `RECRUITER2026` &nbsp;|&nbsp; `TIET-HR-2026` &nbsp;|&nbsp; `CAPSTONE-PRO`
 
 ---
 
@@ -133,7 +147,7 @@ ResumeLens-AI/
 ├── alembic/                       # Alembic schema migrations
 ├── app/
 │   ├── api/                       # REST API Route Controllers
-│   │   ├── auth.py                # JWT authentication & user accounts
+│   │   ├── auth.py                # JWT authentication, portal isolation & recruiter keys
 │   │   ├── gaps.py                # Gemini skill gap advisory & interview predictions
 │   │   ├── health.py              # System health & database probes
 │   │   ├── jobs.py                # Requisition retrieval & AI JD generation
@@ -153,6 +167,15 @@ ResumeLens-AI/
 │   ├── config.py                  # Pydantic BaseSettings environment loader
 │   ├── database.py                # SQLAlchemy async engine & sessionmaker (SQLite / Postgres)
 │   └── main.py                    # FastAPI application initialization & CORS config
+├── docs/                          # Engineering Documentation & Architecture Records
+│   ├── SYSTEM_ARCHITECTURE.md     # High-level architecture, formulas, ER diagram & security
+│   ├── API_DOCUMENTATION.md       # OpenAPI endpoint specs with request/response schemas
+│   ├── RECRUITER_STUDENT_PORTAL_GUIDE.md # Evaluator manual & user walkthrough
+│   └── adr/                       # Architecture Decision Records
+│       ├── 001-why-agile.md       # ADR 001: Agile/Scrum SDLC methodology
+│       ├── 002-dual-model-ai-failover.md # ADR 002: Dual-model LLM gateway & timeouts
+│       ├── 003-portal-isolation-and-rbac.md # ADR 003: Portal RBAC & credential isolation
+│       └── 004-tri-factor-hybrid-matching.md # ADR 004: Tri-factor compatibility algorithm
 ├── frontend/                      # React 18 + TypeScript Application
 │   ├── src/
 │   │   ├── api/client.ts          # Axios client with JWT auto-injection & error interceptors
@@ -167,18 +190,20 @@ ResumeLens-AI/
 │   │   ├── pages/                 # Full-page application views
 │   │   │   ├── Dashboard.tsx      # Candidate landing, upload & match execution
 │   │   │   ├── JobTracker.tsx     # 5-stage application Kanban board
-│   │   │   ├── Login.tsx          # Candidate authentication view
+│   │   │   ├── Login.tsx          # Dual-portal authentication view
 │   │   │   ├── MatchResults.tsx   # Tri-factor report, score ring & action ribbon
 │   │   │   ├── RecruiterPortal.tsx# HR suite: bulk screening, leaderboard, matrix
 │   │   │   ├── Register.tsx       # Account creation view
-│   │   │   ├── ResumeTailor.tsx   # Side-by-side XYZ bullet optimizer
+│   │   │   ├── ResumeTailor.tsx   # Side-by-side XYZ bullet optimizer & selector ribbon
 │   │   │   └── SkillGaps.tsx      # Generative AI advisory & learning curriculum
 │   │   ├── App.tsx                # Dual-role navigation bar & route configuration
 │   │   └── index.css              # Dark glassmorphic design system
 │   ├── package.json               # Node.js dependencies & scripts
 │   ├── tailwind.config.js         # Custom animations, gradients & shadows
 │   └── vite.config.ts             # Vite configuration with chunk splitting
-├── tests/                         # Automated Unit & Integration Test Suite (17 Tests)
+├── scripts/                       # Database seeding & taxonomy initialization
+│   └── seed_taxonomy.py           # Core software engineering technology taxonomy
+├── tests/                         # Automated Unit & Integration Test Suite (21 Tests)
 │   ├── conftest.py                # Pytest async SQLite fixtures & auto-schema setup
 │   ├── test_auth.py               # Authentication, JWT, and authorization tests
 │   ├── test_embedding.py          # Sentence-Transformers vector generation tests
@@ -188,6 +213,8 @@ ResumeLens-AI/
 │   ├── test_pii_redactor.py       # PII masking tests
 │   ├── test_segmenter.py          # Section segmentation tests
 │   └── test_worker.py             # Background task fallback tests
+├── seed_recruiter_demo.py         # Seeds Tier-1 SDE company requisitions & candidates
+├── seed_resume_sections.py        # Seeds structured resume sections for tailoring
 ├── .env.example                   # Environment configuration template
 ├── docker-compose.yml             # PostgreSQL 16 + Redis + pgvector container specification
 ├── Dockerfile                     # Multi-stage production container build
@@ -267,22 +294,38 @@ docker-compose exec api alembic upgrade head
 | Method | Endpoint | Description | Auth Required |
 |---|---|---|---|
 | `POST` | `/auth/register` | Register new candidate account | No |
-| `POST` | `/auth/login` | Authenticate and obtain JWT bearer token | No |
+| `POST` | `/auth/login` | Authenticate and obtain JWT bearer token (portal-scoped) | No |
 | `GET` | `/auth/me` | Fetch currently authenticated user profile | Yes (Bearer) |
+| `POST` | `/auth/verify-recruiter` | Verify enterprise key (`RECRUITER2026`) and elevate role | Yes (Bearer) |
 | `POST` | `/resumes/upload` | Upload resume (PDF/DOCX), parse & redact PII | Yes (Bearer) |
-| `GET` | `/resumes` | List all candidate resumes | Yes (Bearer) |
+| `GET` | `/resumes` | List candidate-scoped resumes | Yes (Bearer) |
 | `POST` | `/resumes/tailor` | AI Resume bullet optimizer (Google XYZ formula) | Yes (Bearer) |
 | `POST` | `/resumes/cover-letter` | Generate tailored 3-paragraph executive cover letter | Yes (Bearer) |
-| `GET` | `/jobs` | List active job requisitions | Yes (Bearer) |
+| `GET` | `/jobs` | List active job requisitions (Google, Microsoft, Amazon, etc.) | Yes (Bearer) |
 | `POST` | `/jobs` | Ingest job description & extract required skills | Yes (Bearer) |
-| `POST` | `/jobs/generate` | AI Job Description generator from title & skills | Yes (Bearer) |
+| `POST` | `/jobs/generate` | AI Job Description generator from title & skills | Yes (Recruiter) |
 | `POST` | `/matches` | Compute tri-factor hybrid compatibility score | Yes (Bearer) |
-| `GET` | `/matches/{id}` | Retrieve match score and sub-metric breakdown | Yes (Bearer) |
-| `GET` | `/matches/leaderboard/{job_id}` | Retrieve ranked applicant leaderboard for recruiter | Yes (Bearer) |
-| `POST` | `/matches/bulk` | Batch-screen candidate pool against requisition | Yes (Bearer) |
-| `PATCH`| `/matches/{id}/status` | Update candidate pipeline status (`review`, `shortlisted`, etc.) | Yes (Bearer) |
+| `GET` | `/matches/{id}` | Retrieve match score, sub-metrics, and target metadata | Yes (Bearer) |
+| `GET` | `/matches/leaderboard/{job_id}` | Retrieve ranked applicant leaderboard for recruiter | Yes (Recruiter) |
+| `POST` | `/matches/bulk` | Batch-screen candidate pool against requisition | Yes (Recruiter) |
+| `PATCH`| `/matches/{id}/status` | Update candidate pipeline status (`review`, `shortlisted`, etc.) | Yes (Recruiter) |
 | `GET` | `/matches/{id}/gaps` | Generate Gemini 3.6 Flash skill gap advisory | Yes (Bearer) |
 | `GET` | `/health` | System health, database connectivity probe | No |
+
+---
+
+## 📚 Deep-Dive Documentation Index
+
+For in-depth architectural and developer documentation, explore the `docs/` repository:
+
+- 🏛️ **[System Architecture Specification](docs/SYSTEM_ARCHITECTURE.md)**: Tri-Factor Hybrid Compatibility algorithm, dense vector embeddings, database ER diagrams, and LLM dual failover design.
+- 📡 **[REST API Specification](docs/API_DOCUMENTATION.md)**: Complete OpenAPI request and response JSON schemas with status code documentation.
+- 👥 **[Dual Portal Evaluation Guide](docs/RECRUITER_STUDENT_PORTAL_GUIDE.md)**: Step-by-step evaluator manual for testing the Candidate Career Hub and Enterprise Recruiter Suite.
+- 📋 **Architecture Decision Records (ADRs)**:
+  - **[ADR-001: Agile/Scrum SDLC Methodology](docs/adr/001-why-agile.md)**
+  - **[ADR-002: Dual-Model LLM Gateway & Latency Guardrails](docs/adr/002-dual-model-ai-failover.md)**
+  - **[ADR-003: Portal Separation & Role-Based Access Control](docs/adr/003-portal-isolation-and-rbac.md)**
+  - **[ADR-004: Tri-Factor Hybrid Compatibility Algorithm](docs/adr/004-tri-factor-hybrid-matching.md)**
 
 ---
 
@@ -291,7 +334,7 @@ docker-compose exec api alembic upgrade head
 The project includes comprehensive automated tests covering unit logic, integration flows, and generative AI resilience:
 
 ```bash
-# Run the complete PyTest test suite (17/17 tests passing)
+# Run the complete PyTest test suite (21/21 tests passing)
 python -m pytest
 
 # Run code style & static analysis with Ruff
