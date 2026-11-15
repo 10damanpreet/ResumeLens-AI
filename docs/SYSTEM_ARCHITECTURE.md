@@ -1,6 +1,6 @@
 # ResumeLens AI - System Architecture Specification
 
-### UCS503P Software Engineering Capstone Project | Group 3C62
+### UCS503P Software Engineering Project (3rd Year) | Group 3C62
 **Thapar Institute of Engineering & Technology (TIET)**
 
 ---

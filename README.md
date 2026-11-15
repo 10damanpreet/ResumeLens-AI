@@ -24,7 +24,7 @@ For course instructors, academic evaluators, and recruitment demonstrations, pre
 | **Candidate Portal** (`/`) | `student@resumelens.ai` *(or test@example.com)* | `Password123!` | PII redaction, Tri-factor match, AI Resume Tailor (XYZ), Cover Letter, Application Tracker |
 | **Recruiter Suite** (`/recruiter`) | `recruiter@resumelens.ai` | `Password123!` | Tier-1 requisitions (Google, Microsoft, Amazon), Bulk screening, Ranked Leaderboards, Status Workflow |
 
-> **Enterprise Recruiter Keys**: `RECRUITER2026` &nbsp;|&nbsp; `TIET-HR-2026` &nbsp;|&nbsp; `CAPSTONE-PRO`
+> **Enterprise Recruiter Keys**: `RECRUITER2026` &nbsp;|&nbsp; `TIET-HR-2026` &nbsp;|&nbsp; `ENTERPRISE-PRO`
 
 ---
 
@@ -347,19 +347,19 @@ npm run build
 
 ---
 
-## 🎓 Academic Capstone Context
+## 🎓 Academic Project Context
 
-Developed as a final-year **UCS503P Software Engineering Capstone Project** at **Thapar Institute of Engineering & Technology (TIET)**.
+Developed as a 6-month **UCS503P Software Engineering Project** (3rd Year) at **Thapar Institute of Engineering & Technology (TIET)**.
 
 - **Course**: UCS503P — Software Engineering
 - **Project Group**: 3C62
 - **Academic Year**: 2026
 - **Repository**: [https://github.com/10damanpreet/ResumeLens-AI](https://github.com/10damanpreet/ResumeLens-AI)
 - **Team Members**:
-  - **Damanpreet Singh** (Roll No: 102203024)
-  - **Dhruv Mittal** (Roll No: 102203014)
-  - **Praneet Singh** (Roll No: 102203025)
-  - **Shreyas Singh** (Roll No: 102203031)
+  - **Damanpreet Singh** (Roll No: 1024030847)
+  - **Dhruv Mittal**
+  - **Praneet Singh**
+  - **Shreyas Singh**
 - **Course Instructor**: Ms. Reaya Grewal
 
 ---

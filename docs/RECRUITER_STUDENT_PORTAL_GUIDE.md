@@ -1,7 +1,7 @@
 # ResumeLens AI - Dual Portal Evaluation Guide
 
 ### Comprehensive Manual for Evaluators, Faculty & Recruiter Demos
-**Thapar Institute of Engineering & Technology (TIET) | Capstone 3C62**
+**Thapar Institute of Engineering & Technology (TIET) | Group 3C62**
 
 ---
 
@@ -18,7 +18,7 @@ The system provides separate authenticated environments with role isolation:
 > If logging in as a new user or elevating from student to recruiter in the Recruiter Portal:
 > - `RECRUITER2026`
 > - `TIET-HR-2026`
-> - `CAPSTONE-PRO`
+> - `RECRUITER-PRO`
 
 ---
 
