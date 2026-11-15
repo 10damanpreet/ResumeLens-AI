@@ -23,10 +23,23 @@ os.environ['REDIS_URL'] = os.environ.get('REDIS_URL', 'redis://localhost:6379/1'
 os.environ['JWT_SECRET_KEY'] = 'test-secret-key-for-testing'
 os.environ['JWT_ALGORITHM'] = 'HS256'
 os.environ['JWT_EXPIRY_MINUTES'] = '60'
-os.environ['DEBUG'] = 'true'
+os.environ['DEBUG'] = 'false'
 os.environ['APP_NAME'] = 'Resume Matcher Test'
 
+import app.models  # noqa: E402, F401
+from app.database import Base, engine  # noqa: E402
 from app.main import app  # noqa: E402
+
+
+@fixture_decorator(autouse=True)
+async def setup_test_database():
+    """Ensure a clean, isolated database schema for every test."""
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+    yield
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
 
 
 @fixture_decorator

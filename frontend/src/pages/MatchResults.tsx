@@ -1,21 +1,40 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
-  ArrowRight, Brain, ArrowLeft, TrendingUp, Layers, Activity,
-  Sparkles, Copy, Printer
+  ArrowRight,
+  Brain,
+  ArrowLeft,
+  TrendingUp,
+  Layers,
+  Activity,
+  Sparkles,
+  Copy,
+  Printer,
+  Wand2,
+  FileText,
+  BookmarkCheck,
+  Kanban,
+  CheckCircle2,
 } from 'lucide-react';
 import { api, getErrorMessage } from '../api/client';
 import { useToast } from '../components/Toast';
 import CompetencyRadar from '../components/CompetencyRadar';
 import ATSHealthCard from '../components/ATSHealthCard';
+import CoverLetterModal from '../components/CoverLetterModal';
 
 interface MatchData {
   id: string;
+  resume_id?: string;
+  job_id?: string;
   final_match_score: number;
   dense_score: number;
   skill_overlap_score: number;
   experience_score: number;
   weights_version?: string;
+  status?: string;
+  job_title?: string;
+  company?: string;
+  resume_filename?: string;
 }
 
 // Animated glowing SVG score ring with count-up
@@ -101,6 +120,8 @@ export default function MatchResults() {
   const [data, setData] = useState<MatchData | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [showCoverLetter, setShowCoverLetter] = useState(false);
+  const [savedToTracker, setSavedToTracker] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -118,11 +139,14 @@ export default function MatchResults() {
           // Demo fallback
           setData({
             id: matchId!,
+            resume_id: 'demo-resume-id',
+            job_id: 'demo-job-id',
             final_match_score: 0.84,
             dense_score: 0.88,
             skill_overlap_score: 0.80,
             experience_score: 0.85,
             weights_version: '2.0',
+            status: 'review',
           });
         }
       } catch (err: any) {
@@ -145,13 +169,38 @@ export default function MatchResults() {
       data.skill_overlap_score * 100
     )}%\n- Experience Fit: ${Math.round(
       data.experience_score * 100
-    )}%\n\nEvaluated using all-MiniLM-L6-v2 vector embeddings & Gemini 3.8 Flash.`;
+    )}%\n\nEvaluated using all-MiniLM-L6-v2 vector embeddings & Gemini 3.6 Flash / Flash Lite.`;
     navigator.clipboard.writeText(text);
     showToast('Match summary copied to clipboard!', 'success');
   };
 
   const handlePrint = () => {
     window.print();
+  };
+
+  const handleAddToTracker = () => {
+    try {
+      const existing = localStorage.getItem('resumelens_job_tracker');
+      const list = existing ? JSON.parse(existing) : [];
+      const scoreVal = data ? Math.round(data.final_match_score * 100) : 85;
+
+      const newItem = {
+        id: `app-${Date.now()}`,
+        company: 'Target Enterprise',
+        role: 'Senior Software Engineer',
+        appliedDate: new Date().toISOString().split('T')[0],
+        status: 'Applied',
+        matchScore: scoreVal,
+        notes: `Logged via Match Evaluation (${scoreVal}% ATS score)`,
+      };
+
+      list.unshift(newItem);
+      localStorage.setItem('resumelens_job_tracker', JSON.stringify(list));
+      setSavedToTracker(true);
+      showToast('Saved to your Job Application Kanban Tracker!', 'success');
+    } catch {
+      showToast('Failed to save to tracker', 'error');
+    }
   };
 
   if (loading) {
@@ -217,7 +266,7 @@ export default function MatchResults() {
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-2 no-print">
+        <div className="flex flex-wrap items-center gap-2 no-print">
           <button
             onClick={handleCopySummary}
             className="btn-secondary py-2 px-3.5 text-xs"
@@ -234,6 +283,69 @@ export default function MatchResults() {
             <Printer className="w-3.5 h-3.5" />
             Print Report
           </button>
+          <button
+            onClick={handleAddToTracker}
+            disabled={savedToTracker}
+            className={`py-2 px-3.5 text-xs rounded-xl font-semibold flex items-center gap-1.5 transition-all ${
+              savedToTracker
+                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/30'
+                : 'glass hover:bg-white/10 text-white/80 border border-white/10'
+            }`}
+          >
+            {savedToTracker ? <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" /> : <BookmarkCheck className="w-3.5 h-3.5" />}
+            {savedToTracker ? 'Tracked' : 'Add to Kanban'}
+          </button>
+        </div>
+      </div>
+
+      {/* Candidate Super-Tools Action Ribbon */}
+      <div className="mb-8 p-4 rounded-2xl glass border border-violet-500/25 bg-gradient-to-r from-violet-900/20 via-indigo-900/20 to-purple-900/20 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-violet-600/30 border border-violet-500/40 flex items-center justify-center flex-shrink-0">
+            <Sparkles className="w-5 h-5 text-violet-300" />
+          </div>
+          <div>
+            <h4 className="text-sm font-bold text-white flex items-center gap-2">
+              Candidate Super-Tools Available
+              <span className="text-[10px] uppercase font-black px-2 py-0.5 rounded-full bg-violet-500/30 text-violet-200 border border-violet-500/40">
+                New
+              </span>
+            </h4>
+            <p className="text-xs text-white/50">
+              Optimize bullets with Google's XYZ formula or generate a custom executive cover letter in 1-click.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2.5 w-full md:w-auto">
+          <Link
+            to={`/tailor/${matchId}`}
+            state={{
+              resume_id: data.resume_id,
+              job_id: data.job_id,
+              job_title: data.job_title,
+              company: data.company,
+              resume_filename: data.resume_filename,
+            }}
+            className="flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-pink-600 to-rose-600 hover:from-pink-500 hover:to-rose-500 transition-all shadow-md shadow-pink-600/20"
+          >
+            <Wand2 className="w-3.5 h-3.5" />
+            Tailor Resume (XYZ)
+          </Link>
+          <button
+            onClick={() => setShowCoverLetter(true)}
+            className="flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 transition-all shadow-md shadow-violet-600/20"
+          >
+            <FileText className="w-3.5 h-3.5" />
+            Cover Letter
+          </button>
+          <Link
+            to="/tracker"
+            className="hidden sm:flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-medium text-white/70 hover:text-white glass hover:bg-white/10 border border-white/10"
+            title="Open Application Kanban"
+          >
+            <Kanban className="w-3.5 h-3.5" />
+          </Link>
         </div>
       </div>
 
@@ -261,14 +373,30 @@ export default function MatchResults() {
               : 'This role demands specialized competencies not strongly emphasized on your resume. See the study plan below.'}
           </p>
 
-          <Link
-            to={`/matches/${matchId}/gaps`}
-            className="btn-primary w-full py-3.5 text-sm shadow-xl"
-          >
-            <Brain className="w-4 h-4 text-violet-200" />
-            Analyze Skill Gaps with Gemini AI
-            <ArrowRight className="w-4 h-4 ml-1" />
-          </Link>
+          <div className="flex flex-col gap-2.5 w-full">
+            <Link
+              to={`/matches/${matchId}/gaps`}
+              className="btn-primary w-full py-3.5 text-sm shadow-xl"
+            >
+              <Brain className="w-4 h-4 text-violet-200" />
+              Analyze Skill Gaps with Gemini AI
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Link>
+            <Link
+              to={`/tailor/${matchId}`}
+              state={{
+                resume_id: data.resume_id,
+                job_id: data.job_id,
+                job_title: data.job_title,
+                company: data.company,
+                resume_filename: data.resume_filename,
+              }}
+              className="w-full py-3 px-4 rounded-xl text-xs font-semibold text-white/80 hover:text-white glass hover:bg-white/10 border border-white/10 flex items-center justify-center gap-2 transition-all"
+            >
+              <Wand2 className="w-3.5 h-3.5 text-pink-400" />
+              Rewrite Resume for this Role (XYZ Formula)
+            </Link>
+          </div>
         </div>
 
         {/* Competency Radar Visualizer (7 cols) */}
@@ -403,7 +531,7 @@ export default function MatchResults() {
           <div>
             <h3 className="text-xl font-bold text-white">Ready for Targeted Recommendations?</h3>
             <p className="text-white/50 text-xs sm:text-sm mt-0.5">
-              Launch Google Gemini 3.8 Flash to extract exact missing libraries, severity ratings, and a study curriculum.
+              Launch Google Gemini 3.6 Flash to extract exact missing libraries, severity ratings, and a study curriculum.
             </p>
           </div>
         </div>
@@ -417,6 +545,16 @@ export default function MatchResults() {
           <ArrowRight className="w-5 h-5 ml-1" />
         </Link>
       </div>
+
+      {/* Cover Letter Modal Component */}
+      <CoverLetterModal
+        isOpen={showCoverLetter}
+        onClose={() => setShowCoverLetter(false)}
+        resumeId={data.resume_id || 'demo-resume-id'}
+        jobId={data.job_id || 'demo-job-id'}
+        jobTitle={data.job_title || 'Target Role'}
+        company={data.company || 'Target Organization'}
+      />
     </div>
   );
 }

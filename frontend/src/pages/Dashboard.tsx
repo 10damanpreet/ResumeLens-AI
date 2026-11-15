@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { api, getErrorMessage } from '../api/client';
 import { useToast } from '../components/Toast';
@@ -107,6 +107,12 @@ export default function Dashboard() {
   });
 
   const token = localStorage.getItem('token');
+
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+    }
+  }, [token, navigate]);
 
   // Detect technical keywords in Job Description in real-time
   const detectedSkills = SKILL_KEYWORDS.filter((skill) =>

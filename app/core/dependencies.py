@@ -31,7 +31,15 @@ async def get_current_user(
             detail="Invalid token payload",
         )
 
-    result = await db.execute(select(Candidate).where(Candidate.id == uuid.UUID(user_id)))
+    try:
+        user_uuid = uuid.UUID(str(user_id))
+    except (ValueError, TypeError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid user identifier format",
+        )
+
+    result = await db.execute(select(Candidate).where(Candidate.id == user_uuid))
     user = result.scalar_one_or_none()
     if user is None:
         raise HTTPException(
@@ -49,5 +57,17 @@ async def require_admin(
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
             detail="Admin access required",
+        )
+    return current_user
+
+
+async def require_recruiter(
+    current_user: Candidate = Depends(get_current_user),
+) -> Candidate:
+    """Require the current user to have recruiter or admin role."""
+    if current_user.role not in ('recruiter', 'admin'):
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Recruiter access required. Student accounts cannot access recruiter endpoints.",
         )
     return current_user

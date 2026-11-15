@@ -21,6 +21,7 @@ class MatchEvaluation(Base):
     final_match_score: Mapped[float] = mapped_column(Numeric(5, 4), nullable=False)
     weights_version: Mapped[str] = mapped_column(String(50), nullable=False)
     ai_analysis: Mapped[str | None] = mapped_column(String, nullable=True)
+    status: Mapped[str] = mapped_column(String(20), default='review')
     evaluated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=lambda: datetime.now(UTC))
 
     resume: Mapped['Resume'] = relationship(back_populates='match_evaluations')

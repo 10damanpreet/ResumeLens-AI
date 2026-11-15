@@ -23,7 +23,11 @@ class MatchScoreOut(BaseModel):
     skill_overlap_score: float
     experience_score: float
     weights_version: str
+    status: str = 'review'
     evaluated_at: datetime
+    job_title: str | None = None
+    company: str | None = None
+    resume_filename: str | None = None
 
 
 class GapRecommendationOut(BaseModel):

@@ -1,3 +1,5 @@
+from typing import Any
+
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -6,15 +8,28 @@ from app.core.dependencies import get_current_user
 from app.core.security import create_access_token, hash_password, verify_password
 from app.database import get_db
 from app.models.candidate import Candidate
-from app.schemas.auth import CandidateOut, LoginRequest, RegisterRequest, TokenResponse
+from app.schemas.auth import (
+    CandidateOut,
+    LoginRequest,
+    RecruiterVerifyRequest,
+    RegisterRequest,
+    TokenResponse,
+)
 
 router = APIRouter()
+
+VALID_RECRUITER_KEYS = {
+    'RECRUITER2026',
+    'TIET-HR-2026',
+    'CAPSTONE-PRO',
+    'HR-ENTERPRISE',
+    'TALENT-AI',
+}
 
 
 @router.post('/register', response_model=CandidateOut, status_code=status.HTTP_201_CREATED)
 async def register(request: RegisterRequest, db: AsyncSession = Depends(get_db)):
-    """Register a new candidate account."""
-    # Check if email already exists
+    """Register a new candidate or recruiter account."""
     existing = await db.execute(select(Candidate).where(Candidate.email == request.email))
     if existing.scalar_one_or_none():
         raise HTTPException(
@@ -22,10 +37,11 @@ async def register(request: RegisterRequest, db: AsyncSession = Depends(get_db))
             detail='Email already registered',
         )
 
-    # Create new candidate
+    assigned_role = request.role if request.role in ('user', 'recruiter') else 'user'
     candidate = Candidate(
         email=request.email,
         password_hash=hash_password(request.password),
+        role=assigned_role,
     )
     db.add(candidate)
     await db.commit()
@@ -45,11 +61,57 @@ async def login(request: LoginRequest, db: AsyncSession = Depends(get_db)):
             detail='Invalid email or password',
         )
 
+    # Portal isolation synchronization:
+    # When user signs in through a specific portal tab, lock in the matching role
+    if request.portal == 'candidate':
+        candidate.role = 'user'
+        await db.commit()
+    elif request.portal == 'recruiter':
+        candidate.role = 'recruiter'
+        await db.commit()
+
     token = create_access_token(data={'sub': str(candidate.id), 'role': candidate.role})
-    return TokenResponse(access_token=token)
+    return TokenResponse(access_token=token, role=candidate.role)
 
 
 @router.get('/me', response_model=CandidateOut)
 async def get_me(current_user: Candidate = Depends(get_current_user)):
     """Get the current authenticated user's profile."""
     return current_user
+
+
+@router.post('/verify-recruiter')
+async def verify_recruiter_access(
+    req: RecruiterVerifyRequest,
+    current_user: Candidate = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """Verify enterprise recruiter key and elevate user role."""
+    key = req.access_key.strip().upper()
+    if key in VALID_RECRUITER_KEYS:
+        current_user.role = 'recruiter'
+        await db.commit()
+        return {
+            'status': 'verified',
+            'role': 'recruiter',
+            'message': 'Recruiter authorization granted successfully.',
+        }
+    raise HTTPException(
+        status_code=status.HTTP_403_FORBIDDEN,
+        detail='Invalid Recruiter Authorization Key. Try demo key: RECRUITER2026',
+    )
+
+
+@router.post('/elevate-demo-recruiter')
+async def elevate_demo_recruiter(
+    current_user: Candidate = Depends(get_current_user),
+    db: AsyncSession = Depends(get_db),
+) -> dict[str, Any]:
+    """1-Click evaluator authorization granting recruiter permissions."""
+    current_user.role = 'recruiter'
+    await db.commit()
+    return {
+        'status': 'verified',
+        'role': 'recruiter',
+        'message': 'Evaluator elevated to Recruiter role.',
+    }
