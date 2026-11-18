@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useState, useCallback, useMemo } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import {
   ArrowLeft, Brain, Zap, AlertTriangle, Info,
@@ -87,9 +87,26 @@ function getSampleBullet(skillName: string): string {
 }
 
 export default function SkillGaps() {
-  const { matchId } = useParams();
+  const { matchId: paramMatchId } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
+
+  // Safely resolve matchId from route param or localStorage recent evaluations
+  const matchId = useMemo(() => {
+    if (paramMatchId && paramMatchId !== 'undefined' && paramMatchId !== 'null' && paramMatchId !== ':matchId') {
+      return paramMatchId;
+    }
+    try {
+      const raw = localStorage.getItem('resumelens_recent_scans');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id) {
+          return parsed[0].id;
+        }
+      }
+    } catch {}
+    return 'latest';
+  }, [paramMatchId]);
 
   const [analysis, setAnalysis] = useState<ComprehensiveAnalysis | null>(null);
   const [loading, setLoading] = useState(true);
@@ -243,22 +260,22 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
           <div className="flex items-center gap-3">
             <Link
               to={`/matches/${matchId}`}
-              className="text-white/40 hover:text-white transition-colors p-2.5 rounded-2xl glass hover:bg-white/10"
+              className="text-slate-500 hover:text-slate-900 transition-colors p-2.5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:bg-slate-50"
               title="Back to Match Score"
             >
               <ArrowLeft className="w-5 h-5" />
             </Link>
             <div>
               <div className="flex items-center gap-2.5 flex-wrap">
-                <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                   AI Career Intelligence & Advisory
                 </h1>
-                <span className="badge-glow bg-violet-500/15 text-violet-300 border-violet-500/30 text-xs flex items-center gap-1.5">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                <span className="bg-indigo-50 text-indigo-700 border border-indigo-200 text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                   Gemini 3.6 Flash / Flash Lite
                 </span>
               </div>
-              <p className="text-white/50 text-xs sm:text-sm mt-0.5">
+              <p className="text-slate-500 text-xs sm:text-sm mt-0.5 font-medium">
                 Comprehensive Strengths, Weaknesses & Actionable Candidate Roadmap
               </p>
             </div>
@@ -270,26 +287,26 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
               <button
                 onClick={() => loadAnalysis(true)}
                 disabled={reanalyzing}
-                className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+                className="btn-secondary py-2 px-3 text-xs font-semibold flex items-center gap-1.5"
                 title="Re-run live analysis with Gemini"
               >
-                <RefreshCw className={`w-3.5 h-3.5 ${reanalyzing ? 'animate-spin text-violet-400' : ''}`} />
+                <RefreshCw className={`w-3.5 h-3.5 ${reanalyzing ? 'animate-spin text-indigo-600' : 'text-slate-500'}`} />
                 {reanalyzing ? 'Analyzing...' : 'Re-Analyze'}
               </button>
               <button
                 onClick={copyFullReport}
-                className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+                className="btn-secondary py-2 px-3 text-xs font-semibold flex items-center gap-1.5"
                 title="Copy complete assessment report"
               >
-                <Copy className="w-3.5 h-3.5" />
+                <Copy className="w-3.5 h-3.5 text-slate-500" />
                 Copy Report
               </button>
               <button
                 onClick={() => window.print()}
-                className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+                className="btn-secondary py-2 px-3 text-xs font-semibold flex items-center gap-1.5"
                 title="Print report"
               >
-                <Printer className="w-3.5 h-3.5" />
+                <Printer className="w-3.5 h-3.5 text-slate-500" />
                 Print
               </button>
             </div>
@@ -298,28 +315,28 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
         {/* Loading State */}
         {loading && (
-          <div className="glass-card rounded-3xl p-10 sm:p-14 text-center max-w-xl mx-auto border-violet-500/30 shadow-2xl relative overflow-hidden">
-            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-violet-500 to-transparent animate-pulse" />
+          <div className="bg-white rounded-3xl p-10 sm:p-14 text-center max-w-xl mx-auto border border-slate-200 shadow-sm relative overflow-hidden">
+            <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-transparent via-indigo-600 to-transparent animate-pulse" />
             <div className="relative w-20 h-20 mx-auto mb-6">
-              <div className="absolute inset-0 rounded-full border-2 border-violet-500/20 border-t-violet-500 animate-spin" />
-              <Brain className="w-8 h-8 text-violet-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+              <div className="absolute inset-0 rounded-full border-2 border-indigo-200 border-t-indigo-600 animate-spin" />
+              <Brain className="w-8 h-8 text-indigo-600 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
             </div>
-            <h3 className="text-xl font-bold text-white mb-2">
+            <h3 className="text-xl font-bold text-slate-900 mb-2">
               Gemini 3.6 Flash is Evaluating Candidate...
             </h3>
-            <p className="text-white/40 text-sm leading-relaxed mb-6">
+            <p className="text-slate-600 text-sm leading-relaxed mb-6 font-medium">
               Synthesizing candidate strengths, detecting domain weaknesses, and constructing an optimized learning trajectory.
             </p>
             <div className="flex justify-center gap-2">
               {[0, 1, 2, 3].map((i) => (
                 <div
                   key={i}
-                  className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-bounce"
+                  className="w-2.5 h-2.5 rounded-full bg-indigo-600 animate-bounce"
                   style={{ animationDelay: `${i * 0.15}s` }}
                 />
               ))}
             </div>
-            <p className="text-white/30 text-[11px] mt-6">
+            <p className="text-slate-400 text-[11px] mt-6 font-medium">
               Primary: Gemini 3.6 Flash • Auto-fallback: Flash Lite (Ultra-Low Latency)
             </p>
           </div>
@@ -327,10 +344,10 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
         {/* Error State */}
         {!loading && error && (
-          <div className="glass-card border border-rose-500/30 rounded-3xl p-8 text-center max-w-lg mx-auto">
-            <AlertTriangle className="w-12 h-12 text-rose-400 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-white mb-2">Analysis Temporarily Unavailable</h3>
-            <p className="text-rose-300 text-sm mb-6 leading-relaxed">{error}</p>
+          <div className="bg-white border border-rose-200 rounded-3xl p-8 text-center max-w-lg mx-auto shadow-sm">
+            <AlertTriangle className="w-12 h-12 text-rose-500 mx-auto mb-4" />
+            <h3 className="text-lg font-bold text-slate-900 mb-2">Analysis Temporarily Unavailable</h3>
+            <p className="text-rose-600 text-sm mb-6 leading-relaxed font-medium">{error}</p>
             <div className="flex items-center justify-center gap-3">
               <button
                 onClick={() => loadAnalysis(true)}
@@ -339,7 +356,7 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
                 <RefreshCw className="w-4 h-4" />
                 Retry Analysis
               </button>
-              <Link to={`/matches/${matchId}`} className="btn-secondary py-2 px-4 text-sm">
+              <Link to={`/matches/${matchId}`} className="btn-secondary py-2 px-4 text-sm font-semibold">
                 &larr; Back to Results
               </Link>
             </div>
@@ -350,77 +367,77 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
         {!loading && !error && analysis && (
           <div className="space-y-8 animate-fade-in">
             {/* Top Card: Executive Assessment & Verdict */}
-            <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10 relative overflow-hidden shadow-2xl bg-gradient-to-br from-white/[0.04] via-transparent to-violet-500/[0.03]">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+            <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 relative overflow-hidden shadow-xs">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-violet-600 to-indigo-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
-                    <Brain className="w-6 h-6 text-white" />
+                  <div className="w-12 h-12 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center shadow-xs">
+                    <Brain className="w-6 h-6 text-indigo-600" />
                   </div>
                   <div>
-                    <span className="text-xs font-semibold uppercase tracking-wider text-violet-300">
+                    <span className="text-xs font-bold uppercase tracking-wider text-indigo-700">
                       Executive Evaluation
                     </span>
-                    <h2 className="text-xl sm:text-2xl font-bold text-white mt-0.5">
+                    <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">
                       Recruiter Match Diagnosis
                     </h2>
                   </div>
                 </div>
 
                 {analysis.fit_verdict && (
-                  <div className="self-start md:self-auto px-4 py-2 rounded-2xl bg-gradient-to-r from-violet-500/20 to-indigo-500/20 border border-violet-500/30 text-violet-200 text-xs sm:text-sm font-semibold flex items-center gap-2 shadow-inner">
-                    <Target className="w-4 h-4 text-violet-400" />
+                  <div className="self-start md:self-auto px-4 py-2 rounded-2xl bg-indigo-50 border border-indigo-200 text-indigo-800 text-xs sm:text-sm font-bold flex items-center gap-2 shadow-xs">
+                    <Target className="w-4 h-4 text-indigo-600" />
                     <span>{analysis.fit_verdict}</span>
                   </div>
                 )}
               </div>
 
               {/* Narrative Summary */}
-              <div className="mt-6 text-white/80 text-sm sm:text-base leading-relaxed">
-                <p className="bg-white/[0.02] p-4 sm:p-5 rounded-2xl border border-white/5">
+              <div className="mt-6 text-slate-800 text-sm sm:text-base leading-relaxed font-medium">
+                <p className="bg-slate-50 p-4 sm:p-5 rounded-2xl border border-slate-200">
                   {analysis.executive_summary}
                 </p>
               </div>
 
               {/* Quick Metrics Strip */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 mt-6">
-                <div className="p-3.5 rounded-2xl bg-emerald-500/10 border border-emerald-500/20">
-                  <span className="text-[11px] font-medium text-emerald-300 uppercase tracking-wider block">
+                <div className="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+                  <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider block">
                     Verified Strengths
                   </span>
-                  <span className="text-2xl font-black text-white mt-1 block">
+                  <span className="text-2xl font-black text-emerald-700 mt-1 block">
                     {strengths.length}
                   </span>
-                  <span className="text-[10px] text-emerald-400/80">Employer-ready assets</span>
+                  <span className="text-[10px] text-emerald-600 font-medium">Employer-ready assets</span>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-rose-500/10 border border-rose-500/20">
-                  <span className="text-[11px] font-medium text-rose-300 uppercase tracking-wider block">
+                <div className="p-3.5 rounded-2xl bg-rose-50 border border-rose-200">
+                  <span className="text-[11px] font-bold text-rose-800 uppercase tracking-wider block">
                     Critical Weaknesses
                   </span>
-                  <span className="text-2xl font-black text-white mt-1 block">
+                  <span className="text-2xl font-black text-rose-700 mt-1 block">
                     {criticalCount}
                   </span>
-                  <span className="text-[10px] text-rose-400/80">Direct barrier to interview</span>
+                  <span className="text-[10px] text-rose-600 font-medium">Direct barrier to interview</span>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-                  <span className="text-[11px] font-medium text-amber-300 uppercase tracking-wider block">
+                <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200">
+                  <span className="text-[11px] font-bold text-amber-800 uppercase tracking-wider block">
                     Total Study Curve
                   </span>
-                  <span className="text-2xl font-black text-white mt-1 block">
+                  <span className="text-2xl font-black text-amber-700 mt-1 block">
                     ~{totalHours}h
                   </span>
-                  <span className="text-[10px] text-amber-400/80">To achieve full alignment</span>
+                  <span className="text-[10px] text-amber-600 font-medium">To achieve full alignment</span>
                 </div>
 
-                <div className="p-3.5 rounded-2xl bg-violet-500/10 border border-violet-500/20">
-                  <span className="text-[11px] font-medium text-violet-300 uppercase tracking-wider block">
+                <div className="p-3.5 rounded-2xl bg-indigo-50 border border-indigo-200">
+                  <span className="text-[11px] font-bold text-indigo-800 uppercase tracking-wider block">
                     Evaluation Engine
                   </span>
-                  <span className="text-sm font-bold text-white mt-2 block truncate">
+                  <span className="text-sm font-bold text-indigo-900 mt-2 block truncate">
                     {analysis.model_used || 'Gemini 3.6 Flash'}
                   </span>
-                  <span className="text-[10px] text-violet-400/80">Dual-model auto failover</span>
+                  <span className="text-[10px] text-indigo-600 font-medium">Dual-model auto failover</span>
                 </div>
               </div>
             </div>
@@ -428,19 +445,19 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
             {/* DUAL ASSESSMENT: STRENGTHS & WEAKNESSES SIDE-BY-SIDE */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* STRENGTHS CARD (EMERALD) */}
-              <div className="glass-card rounded-3xl p-6 border border-emerald-500/30 relative overflow-hidden shadow-xl bg-gradient-to-br from-emerald-950/20 via-slate-900/40 to-transparent">
-                <div className="flex items-center gap-3 mb-5 pb-4 border-b border-emerald-500/20">
-                  <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center">
-                    <ShieldCheck className="w-5 h-5 text-emerald-400" />
+              <div className="bg-white rounded-3xl p-6 border border-emerald-200 shadow-xs">
+                <div className="flex items-center gap-3 mb-5 pb-4 border-b border-emerald-100">
+                  <div className="w-10 h-10 rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center">
+                    <ShieldCheck className="w-5 h-5 text-emerald-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                       Verified Strengths
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                         {strengths.length}
                       </span>
                     </h3>
-                    <p className="text-xs text-white/40">
+                    <p className="text-xs text-slate-500 font-medium">
                       Confirmed capabilities directly satisfying employer requirements
                     </p>
                   </div>
@@ -448,28 +465,28 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
                 <div className="space-y-4">
                   {strengths.length === 0 ? (
-                    <p className="text-xs text-white/40 italic">No direct strength matches parsed.</p>
+                    <p className="text-xs text-slate-500 italic">No direct strength matches parsed.</p>
                   ) : (
                     strengths.map((item, idx) => (
                       <div
                         key={idx}
-                        className="p-4 rounded-2xl bg-white/[0.02] border border-emerald-500/20 hover:border-emerald-500/40 transition-colors"
+                        className="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-emerald-300 transition-colors"
                       >
                         <div className="flex items-center justify-between gap-2 mb-1.5">
-                          <span className="text-sm font-bold text-emerald-300 flex items-center gap-1.5">
-                            <CheckCircle2 className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+                          <span className="text-sm font-bold text-emerald-800 flex items-center gap-1.5">
+                            <CheckCircle2 className="w-4 h-4 text-emerald-600 flex-shrink-0" />
                             {item.skill}
                           </span>
-                          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-200">
                             Asset
                           </span>
                         </div>
-                        <p className="text-xs text-white/70 leading-relaxed mt-1">
+                        <p className="text-xs text-slate-700 leading-relaxed mt-1 font-medium">
                           {item.impact}
                         </p>
                         {item.evidence && (
-                          <div className="mt-2 pt-2 border-t border-white/5 flex items-start gap-1.5 text-[11px] text-white/40">
-                            <span className="font-semibold text-emerald-400/90 flex-shrink-0">Resume Context:</span>
+                          <div className="mt-2 pt-2 border-t border-slate-200 flex items-start gap-1.5 text-[11px] text-slate-500">
+                            <span className="font-semibold text-emerald-700 flex-shrink-0">Resume Context:</span>
                             <span className="italic">{item.evidence}</span>
                           </div>
                         )}
@@ -480,19 +497,19 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
               </div>
 
               {/* WEAKNESSES CARD (ROSE/AMBER) */}
-              <div className="glass-card rounded-3xl p-6 border border-rose-500/30 relative overflow-hidden shadow-xl bg-gradient-to-br from-rose-950/20 via-slate-900/40 to-transparent">
-                <div className="flex items-center gap-3 mb-5 pb-4 border-b border-rose-500/20">
-                  <div className="w-10 h-10 rounded-2xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center">
-                    <Flame className="w-5 h-5 text-rose-400" />
+              <div className="bg-white rounded-3xl p-6 border border-rose-200 shadow-xs">
+                <div className="flex items-center gap-3 mb-5 pb-4 border-b border-rose-100">
+                  <div className="w-10 h-10 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center">
+                    <Flame className="w-5 h-5 text-rose-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
                       Identified Weaknesses
-                      <span className="text-xs font-semibold px-2 py-0.5 rounded-full bg-rose-500/20 text-rose-300">
+                      <span className="text-xs font-bold px-2 py-0.5 rounded-full bg-rose-100 text-rose-800 border border-rose-200">
                         {weaknesses.length}
                       </span>
                     </h3>
-                    <p className="text-xs text-white/40">
+                    <p className="text-xs text-slate-500 font-medium">
                       Missing qualifications or shallow coverage flagging risk
                     </p>
                   </div>
@@ -500,39 +517,39 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
                 <div className="space-y-4">
                   {weaknesses.length === 0 ? (
-                    <p className="text-xs text-white/40 italic">No major disqualifying gaps found.</p>
+                    <p className="text-xs text-slate-500 italic">No major disqualifying gaps found.</p>
                   ) : (
                     weaknesses.map((item, idx) => {
                       const cfg = severityConfig[item.severity] || severityConfig.moderate;
                       return (
                         <div
                           key={idx}
-                          className={`p-4 rounded-2xl bg-white/[0.02] border ${cfg.border} hover:border-opacity-60 transition-colors`}
+                          className="p-4 rounded-2xl bg-slate-50 border border-slate-200 hover:border-rose-300 transition-colors"
                         >
                           <div className="flex items-center justify-between gap-2 mb-1.5">
-                            <span className="text-sm font-bold text-white flex items-center gap-1.5">
-                              <cfg.icon className="w-4 h-4 text-rose-400 flex-shrink-0" />
+                            <span className="text-sm font-bold text-slate-900 flex items-center gap-1.5">
+                              <cfg.icon className="w-4 h-4 text-rose-600 flex-shrink-0" />
                               {item.skill}
                             </span>
                             <div className="flex items-center gap-1.5">
-                              <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${cfg.badge}`}>
+                              <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${cfg.badge}`}>
                                 {cfg.label}
                               </span>
                               {item.estimated_hours && (
-                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 text-white/50 border border-white/10 flex items-center gap-1">
-                                  <Clock className="w-3 h-3 text-amber-400" />
+                                <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-50 text-amber-800 border border-amber-200 font-bold flex items-center gap-1">
+                                  <Clock className="w-3 h-3 text-amber-600" />
                                   ~{item.estimated_hours}h
                                 </span>
                               )}
                             </div>
                           </div>
-                          <p className="text-xs text-white/70 leading-relaxed mt-1">
+                          <p className="text-xs text-slate-700 leading-relaxed mt-1 font-medium">
                             {item.gap_reason}
                           </p>
                           {item.target_proficiency && (
-                            <div className="mt-2 pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-white/40">
+                            <div className="mt-2 pt-2 border-t border-slate-200 flex items-center justify-between text-[11px] text-slate-500 font-medium">
                               <span>Target Proficiency:</span>
-                              <span className="font-semibold text-white/70">{item.target_proficiency}</span>
+                              <span className="font-bold text-slate-800">{item.target_proficiency}</span>
                             </div>
                           )}
                         </div>
@@ -544,13 +561,13 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
             </div>
 
             {/* TABBED DEEP DIVE CONTROLS */}
-            <div className="flex items-center gap-2 p-1.5 rounded-2xl glass border border-white/10 max-w-xl no-print">
+            <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-white border border-slate-200 max-w-xl no-print shadow-xs">
               <button
                 onClick={() => setActiveTab('overview')}
-                className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                   activeTab === 'overview'
-                    ? 'bg-violet-600 text-white shadow-md'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <BookOpen className="w-3.5 h-3.5" />
@@ -558,10 +575,10 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
               </button>
               <button
                 onClick={() => setActiveTab('interview')}
-                className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                   activeTab === 'interview'
-                    ? 'bg-violet-600 text-white shadow-md'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <HelpCircle className="w-3.5 h-3.5" />
@@ -569,10 +586,10 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
               </button>
               <button
                 onClick={() => setActiveTab('bullets')}
-                className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 ${
+                className={`flex-1 py-2 px-3 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
                   activeTab === 'bullets'
-                    ? 'bg-violet-600 text-white shadow-md'
-                    : 'text-white/60 hover:text-white hover:bg-white/5'
+                    ? 'bg-indigo-600 text-white shadow-sm'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-100'
                 }`}
               >
                 <Sparkles className="w-3.5 h-3.5" />
@@ -595,14 +612,14 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
                 />
 
                 {/* Filterable Gaps Matrix */}
-                <div className="glass-card rounded-3xl p-6 border border-white/10">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-white/10">
+                <div className="bg-white rounded-3xl p-6 border border-slate-200 shadow-xs">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6 pb-4 border-b border-slate-100">
                     <div>
-                      <h3 className="text-base font-bold text-white flex items-center gap-2">
-                        <Target className="w-4 h-4 text-violet-400" />
+                      <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                        <Target className="w-4 h-4 text-indigo-600" />
                         Detailed Skill Gap Matrix
                       </h3>
-                      <p className="text-xs text-white/40">
+                      <p className="text-xs text-slate-500 font-medium">
                         Targeted curriculum to eliminate employer reservations
                       </p>
                     </div>
@@ -613,10 +630,10 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
                         <button
                           key={filter}
                           onClick={() => setActiveFilter(filter)}
-                          className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
+                          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition-all ${
                             activeFilter === filter
-                              ? 'bg-white/20 text-white border border-white/20 shadow-inner'
-                              : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'
+                              ? 'bg-indigo-600 text-white shadow-xs'
+                              : 'bg-slate-50 text-slate-700 hover:bg-slate-100 border border-slate-200'
                           }`}
                         >
                           {filter.charAt(0).toUpperCase() + filter.slice(1)}
@@ -631,21 +648,21 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
                       return (
                         <div
                           key={i}
-                          className={`p-4 rounded-2xl border ${cfg.border} bg-white/[0.02] flex items-start justify-between gap-3`}
+                          className="p-4 rounded-2xl border border-slate-200 bg-slate-50 flex items-start justify-between gap-3 shadow-xs"
                         >
                           <div>
                             <div className="flex items-center gap-2">
-                              <span className="text-sm font-bold text-white">{gap.skill_name}</span>
-                              <span className={`text-[10px] px-2 py-0.5 rounded-full font-semibold border ${cfg.badge}`}>
+                              <span className="text-sm font-bold text-slate-900">{gap.skill_name}</span>
+                              <span className={`text-[10px] px-2 py-0.5 rounded-full font-bold border ${cfg.badge}`}>
                                 {cfg.label}
                               </span>
                             </div>
-                            <p className="text-xs text-white/50 mt-1">
-                              Target Level: <span className="text-white/80 font-medium">{gap.target_proficiency || 'Intermediate'}</span>
+                            <p className="text-xs text-slate-600 mt-1 font-medium">
+                              Target Level: <span className="text-slate-900 font-semibold">{gap.target_proficiency || 'Intermediate'}</span>
                             </p>
                           </div>
-                          <span className="text-xs px-2.5 py-1 rounded-xl bg-white/5 text-amber-300 border border-white/10 font-bold flex items-center gap-1 flex-shrink-0">
-                            <Clock className="w-3 h-3 text-amber-400" />
+                          <span className="text-xs px-2.5 py-1 rounded-xl bg-amber-50 text-amber-800 border border-amber-200 font-bold flex items-center gap-1 flex-shrink-0">
+                            <Clock className="w-3 h-3 text-amber-600" />
                             {gap.estimated_hours || 25}h
                           </span>
                         </div>
@@ -658,14 +675,14 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
             {/* TAB CONTENT: INTERVIEW QUESTIONS */}
             {activeTab === 'interview' && (
-              <div className="glass-card rounded-3xl p-6 sm:p-8 border border-violet-500/30">
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
-                  <div className="w-10 h-10 rounded-2xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center">
-                    <HelpCircle className="w-5 h-5 text-violet-400" />
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs">
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center">
+                    <HelpCircle className="w-5 h-5 text-indigo-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">Predicted Technical Interview Questions</h3>
-                    <p className="text-xs text-white/40">
+                    <h3 className="text-lg font-bold text-slate-900">Predicted Technical Interview Questions</h3>
+                    <p className="text-xs text-slate-500 font-medium">
                       Based on your strengths and missing requirements, expect hiring managers to press you on these topics:
                     </p>
                   </div>
@@ -673,21 +690,21 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
                 <div className="space-y-4">
                   {analysis.interview_prep_tips.length === 0 ? (
-                    <p className="text-xs text-white/40">No specific interview questions generated.</p>
+                    <p className="text-xs text-slate-500 italic">No specific interview questions generated.</p>
                   ) : (
                     analysis.interview_prep_tips.map((tip, idx) => (
                       <div
                         key={idx}
-                        className="p-5 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-violet-500/40 transition-colors flex items-start gap-4"
+                        className="p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-indigo-300 transition-colors flex items-start gap-4 shadow-xs"
                       >
-                        <span className="w-7 h-7 rounded-xl bg-violet-500/20 text-violet-300 font-black text-xs flex items-center justify-center flex-shrink-0 border border-violet-500/30">
+                        <span className="w-7 h-7 rounded-xl bg-indigo-100 text-indigo-700 font-black text-xs flex items-center justify-center flex-shrink-0 border border-indigo-200">
                           Q{idx + 1}
                         </span>
                         <div>
-                          <p className="text-sm font-semibold text-white leading-relaxed">
+                          <p className="text-sm font-bold text-slate-900 leading-relaxed">
                             {tip}
                           </p>
-                          <p className="text-[11px] text-white/40 mt-1.5">
+                          <p className="text-[11px] text-slate-500 mt-1.5 font-medium">
                             Tip: Frame your answer by acknowledging your foundational skills, then detailing the specific architecture pattern you would adopt.
                           </p>
                         </div>
@@ -700,14 +717,14 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
 
             {/* TAB CONTENT: BULLETS */}
             {activeTab === 'bullets' && (
-              <div className="glass-card rounded-3xl p-6 sm:p-8 border border-white/10">
-                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-white/10">
-                  <div className="w-10 h-10 rounded-2xl bg-indigo-600/20 border border-indigo-500/30 flex items-center justify-center">
-                    <Sparkles className="w-5 h-5 text-indigo-400" />
+              <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-xs">
+                <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-100">
+                  <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center">
+                    <Sparkles className="w-5 h-5 text-indigo-600" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold text-white">ATS-Optimized Resume Bullets</h3>
-                    <p className="text-xs text-white/40">
+                    <h3 className="text-lg font-bold text-slate-900">ATS-Optimized Resume Bullets</h3>
+                    <p className="text-xs text-slate-500 font-medium">
                       Copy and integrate these metric-driven bullet points into your resume to immediately boost match score:
                     </p>
                   </div>
@@ -720,34 +737,34 @@ ${analysis.interview_prep_tips.map((t, i) => `  ${i + 1}. ${t}`).join('\n')}
                     return (
                       <div
                         key={idx}
-                        className="p-4 sm:p-5 rounded-2xl bg-white/[0.02] border border-white/10 hover:border-violet-500/30 transition-colors"
+                        className="p-4 sm:p-5 rounded-2xl bg-slate-50 border border-slate-200 hover:border-indigo-300 transition-colors shadow-xs"
                       >
                         <div className="flex items-center justify-between gap-3 mb-2">
-                          <span className="text-xs font-bold uppercase tracking-wider text-violet-300">
+                          <span className="text-xs font-bold uppercase tracking-wider text-indigo-700">
                             {gap.skill_name}
                           </span>
                           <button
                             onClick={() => copyBullet(gap.skill_name, bullet)}
-                            className={`py-1.5 px-3 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                            className={`py-1.5 px-3 rounded-xl text-xs font-bold flex items-center gap-1.5 transition-all shadow-xs ${
                               isCopied
-                                ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40'
-                                : 'bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10'
+                                ? 'bg-emerald-600 text-white'
+                                : 'bg-white hover:bg-slate-100 text-slate-700 border border-slate-200'
                             }`}
                           >
                             {isCopied ? (
                               <>
-                                <Check className="w-3.5 h-3.5 text-emerald-400" />
+                                <Check className="w-3.5 h-3.5 text-white" />
                                 Copied!
                               </>
                             ) : (
                               <>
-                                <Copy className="w-3.5 h-3.5" />
+                                <Copy className="w-3.5 h-3.5 text-slate-500" />
                                 Copy Bullet
                               </>
                             )}
                           </button>
                         </div>
-                        <p className="text-xs sm:text-sm text-white/80 font-mono bg-black/20 p-3 rounded-xl border border-white/5">
+                        <p className="text-xs sm:text-sm text-slate-900 font-mono bg-white p-3.5 rounded-xl border border-slate-200 shadow-xs">
                           &bull; {bullet}
                         </p>
                       </div>

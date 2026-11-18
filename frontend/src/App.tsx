@@ -1,18 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Routes, Route, Link, useNavigate, useLocation, Navigate } from 'react-router-dom';
 import {
   Sparkles,
-  LayoutDashboard,
-  LogIn,
-  UserPlus,
   LogOut,
   Cpu,
-  Building2,
-  Kanban,
-  Wand2,
   Lock,
-  ShieldCheck,
   GraduationCap,
+  Menu,
 } from 'lucide-react';
 import Dashboard from './pages/Dashboard';
 import MatchResults from './pages/MatchResults';
@@ -22,6 +16,13 @@ import Register from './pages/Register';
 import RecruiterPortal from './pages/RecruiterPortal';
 import JobTracker from './pages/JobTracker';
 import ResumeTailor from './pages/ResumeTailor';
+import ResumeStudio from './pages/ResumeStudio';
+import Sidebar from './components/Sidebar';
+import LearningPlan from './pages/LearningPlan';
+import Resources from './pages/Resources';
+import ProjectsCatalog from './pages/ProjectsCatalog';
+import Opportunities from './pages/Opportunities';
+import SettingsPage from './pages/SettingsPage';
 import { ToastProvider } from './components/Toast';
 import { api } from './api/client';
 
@@ -39,18 +40,18 @@ function CandidateRoute({ children }: { children: React.ReactNode }) {
   if (userRole === 'recruiter' || userRole === 'admin') {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center animate-fade-in">
-        <div className="glass-card rounded-3xl p-8 sm:p-10 border border-violet-500/30 shadow-2xl">
-          <div className="w-16 h-16 rounded-2xl bg-violet-500/20 border border-violet-500/30 flex items-center justify-center mx-auto mb-4">
-            <GraduationCap className="w-8 h-8 text-violet-400" />
+        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-indigo-200 shadow-xl">
+          <div className="w-16 h-16 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center mx-auto mb-4">
+            <GraduationCap className="w-8 h-8 text-indigo-600" />
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-violet-500/15 border border-violet-500/30 text-violet-300 text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-50 border border-indigo-200 text-indigo-700 text-xs font-bold uppercase tracking-wider mb-2">
             Access Restricted &bull; Student Account Required
           </div>
-          <h2 className="text-2xl font-extrabold text-white mb-2">
+          <h2 className="text-2xl font-extrabold text-slate-900 mb-2">
             Student Workspace Restricted
           </h2>
-          <p className="text-white/60 text-xs sm:text-sm mb-6 leading-relaxed">
-            You are signed in with a <strong className="text-emerald-300">Recruiter Account</strong> ({userEmail}).
+          <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
+            You are signed in with a <strong className="text-emerald-700">Recruiter Account</strong> ({userEmail}).
             Recruiter accounts cannot access personal student career tools.
             Please sign out of your Recruiter account to access the Student Workspace.
           </p>
@@ -63,7 +64,7 @@ function CandidateRoute({ children }: { children: React.ReactNode }) {
                 localStorage.removeItem('recruiter_access_verified');
                 window.location.href = '/login';
               }}
-              className="btn-primary py-3 px-6 text-xs sm:text-sm bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500"
+              className="btn-primary py-3 px-6 text-xs sm:text-sm"
             >
               Log Out & Sign In as Student
             </button>
@@ -89,22 +90,21 @@ function RecruiterRoute({ children }: { children: React.ReactNode }) {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  // If a student tries to visit recruiter route, strictly block them
   if (userRole !== 'recruiter' && userRole !== 'admin') {
     return (
       <div className="max-w-xl mx-auto px-4 py-20 text-center animate-fade-in">
-        <div className="glass-card rounded-3xl p-8 sm:p-10 border border-red-500/30 shadow-2xl">
-          <div className="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-8 h-8 text-red-400" />
+        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-rose-200 shadow-xl">
+          <div className="w-16 h-16 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-8 h-8 text-rose-600" />
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold uppercase tracking-wider mb-2">
             Access Restricted &bull; Recruiter Account Required
           </div>
-          <h2 className="text-2xl font-extrabold text-white mb-2">
+          <h2 className="text-2xl font-extrabold text-slate-900 mb-2">
             Recruiter Portal Restricted
           </h2>
-          <p className="text-white/60 text-xs sm:text-sm mb-6 leading-relaxed">
-            You are signed in with a <strong className="text-violet-300">Student Account</strong> ({userEmail}).
+          <p className="text-slate-600 text-xs sm:text-sm mb-6 leading-relaxed">
+            You are signed in with a <strong className="text-indigo-600">Student Account</strong> ({userEmail}).
             Candidate accounts cannot view applicant leaderboards or talent screening pipelines.
             Please sign out of your Student account to access the Recruiter Suite.
           </p>
@@ -133,12 +133,27 @@ function RecruiterRoute({ children }: { children: React.ReactNode }) {
   return <>{children}</>;
 }
 
+function SmartTabRedirect({ tab }: { tab: string }) {
+  const recentScansRaw = localStorage.getItem('resumelens_recent_scans');
+  let targetMatchId = 'latest';
+  try {
+    if (recentScansRaw) {
+      const parsed = JSON.parse(recentScansRaw);
+      if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].id) {
+        targetMatchId = parsed[0].id;
+      }
+    }
+  } catch {}
+  return <Navigate to={`/matches/${targetMatchId}?tab=${tab}`} replace />;
+}
+
 function AppContent() {
   const navigate = useNavigate();
   const location = useLocation();
   const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
   const [userRole, setUserRole] = useState<string>(() => localStorage.getItem('user_role') || 'user');
   const [userEmail, setUserEmail] = useState<string>(() => localStorage.getItem('user_email') || '');
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   // Validate session on route change & prune expired/stale tokens
   useEffect(() => {
@@ -157,7 +172,6 @@ function AppContent() {
           localStorage.setItem('user_email', res.data.email);
         })
         .catch(() => {
-          // Token is expired, invalid, or rejected by backend: clear session and ask for login
           localStorage.removeItem('token');
           localStorage.removeItem('user_role');
           localStorage.removeItem('user_email');
@@ -168,7 +182,6 @@ function AppContent() {
           }
         });
     } else {
-      // Unauthenticated visitor: redirect directly to /login
       if (location.pathname !== '/login' && location.pathname !== '/register') {
         navigate('/login');
       }
@@ -184,295 +197,304 @@ function AppContent() {
     navigate('/login');
   };
 
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/register';
   const isRecruiter = userRole === 'recruiter' || userRole === 'admin';
+  const isRecruiterPath = location.pathname.startsWith('/recruiter');
+  const showSidebar = !isAuthPage && !isRecruiter && !isRecruiterPath;
 
   return (
-    <div className="min-h-screen flex flex-col relative selection:bg-violet-500/30 selection:text-violet-200">
-      {/* Dynamic ambient background orbs */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none -z-10">
-        <div className="absolute -top-32 -left-32 w-96 h-96 bg-violet-600/15 rounded-full blur-[100px] animate-pulse-slow" />
-        <div
-          className="absolute top-1/3 -right-32 w-[30rem] h-[30rem] bg-indigo-600/10 rounded-full blur-[120px] animate-pulse-slow"
-          style={{ animationDelay: '2s' }}
+    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
+      {/* Left Sidebar for Student Workspace */}
+      {showSidebar && (
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          onToggle={() => setSidebarCollapsed(!sidebarCollapsed)}
+          userEmail={userEmail}
+          isRecruiter={isRecruiter}
         />
-        <div
-          className="absolute -bottom-32 left-1/3 w-[28rem] h-[28rem] bg-sky-500/10 rounded-full blur-[120px] animate-pulse-slow"
-          style={{ animationDelay: '3.5s' }}
-        />
-        <div className="absolute inset-0 glow-mesh-overlay opacity-30" />
-      </div>
+      )}
 
-      {/* Role-Segregated Navbar */}
-      <nav className="glass sticky top-0 z-50 border-b border-white/10 backdrop-blur-2xl">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16 sm:h-20 gap-4">
-            {/* Logo */}
-            <Link to={isRecruiter ? '/recruiter' : '/'} className="flex items-center gap-3 group flex-shrink-0">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br from-violet-600 via-indigo-600 to-purple-700 flex items-center justify-center shadow-lg shadow-violet-600/30 group-hover:shadow-violet-500/60 group-hover:scale-105 transition-all duration-300">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-extrabold text-lg sm:text-xl tracking-tight text-white group-hover:text-violet-200 transition-colors">
-                  Resume<span className="text-gradient">Lens</span> AI
-                </span>
-                <span className="text-[10px] text-white/40 tracking-wider font-medium uppercase -mt-0.5">
-                  {isRecruiter ? 'Recruiter Talent Suite' : 'Student Career Platform'}
-                </span>
-              </div>
-            </Link>
+      {/* Main Content Area: dynamically adjusted for Sidebar */}
+      <div
+        className={`flex-1 flex flex-col transition-all duration-300 ${
+          showSidebar ? (sidebarCollapsed ? 'md:pl-20' : 'md:pl-64') : ''
+        }`}
+      >
+        {/* Top Header Navbar */}
+        <header className="sticky top-0 z-30 bg-white border-b border-slate-200 shadow-2xs">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-3">
+              {showSidebar && (
+                <button
+                  type="button"
+                  onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
+                  className="p-2 rounded-xl text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-colors"
+                  title={sidebarCollapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+                >
+                  <Menu className="w-5 h-5" />
+                </button>
+              )}
 
-            {/* Navigation Links STRICTLY segregated by role */}
-            {token && (
-              <div className="hidden md:flex items-center gap-1 p-1 rounded-2xl glass border border-white/10 shadow-inner">
-                {isRecruiter ? (
-                  /* Recruiter ONLY links */
-                  <Link
-                    to="/recruiter"
-                    className={`flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all ${
-                      location.pathname === '/recruiter'
-                        ? 'bg-gradient-to-r from-emerald-500/30 to-teal-500/30 text-emerald-300 border border-emerald-500/40 shadow'
-                        : 'text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/10'
-                    }`}
-                  >
-                    <Building2 className="w-3.5 h-3.5 text-emerald-400" />
-                    Recruiter Talent Suite
-                    <span className="text-[9px] uppercase px-1.5 py-0.2 rounded-full bg-emerald-500/20 text-emerald-300 font-extrabold border border-emerald-500/30">
-                      ACTIVE
-                    </span>
-                  </Link>
-                ) : (
-                  /* Student ONLY links */
-                  <>
-                    <Link
-                      to="/"
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                        location.pathname === '/'
-                          ? 'bg-violet-600/40 text-white shadow-md border border-violet-500/30'
-                          : 'text-white/60 hover:text-white hover:bg-white/5'
-                      }`}
-                    >
-                      <LayoutDashboard className="w-3.5 h-3.5 text-violet-400" />
-                      Candidate Hub
-                    </Link>
+              <Link to={isRecruiter ? '/recruiter' : '/'} className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-600 via-violet-600 to-purple-600 flex items-center justify-center text-white shadow-sm shadow-indigo-600/30">
+                  <Sparkles className="w-4 h-4" />
+                </div>
+                <div className="flex flex-col">
+                  <span className="font-extrabold text-slate-900 text-base tracking-tight leading-none">
+                    Resume<span className="text-indigo-600">Lens</span> AI
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-bold uppercase tracking-wider mt-0.5">
+                    {isRecruiter ? 'Recruiter Suite' : 'Student Career Workspace'}
+                  </span>
+                </div>
+              </Link>
+            </div>
 
-                    <Link
-                      to="/tailor"
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                        location.pathname.startsWith('/tailor')
-                          ? 'bg-violet-600/40 text-white shadow-md border border-violet-500/30'
-                          : 'text-white/60 hover:text-white hover:bg-white/5'
-                      }`}
-                    >
-                      <Wand2 className="w-3.5 h-3.5 text-pink-400" />
-                      AI Tailor
-                    </Link>
-
-                    <Link
-                      to="/tracker"
-                      className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
-                        location.pathname === '/tracker'
-                          ? 'bg-violet-600/40 text-white shadow-md border border-violet-500/30'
-                          : 'text-white/60 hover:text-white hover:bg-white/5'
-                      }`}
-                    >
-                      <Kanban className="w-3.5 h-3.5 text-sky-400" />
-                      Job Tracker
-                    </Link>
-                  </>
-                )}
-              </div>
-            )}
-
-            {/* AI Engine Status Pill & Auth Controls */}
-            <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-              <div className="hidden xl:flex items-center gap-2 px-3 py-1.5 rounded-full glass border border-white/10 text-xs text-white/70">
-                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <Cpu className="w-3.5 h-3.5 text-violet-400" />
+            {/* Status Pills & Controls */}
+            <div className="flex items-center gap-3">
+              <div className="hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200 text-xs text-slate-600 font-medium">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                <Cpu className="w-3.5 h-3.5 text-indigo-600" />
                 <span>Gemini 3.6 Flash / Flash Lite Dual Failover</span>
               </div>
 
               {token ? (
                 <div className="flex items-center gap-2">
-                  <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-xl glass border border-white/10 text-xs text-white/70">
-                    {isRecruiter ? (
-                      <>
-                        <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                        <span className="text-emerald-300 font-bold">
-                          Recruiter: {userEmail || 'Active'}
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <GraduationCap className="w-3.5 h-3.5 text-violet-400" />
-                        <span className="text-violet-300 font-medium">
-                          Student: {userEmail || 'Active'}
-                        </span>
-                      </>
-                    )}
-                  </div>
+                  <span className="text-xs font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-xl border border-slate-200 hidden sm:inline">
+                    {isRecruiter ? 'Recruiter: ' : 'Student: '}
+                    {userEmail || 'Active'}
+                  </span>
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-medium text-white/60 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-all"
+                    className="px-3 py-1.5 rounded-xl text-xs font-bold text-slate-600 hover:text-rose-600 hover:bg-rose-50 border border-slate-200 transition-colors flex items-center gap-1"
                   >
-                    <LogOut className="w-4 h-4" />
-                    <span>Logout</span>
+                    <LogOut className="w-3.5 h-3.5" />
+                    <span>Sign Out</span>
                   </button>
                 </div>
               ) : (
                 <div className="flex items-center gap-2">
                   <Link
                     to="/login"
-                    className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold transition-all ${
-                      location.pathname === '/login'
-                        ? 'bg-white/15 text-white border border-white/10'
-                        : 'text-white/70 hover:text-white hover:bg-white/5'
-                    }`}
+                    className="px-4 py-2 rounded-xl text-xs font-bold text-indigo-600 hover:bg-indigo-50 border border-indigo-200 transition-colors"
                   >
-                    <LogIn className="w-4 h-4" />
-                    <span>Sign In</span>
+                    Sign In
                   </Link>
-                  <Link to="/register" className="btn-primary py-2 px-4 text-xs sm:text-sm">
-                    <UserPlus className="w-4 h-4" />
-                    <span>Register</span>
+                  <Link to="/register" className="btn-primary py-2 px-4 text-xs">
+                    Register
                   </Link>
                 </div>
               )}
             </div>
           </div>
+        </header>
 
-          {/* Mobile Secondary Subnav (Role-segregated) */}
-          {token && (
-            <div className="flex md:hidden items-center justify-around py-2.5 border-t border-white/5 text-xs">
-              {isRecruiter ? (
-                <Link
-                  to="/recruiter"
-                  className="flex items-center gap-1 py-1 px-3 rounded-lg text-emerald-300 font-bold bg-emerald-500/15"
-                >
-                  <Building2 className="w-3.5 h-3.5" />
-                  Recruiter Suite
-                </Link>
-              ) : (
-                <>
-                  <Link
-                    to="/"
-                    className={`flex items-center gap-1 py-1 px-2 rounded-lg ${
-                      location.pathname === '/' ? 'text-violet-300 font-bold bg-violet-500/10' : 'text-white/60'
-                    }`}
-                  >
-                    <LayoutDashboard className="w-3.5 h-3.5" />
-                    Candidate
-                  </Link>
-                  <Link
-                    to="/tailor"
-                    className={`flex items-center gap-1 py-1 px-2 rounded-lg ${
-                      location.pathname.startsWith('/tailor') ? 'text-pink-300 font-bold bg-pink-500/10' : 'text-white/60'
-                    }`}
-                  >
-                    <Wand2 className="w-3.5 h-3.5" />
-                    Tailor
-                  </Link>
-                  <Link
-                    to="/tracker"
-                    className={`flex items-center gap-1 py-1 px-2 rounded-lg ${
-                      location.pathname === '/tracker' ? 'text-sky-300 font-bold bg-sky-500/10' : 'text-white/60'
-                    }`}
-                  >
-                    <Kanban className="w-3.5 h-3.5" />
-                    Tracker
-                  </Link>
-                </>
-              )}
+        {/* Dynamic Route Pages */}
+        <main className="flex-1">
+          <Routes>
+            {/* Public Auth Routes */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+
+            {/* Candidate Protected Core Routes */}
+            <Route
+              path="/"
+              element={
+                <CandidateRoute>
+                  <Dashboard />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/matches/:matchId"
+              element={
+                <CandidateRoute>
+                  <MatchResults />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/tailor"
+              element={
+                <CandidateRoute>
+                  <ResumeTailor />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/tailor/:matchId"
+              element={
+                <CandidateRoute>
+                  <ResumeTailor />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/studio"
+              element={
+                <CandidateRoute>
+                  <ResumeStudio />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/revamp"
+              element={
+                <CandidateRoute>
+                  <ResumeStudio />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/tracker"
+              element={
+                <CandidateRoute>
+                  <JobTracker />
+                </CandidateRoute>
+              }
+            />
+
+            {/* Direct Tab Redirections */}
+            <Route path="/ats" element={<CandidateRoute><SmartTabRedirect tab="ats" /></CandidateRoute>} />
+            <Route path="/ats-screener" element={<CandidateRoute><SmartTabRedirect tab="ats" /></CandidateRoute>} />
+            <Route path="/requirements" element={<CandidateRoute><SmartTabRedirect tab="requirements" /></CandidateRoute>} />
+            <Route path="/simulator" element={<CandidateRoute><SmartTabRedirect tab="whatif" /></CandidateRoute>} />
+            <Route path="/what-if" element={<CandidateRoute><SmartTabRedirect tab="whatif" /></CandidateRoute>} />
+            <Route path="/github-audit" element={<CandidateRoute><SmartTabRedirect tab="github" /></CandidateRoute>} />
+
+            {/* DEVELOP Section Routes */}
+            <Route
+              path="/skill-gaps"
+              element={
+                <CandidateRoute>
+                  <SkillGaps />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/skill-gaps/:matchId"
+              element={
+                <CandidateRoute>
+                  <SkillGaps />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/matches/:matchId/gaps"
+              element={
+                <CandidateRoute>
+                  <SkillGaps />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/learning-plan"
+              element={
+                <CandidateRoute>
+                  <LearningPlan />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/resources"
+              element={
+                <CandidateRoute>
+                  <Resources />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/projects"
+              element={
+                <CandidateRoute>
+                  <ProjectsCatalog />
+                </CandidateRoute>
+              }
+            />
+
+            {/* OPPORTUNITIES Section Routes */}
+            <Route
+              path="/internships"
+              element={
+                <CandidateRoute>
+                  <Opportunities initialTab="internships" />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/jobs-feed"
+              element={
+                <CandidateRoute>
+                  <Opportunities initialTab="jobs" />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/hackathons"
+              element={
+                <CandidateRoute>
+                  <Opportunities initialTab="hackathons" />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/saved"
+              element={
+                <CandidateRoute>
+                  <Opportunities initialTab="saved" />
+                </CandidateRoute>
+              }
+            />
+
+            {/* UTILITIES & SETTINGS */}
+            <Route
+              path="/settings"
+              element={
+                <CandidateRoute>
+                  <SettingsPage defaultTab="settings" />
+                </CandidateRoute>
+              }
+            />
+            <Route
+              path="/methodology"
+              element={
+                <CandidateRoute>
+                  <SettingsPage defaultTab="methodology" />
+                </CandidateRoute>
+              }
+            />
+
+            {/* Recruiter Suite */}
+            <Route
+              path="/recruiter"
+              element={
+                <RecruiterRoute>
+                  <RecruiterPortal />
+                </RecruiterRoute>
+              }
+            />
+          </Routes>
+        </main>
+
+        {/* Footer */}
+        <footer className="py-8 text-center text-slate-400 text-xs border-t border-slate-200 mt-16 bg-white">
+          <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-slate-700">ResumeLens AI</span>
+              <span>&bull;</span>
+              <span>UCS503P Software Engineering Platform (3rd Year)</span>
             </div>
-          )}
-        </div>
-      </nav>
 
-      {/* Main Content with Strictly Segregated Routes */}
-      <main className="flex-1">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-
-          {/* Student / Candidate Routes */}
-          <Route
-            path="/"
-            element={
-              <CandidateRoute>
-                <Dashboard />
-              </CandidateRoute>
-            }
-          />
-          <Route
-            path="/matches/:matchId"
-            element={
-              <CandidateRoute>
-                <MatchResults />
-              </CandidateRoute>
-            }
-          />
-          <Route
-            path="/matches/:matchId/gaps"
-            element={
-              <CandidateRoute>
-                <SkillGaps />
-              </CandidateRoute>
-            }
-          />
-          <Route
-            path="/tracker"
-            element={
-              <CandidateRoute>
-                <JobTracker />
-              </CandidateRoute>
-            }
-          />
-          <Route
-            path="/tailor"
-            element={
-              <CandidateRoute>
-                <ResumeTailor />
-              </CandidateRoute>
-            }
-          />
-          <Route
-            path="/tailor/:matchId"
-            element={
-              <CandidateRoute>
-                <ResumeTailor />
-              </CandidateRoute>
-            }
-          />
-
-          {/* Recruiter ONLY Route */}
-          <Route
-            path="/recruiter"
-            element={
-              <RecruiterRoute>
-                <RecruiterPortal />
-              </RecruiterRoute>
-            }
-          />
-        </Routes>
-      </main>
-
-      {/* Footer */}
-      <footer className="py-8 text-center text-white/40 text-xs border-t border-white/10 mt-16 glass backdrop-blur-md">
-        <div className="max-w-6xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-white/70">ResumeLens AI</span>
-            <span>&bull;</span>
-            <span>UCS503P Capstone Software Engineering Platform</span>
+            <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] text-slate-500">
+              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">FastAPI Async</span>
+              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">React 18 + TS</span>
+              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">all-MiniLM-L6-v2 (384-D)</span>
+              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">Gemini 3.6 Flash / Flash Lite</span>
+              <span className="px-2 py-0.5 rounded bg-slate-100 border border-slate-200">Thapar Institute (TIET)</span>
+            </div>
           </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-2 text-[11px] text-white/40">
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">FastAPI Async</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">React 18 + TS</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">all-MiniLM-L6-v2 (384-D)</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">Gemini 3.6 Flash / Flash Lite</span>
-            <span className="px-2 py-0.5 rounded bg-white/5 border border-white/5">Role-Based Access Control</span>
-          </div>
-        </div>
-      </footer>
+        </footer>
+      </div>
     </div>
   );
 }

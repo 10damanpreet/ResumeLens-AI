@@ -155,10 +155,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Rohan Gupta',
       candidate_email: 'rohan.gupta@thapar.edu',
       filename: 'Rohan_Gupta_Junior_Backend_Dev.pdf',
-      final_match_score: 0.580,
-      dense_score: 0.595,
+      final_match_score: 0.589,
+      dense_score: 0.610,
       skill_overlap_score: 0.570,
-      experience_score: 0.580,
+      experience_score: 0.590,
       status: 'rejected',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -171,10 +171,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Dhruv Mittal',
       candidate_email: 'dhruv.mittal@thapar.edu',
       filename: 'Dhruv_Mittal_FullStack_React_Python.pdf',
-      final_match_score: 0.885,
-      dense_score: 0.895,
-      skill_overlap_score: 0.880,
-      experience_score: 0.880,
+      final_match_score: 0.908,
+      dense_score: 0.920,
+      skill_overlap_score: 0.895,
+      experience_score: 0.910,
       status: 'shortlisted',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -185,10 +185,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Damanpreet Singh',
       candidate_email: 'damanpreet.singh@thapar.edu',
       filename: 'Damanpreet_Singh_Backend_SDE.pdf',
-      final_match_score: 0.861,
+      final_match_score: 0.864,
       dense_score: 0.875,
       skill_overlap_score: 0.850,
-      experience_score: 0.860,
+      experience_score: 0.865,
       status: 'interview',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -199,10 +199,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Ananya Verma',
       candidate_email: 'ananya.verma@thapar.edu',
       filename: 'Ananya_Verma_Frontend_React_Lead.pdf',
-      final_match_score: 0.834,
-      dense_score: 0.845,
-      skill_overlap_score: 0.820,
-      experience_score: 0.840,
+      final_match_score: 0.825,
+      dense_score: 0.840,
+      skill_overlap_score: 0.810,
+      experience_score: 0.825,
       status: 'interview',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -223,28 +223,28 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
     {
       rank: 5,
       match_id: 'msft-c5',
-      resume_id: 'res-aarav',
-      candidate_name: 'Aarav Sharma',
-      candidate_email: 'aarav.sharma@thapar.edu',
-      filename: 'Aarav_Sharma_Python_Microservices.pdf',
-      final_match_score: 0.758,
-      dense_score: 0.770,
-      skill_overlap_score: 0.750,
-      experience_score: 0.760,
+      resume_id: 'res-shreyas',
+      candidate_name: 'Shreyas Singh',
+      candidate_email: 'shreyas.singh@thapar.edu',
+      filename: 'Shreyas_Singh_Data_Systems_ML.pdf',
+      final_match_score: 0.735,
+      dense_score: 0.750,
+      skill_overlap_score: 0.720,
+      experience_score: 0.735,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
     {
       rank: 6,
       match_id: 'msft-c6',
-      resume_id: 'res-shreyas',
-      candidate_name: 'Shreyas Singh',
-      candidate_email: 'shreyas.singh@thapar.edu',
-      filename: 'Shreyas_Singh_Data_Systems_ML.pdf',
-      final_match_score: 0.721,
-      dense_score: 0.735,
-      skill_overlap_score: 0.710,
-      experience_score: 0.720,
+      resume_id: 'res-aarav',
+      candidate_name: 'Aarav Sharma',
+      candidate_email: 'aarav.sharma@thapar.edu',
+      filename: 'Aarav_Sharma_Python_Microservices.pdf',
+      final_match_score: 0.702,
+      dense_score: 0.715,
+      skill_overlap_score: 0.690,
+      experience_score: 0.700,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -255,10 +255,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Rohan Gupta',
       candidate_email: 'rohan.gupta@thapar.edu',
       filename: 'Rohan_Gupta_Junior_Backend_Dev.pdf',
-      final_match_score: 0.554,
-      dense_score: 0.570,
-      skill_overlap_score: 0.540,
-      experience_score: 0.550,
+      final_match_score: 0.542,
+      dense_score: 0.560,
+      skill_overlap_score: 0.530,
+      experience_score: 0.540,
       status: 'rejected',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -271,10 +271,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Praneet Singh',
       candidate_email: 'praneet.singh@thapar.edu',
       filename: 'Praneet_Singh_Cloud_AWS_DevOps.pdf',
-      final_match_score: 0.891,
-      dense_score: 0.905,
-      skill_overlap_score: 0.880,
-      experience_score: 0.890,
+      final_match_score: 0.915,
+      dense_score: 0.930,
+      skill_overlap_score: 0.900,
+      experience_score: 0.915,
       status: 'shortlisted',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -285,7 +285,7 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Damanpreet Singh',
       candidate_email: 'damanpreet.singh@thapar.edu',
       filename: 'Damanpreet_Singh_Backend_SDE.pdf',
-      final_match_score: 0.873,
+      final_match_score: 0.871,
       dense_score: 0.885,
       skill_overlap_score: 0.860,
       experience_score: 0.870,
@@ -299,10 +299,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Aarav Sharma',
       candidate_email: 'aarav.sharma@thapar.edu',
       filename: 'Aarav_Sharma_Python_Microservices.pdf',
-      final_match_score: 0.840,
-      dense_score: 0.855,
-      skill_overlap_score: 0.830,
-      experience_score: 0.840,
+      final_match_score: 0.814,
+      dense_score: 0.830,
+      skill_overlap_score: 0.800,
+      experience_score: 0.810,
       status: 'interview',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -313,10 +313,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Dhruv Mittal',
       candidate_email: 'dhruv.mittal@thapar.edu',
       filename: 'Dhruv_Mittal_FullStack_React_Python.pdf',
-      final_match_score: 0.816,
-      dense_score: 0.830,
-      skill_overlap_score: 0.810,
-      experience_score: 0.810,
+      final_match_score: 0.778,
+      dense_score: 0.795,
+      skill_overlap_score: 0.765,
+      experience_score: 0.775,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -327,10 +327,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Shreyas Singh',
       candidate_email: 'shreyas.singh@thapar.edu',
       filename: 'Shreyas_Singh_Data_Systems_ML.pdf',
-      final_match_score: 0.764,
-      dense_score: 0.780,
-      skill_overlap_score: 0.750,
-      experience_score: 0.760,
+      final_match_score: 0.751,
+      dense_score: 0.765,
+      skill_overlap_score: 0.740,
+      experience_score: 0.750,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -341,10 +341,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Ananya Verma',
       candidate_email: 'ananya.verma@thapar.edu',
       filename: 'Ananya_Verma_Frontend_React_Lead.pdf',
-      final_match_score: 0.698,
-      dense_score: 0.715,
+      final_match_score: 0.695,
+      dense_score: 0.710,
       skill_overlap_score: 0.680,
-      experience_score: 0.700,
+      experience_score: 0.695,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -355,10 +355,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Rohan Gupta',
       candidate_email: 'rohan.gupta@thapar.edu',
       filename: 'Rohan_Gupta_Junior_Backend_Dev.pdf',
-      final_match_score: 0.542,
-      dense_score: 0.560,
-      skill_overlap_score: 0.530,
-      experience_score: 0.540,
+      final_match_score: 0.573,
+      dense_score: 0.590,
+      skill_overlap_score: 0.560,
+      experience_score: 0.570,
       status: 'rejected',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -371,10 +371,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Ananya Verma',
       candidate_email: 'ananya.verma@thapar.edu',
       filename: 'Ananya_Verma_Frontend_React_Lead.pdf',
-      final_match_score: 0.902,
-      dense_score: 0.915,
-      skill_overlap_score: 0.890,
-      experience_score: 0.900,
+      final_match_score: 0.912,
+      dense_score: 0.925,
+      skill_overlap_score: 0.900,
+      experience_score: 0.910,
       status: 'shortlisted',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -385,10 +385,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Dhruv Mittal',
       candidate_email: 'dhruv.mittal@thapar.edu',
       filename: 'Dhruv_Mittal_FullStack_React_Python.pdf',
-      final_match_score: 0.868,
-      dense_score: 0.880,
-      skill_overlap_score: 0.860,
-      experience_score: 0.865,
+      final_match_score: 0.884,
+      dense_score: 0.895,
+      skill_overlap_score: 0.875,
+      experience_score: 0.880,
       status: 'interview',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -413,10 +413,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Aarav Sharma',
       candidate_email: 'aarav.sharma@thapar.edu',
       filename: 'Aarav_Sharma_Python_Microservices.pdf',
-      final_match_score: 0.779,
-      dense_score: 0.795,
-      skill_overlap_score: 0.765,
-      experience_score: 0.780,
+      final_match_score: 0.774,
+      dense_score: 0.790,
+      skill_overlap_score: 0.760,
+      experience_score: 0.770,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -427,10 +427,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Praneet Singh',
       candidate_email: 'praneet.singh@thapar.edu',
       filename: 'Praneet_Singh_Cloud_AWS_DevOps.pdf',
-      final_match_score: 0.743,
+      final_match_score: 0.748,
       dense_score: 0.760,
-      skill_overlap_score: 0.730,
-      experience_score: 0.740,
+      skill_overlap_score: 0.735,
+      experience_score: 0.750,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -441,10 +441,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Shreyas Singh',
       candidate_email: 'shreyas.singh@thapar.edu',
       filename: 'Shreyas_Singh_Data_Systems_ML.pdf',
-      final_match_score: 0.705,
-      dense_score: 0.720,
-      skill_overlap_score: 0.695,
-      experience_score: 0.700,
+      final_match_score: 0.719,
+      dense_score: 0.735,
+      skill_overlap_score: 0.705,
+      experience_score: 0.715,
       status: 'review',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -455,10 +455,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Rohan Gupta',
       candidate_email: 'rohan.gupta@thapar.edu',
       filename: 'Rohan_Gupta_Junior_Backend_Dev.pdf',
-      final_match_score: 0.528,
-      dense_score: 0.545,
-      skill_overlap_score: 0.515,
-      experience_score: 0.525,
+      final_match_score: 0.564,
+      dense_score: 0.580,
+      skill_overlap_score: 0.550,
+      experience_score: 0.560,
       status: 'rejected',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -471,10 +471,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Damanpreet Singh',
       candidate_email: 'damanpreet.singh@thapar.edu',
       filename: 'Damanpreet_Singh_Backend_SDE.pdf',
-      final_match_score: 0.915,
-      dense_score: 0.925,
-      skill_overlap_score: 0.910,
-      experience_score: 0.910,
+      final_match_score: 0.923,
+      dense_score: 0.935,
+      skill_overlap_score: 0.915,
+      experience_score: 0.920,
       status: 'shortlisted',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -485,10 +485,10 @@ const COMPANY_DEMO_POOLS: Record<string, CandidateRow[]> = {
       candidate_name: 'Praneet Singh',
       candidate_email: 'praneet.singh@thapar.edu',
       filename: 'Praneet_Singh_Cloud_AWS_DevOps.pdf',
-      final_match_score: 0.867,
+      final_match_score: 0.868,
       dense_score: 0.880,
-      skill_overlap_score: 0.860,
-      experience_score: 0.865,
+      skill_overlap_score: 0.855,
+      experience_score: 0.870,
       status: 'interview',
       evaluated_at: '2026-11-15T09:45:00Z',
     },
@@ -761,27 +761,30 @@ export default function RecruiterPortal() {
   if (!isRecruiter) {
     return (
       <div className="max-w-2xl mx-auto px-4 py-16 text-center animate-fade-in">
-        <div className="glass-card rounded-3xl p-8 sm:p-10 border border-red-500/30 shadow-2xl">
-          <div className="w-16 h-16 rounded-2xl bg-red-500/20 border border-red-500/30 flex items-center justify-center mx-auto mb-4">
-            <Lock className="w-8 h-8 text-red-400" />
+        <div className="bg-white rounded-3xl p-8 sm:p-10 border border-rose-200 shadow-xl">
+          <div className="w-16 h-16 rounded-2xl bg-rose-50 border border-rose-200 flex items-center justify-center mx-auto mb-4">
+            <Lock className="w-8 h-8 text-rose-600" />
           </div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-red-500/15 border border-red-500/30 text-red-300 text-xs font-bold uppercase tracking-wider mb-2">
+          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-rose-50 border border-rose-200 text-rose-700 text-xs font-bold uppercase tracking-wider mb-2">
             Access Denied &bull; Recruiter Account Required
           </div>
-          <h2 className="text-2xl font-extrabold text-white mb-2">
+          <h2 className="text-2xl font-black text-slate-900 mb-2">
             Recruiter Portal Restricted
           </h2>
-          <p className="text-white/60 text-xs sm:text-sm max-w-md mx-auto mb-6 leading-relaxed">
-            You are currently signed in with a <strong className="text-violet-300">Student Account</strong> ({userEmail || 'student'}). Student accounts cannot access confidential applicant pipelines or candidate screening leaderboards.
+          <p className="text-slate-600 text-xs sm:text-sm max-w-md mx-auto mb-6 leading-relaxed font-medium">
+            You are currently signed in with a <strong className="text-indigo-600 font-bold">Student Account</strong> ({userEmail || 'student'}). Student accounts cannot access confidential applicant pipelines or candidate screening leaderboards.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
             <button
               onClick={handleLogoutAndSwitch}
-              className="btn-primary py-3 px-6 text-xs sm:text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500"
+              className="py-3 px-6 text-xs sm:text-sm font-bold rounded-xl text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 shadow-md shadow-emerald-500/20 transition-all"
             >
               Log Out & Sign In as Recruiter
             </button>
-            <Link to="/" className="btn-secondary py-3 px-6 text-xs sm:text-sm">
+            <Link
+              to="/"
+              className="py-3 px-6 text-xs sm:text-sm font-semibold rounded-xl bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 transition-all shadow-sm"
+            >
               &larr; Return to Student Workspace
             </Link>
           </div>
@@ -796,41 +799,41 @@ export default function RecruiterPortal() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
           <div className="flex items-center gap-2.5 flex-wrap">
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+            <h1 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
               Recruiter Talent Intelligence Suite
             </h1>
-            <span className="badge-glow bg-indigo-500/15 text-indigo-300 border-indigo-500/30 text-xs">
+            <span className="px-3 py-1 rounded-full text-xs font-bold bg-indigo-50 text-indigo-700 border border-indigo-200 shadow-sm">
               Enterprise ATS Pipeline
             </span>
           </div>
-          <p className="text-white/40 text-xs sm:text-sm mt-0.5">
+          <p className="text-slate-600 text-xs sm:text-sm mt-1 font-medium">
             Bulk applicant ingestion, tri-factor algorithmic ranking, and comparative talent screening
           </p>
         </div>
 
         {/* Action Controls */}
-        <div className="flex items-center gap-2 flex-wrap">
-          <span className="px-3 py-1.5 rounded-xl text-xs font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <span className="px-3.5 py-1.5 rounded-xl text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 flex items-center gap-1.5 shadow-sm">
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
             Recruiter: {userEmail || 'recruiter@resumelens.ai'}
           </span>
           <button
             onClick={() => setShowGenerateJdModal(true)}
-            className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 shadow-sm flex items-center gap-1.5 transition-all"
           >
-            <Sparkles className="w-3.5 h-3.5 text-violet-400" />
+            <Sparkles className="w-3.5 h-3.5 text-violet-600" />
             AI Draft Requisition
           </button>
           <button
             onClick={exportToCSV}
-            className="btn-primary py-2 px-3.5 text-xs flex items-center gap-1.5"
+            className="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/20 flex items-center gap-1.5 transition-all"
           >
             <FileSpreadsheet className="w-3.5 h-3.5" />
             Export CSV
           </button>
           <button
             onClick={handleLogoutAndSwitch}
-            className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5 text-white/60 hover:text-red-300 hover:bg-red-500/10"
+            className="px-3.5 py-2 rounded-xl text-xs font-bold bg-white text-slate-600 border border-slate-200 hover:bg-rose-50 hover:text-rose-700 hover:border-rose-200 shadow-sm flex items-center gap-1.5 transition-all"
             title="Log out of recruiter account"
           >
             <Lock className="w-3.5 h-3.5" />
@@ -840,27 +843,27 @@ export default function RecruiterPortal() {
       </div>
 
       {/* Requisition Selector & Stats Banner */}
-      <div className="glass-card rounded-3xl p-6 mb-8 border border-white/10 bg-gradient-to-br from-indigo-950/20 via-slate-900/60 to-transparent">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+      <div className="bg-white rounded-3xl p-6 mb-8 border border-slate-200/90 shadow-sm">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl bg-indigo-500/20 border border-indigo-500/30 flex items-center justify-center">
-              <Building className="w-5 h-5 text-indigo-400" />
+            <div className="w-11 h-11 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center">
+              <Building className="w-5 h-5 text-indigo-600" />
             </div>
             <div>
-              <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider">
+              <span className="text-[11px] font-extrabold text-slate-500 uppercase tracking-wider block">
                 Target Requisition
               </span>
-              <div className="flex items-center gap-2 mt-0.5">
+              <div className="flex items-center gap-2 mt-1">
                 <select
                   value={selectedJobId}
                   onChange={(e) => handleJobChange(e.target.value)}
-                  className="bg-white/10 text-white text-sm font-bold rounded-xl px-3 py-1.5 border border-white/15 focus:outline-none focus:border-indigo-400"
+                  className="bg-white text-slate-900 text-sm font-bold rounded-xl px-3.5 py-2 border border-slate-300 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 shadow-sm cursor-pointer max-w-full sm:max-w-md"
                 >
                   {jobs.length === 0 ? (
                     <option value="default">🏢 Google &mdash; Software Development Engineer II</option>
                   ) : (
                     jobs.map((j) => (
-                      <option key={j.id} value={j.id} className="bg-slate-900 text-white">
+                      <option key={j.id} value={j.id} className="bg-white text-slate-900 font-medium">
                         🏢 {j.company} &mdash; {j.title}
                       </option>
                     ))
@@ -872,19 +875,19 @@ export default function RecruiterPortal() {
 
           {/* Quick Metrics */}
           <div className="flex items-center gap-3">
-            <div className="px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 text-center">
-              <span className="text-[10px] text-white/40 uppercase block">Total Screened</span>
-              <span className="text-base font-black text-white">{candidates.length}</span>
+            <div className="px-4 py-2 rounded-xl bg-slate-50 border border-slate-200 text-center shadow-sm">
+              <span className="text-[10px] text-slate-500 uppercase font-bold block">Total Screened</span>
+              <span className="text-lg font-black text-slate-900">{candidates.length}</span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-center">
-              <span className="text-[10px] text-emerald-400 uppercase block">Top Matches (&gt;80%)</span>
-              <span className="text-base font-black text-emerald-300">
+            <div className="px-4 py-2 rounded-xl bg-emerald-50 border border-emerald-200 text-center shadow-sm">
+              <span className="text-[10px] text-emerald-700 uppercase font-bold block">Top Matches (&gt;80%)</span>
+              <span className="text-lg font-black text-emerald-700">
                 {candidates.filter((c) => c.final_match_score >= 0.8).length}
               </span>
             </div>
-            <div className="px-3.5 py-1.5 rounded-xl bg-indigo-500/10 border border-indigo-500/20 text-center">
-              <span className="text-[10px] text-indigo-400 uppercase block">Shortlisted</span>
-              <span className="text-base font-black text-indigo-300">
+            <div className="px-4 py-2 rounded-xl bg-indigo-50 border border-indigo-200 text-center shadow-sm">
+              <span className="text-[10px] text-indigo-700 uppercase font-bold block">Shortlisted</span>
+              <span className="text-lg font-black text-indigo-700">
                 {candidates.filter((c) => c.status === 'shortlisted' || c.status === 'interview').length}
               </span>
             </div>
@@ -892,15 +895,15 @@ export default function RecruiterPortal() {
         </div>
 
         {/* Filter & Search Bar */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-4">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mt-5">
           <div className="relative flex-1 max-w-md">
-            <Search className="w-4 h-4 text-white/40 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Filter by candidate name, email, or resume file..."
-              className="input-field text-xs pl-10 w-full"
+              className="w-full bg-white border border-slate-300 text-slate-900 placeholder:text-slate-400 rounded-xl px-3.5 py-2 pl-10 text-xs shadow-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100"
             />
           </div>
 
@@ -911,8 +914,8 @@ export default function RecruiterPortal() {
                 onClick={() => setStatusFilter(filter)}
                 className={`px-3 py-1.5 rounded-xl text-xs font-semibold transition-all ${
                   statusFilter === filter
-                    ? 'bg-white/20 text-white border border-white/20 shadow-inner'
-                    : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'
+                    ? 'bg-slate-900 text-white font-bold shadow-sm border border-slate-900'
+                    : 'bg-white text-slate-600 hover:bg-slate-100 hover:text-slate-900 border border-slate-200 font-semibold'
                 }`}
               >
                 {filter.charAt(0).toUpperCase() + filter.slice(1)}
@@ -924,23 +927,23 @@ export default function RecruiterPortal() {
 
       {/* Comparison Drawer Action */}
       {selectedForComparison.length > 0 && (
-        <div className="mb-4 p-3.5 rounded-2xl glass border border-violet-500/30 flex items-center justify-between gap-4 animate-fade-in bg-violet-950/40">
+        <div className="mb-4 p-4 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-between gap-4 animate-fade-in shadow-sm">
           <div className="flex items-center gap-2">
-            <Layers className="w-4 h-4 text-violet-400" />
-            <span className="text-xs font-semibold text-white">
+            <Layers className="w-4 h-4 text-indigo-600" />
+            <span className="text-xs font-bold text-indigo-950">
               {selectedForComparison.length} candidate(s) selected for head-to-head comparison
             </span>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={() => setSelectedForComparison([])}
-              className="text-xs text-white/50 hover:text-white px-2 py-1"
+              className="text-xs text-slate-600 hover:text-slate-900 font-semibold px-2 py-1 transition-colors"
             >
               Clear
             </button>
             <button
               onClick={() => setShowCompareModal(true)}
-              className="btn-primary py-1.5 px-3.5 text-xs flex items-center gap-1"
+              className="py-1.5 px-3.5 text-xs font-bold rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white shadow-md flex items-center gap-1.5 transition-all"
             >
               <BarChart3 className="w-3.5 h-3.5" />
               Compare Candidates
@@ -950,10 +953,10 @@ export default function RecruiterPortal() {
       )}
 
       {/* Candidates Leaderboard Table */}
-      <div className="glass-card rounded-3xl overflow-hidden border border-white/10 shadow-2xl">
+      <div className="bg-white rounded-3xl overflow-hidden border border-slate-200 shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-left text-xs">
-            <thead className="bg-white/[0.04] border-b border-white/10 text-white/40 uppercase tracking-wider text-[10px]">
+            <thead className="bg-slate-50 border-b border-slate-200 text-slate-600 uppercase tracking-wider text-[11px] font-bold">
               <tr>
                 <th className="py-3.5 px-4 w-10">Compare</th>
                 <th className="py-3.5 px-3 w-12 text-center">Rank</th>
@@ -966,19 +969,19 @@ export default function RecruiterPortal() {
                 <th className="py-3.5 px-4 text-right">Actions</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-white/5 text-white/80">
+            <tbody className="divide-y divide-slate-100">
               {loading ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-white/40">
+                  <td colSpan={9} className="py-12 text-center text-slate-500 font-medium">
                     <div className="flex items-center justify-center gap-2">
-                      <div className="w-4 h-4 rounded-full border-2 border-violet-500 border-t-transparent animate-spin" />
+                      <div className="w-4 h-4 rounded-full border-2 border-indigo-600 border-t-transparent animate-spin" />
                       <span>Updating applicant leaderboard...</span>
                     </div>
                   </td>
                 </tr>
               ) : filteredCandidates.length === 0 ? (
                 <tr>
-                  <td colSpan={9} className="py-12 text-center text-white/40">
+                  <td colSpan={9} className="py-12 text-center text-slate-500 font-medium">
                     No applicants matching current search query.
                   </td>
                 </tr>
@@ -992,8 +995,8 @@ export default function RecruiterPortal() {
                   return (
                     <tr
                       key={c.match_id}
-                      className={`hover:bg-white/[0.03] transition-colors ${
-                        isChecked ? 'bg-violet-500/[0.05]' : ''
+                      className={`hover:bg-slate-50/80 transition-colors ${
+                        isChecked ? 'bg-indigo-50/50' : ''
                       }`}
                     >
                       {/* Checkbox */}
@@ -1002,7 +1005,7 @@ export default function RecruiterPortal() {
                           type="checkbox"
                           checked={isChecked}
                           onChange={() => toggleCompare(c.match_id)}
-                          className="rounded border-white/20 bg-white/5 text-violet-600 focus:ring-0 cursor-pointer"
+                          className="rounded border-slate-300 text-indigo-600 focus:ring-0 cursor-pointer"
                         />
                       </td>
 
@@ -1011,12 +1014,12 @@ export default function RecruiterPortal() {
                         <span
                           className={`w-6 h-6 rounded-full inline-flex items-center justify-center font-black text-[11px] ${
                             c.rank === 1
-                              ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
+                              ? 'bg-amber-100 text-amber-900 border border-amber-300'
                               : c.rank === 2
-                              ? 'bg-slate-300/20 text-slate-200 border border-slate-300/30'
+                              ? 'bg-slate-200 text-slate-800 border border-slate-300'
                               : c.rank === 3
-                              ? 'bg-amber-700/20 text-amber-500 border border-amber-700/30'
-                              : 'text-white/40'
+                              ? 'bg-amber-100 text-amber-800 border border-amber-200'
+                              : 'text-slate-500 font-bold'
                           }`}
                         >
                           #{c.rank}
@@ -1025,9 +1028,9 @@ export default function RecruiterPortal() {
 
                       {/* Candidate Name & Email */}
                       <td className="py-3.5 px-4">
-                        <div className="font-bold text-white text-sm">{c.candidate_name}</div>
-                        <div className="text-[11px] text-white/40">{c.candidate_email}</div>
-                        <div className="text-[10px] text-white/30 truncate max-w-[200px]">
+                        <div className="font-bold text-slate-900 text-sm">{c.candidate_name}</div>
+                        <div className="text-xs text-slate-600 font-medium mt-0.5">{c.candidate_email}</div>
+                        <div className="text-[11px] text-slate-500 truncate max-w-[220px] font-mono mt-0.5">
                           {c.filename}
                         </div>
                       </td>
@@ -1035,12 +1038,12 @@ export default function RecruiterPortal() {
                       {/* Overall Score Badge */}
                       <td className="py-3.5 px-4 text-center">
                         <span
-                          className={`px-3 py-1 rounded-full text-xs font-black inline-block border ${
+                          className={`px-3 py-1 rounded-full text-xs font-black inline-block border shadow-sm ${
                             isTop
-                              ? 'bg-emerald-500/15 text-emerald-300 border-emerald-500/30'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
                               : isMed
-                              ? 'bg-amber-500/15 text-amber-300 border-amber-500/30'
-                              : 'bg-rose-500/15 text-rose-300 border-rose-500/30'
+                              ? 'bg-amber-50 text-amber-800 border-amber-300'
+                              : 'bg-rose-50 text-rose-800 border-rose-300'
                           }`}
                         >
                           {pct}%
@@ -1048,17 +1051,17 @@ export default function RecruiterPortal() {
                       </td>
 
                       {/* Dense Score */}
-                      <td className="py-3.5 px-4 text-center font-mono text-white/70">
+                      <td className="py-3.5 px-4 text-center font-mono font-bold text-slate-800 text-xs">
                         {Math.round(c.dense_score * 100)}%
                       </td>
 
                       {/* Skill Overlap */}
-                      <td className="py-3.5 px-4 text-center font-mono text-white/70">
+                      <td className="py-3.5 px-4 text-center font-mono font-bold text-slate-800 text-xs">
                         {Math.round(c.skill_overlap_score * 100)}%
                       </td>
 
                       {/* Experience Fit */}
-                      <td className="py-3.5 px-4 text-center font-mono text-white/70">
+                      <td className="py-3.5 px-4 text-center font-mono font-bold text-slate-800 text-xs">
                         {Math.round(c.experience_score * 100)}%
                       </td>
 
@@ -1069,26 +1072,26 @@ export default function RecruiterPortal() {
                           onChange={(e) =>
                             handleStatusChange(c.match_id, e.target.value as CandidateRow['status'])
                           }
-                          className={`text-xs font-bold rounded-xl px-2.5 py-1.5 border focus:outline-none transition-all cursor-pointer ${
+                          className={`text-xs font-bold rounded-xl px-2.5 py-1.5 border focus:outline-none transition-all cursor-pointer shadow-sm ${
                             c.status === 'shortlisted'
-                              ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                              ? 'bg-emerald-50 text-emerald-800 border-emerald-300'
                               : c.status === 'interview'
-                              ? 'bg-sky-500/20 text-sky-300 border-sky-500/40'
+                              ? 'bg-sky-50 text-sky-800 border-sky-300'
                               : c.status === 'rejected'
-                              ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                              : 'bg-amber-500/20 text-amber-300 border-amber-500/40'
+                              ? 'bg-rose-50 text-rose-800 border-rose-300'
+                              : 'bg-amber-50 text-amber-800 border-amber-300'
                           }`}
                         >
-                          <option value="shortlisted" className="bg-slate-900 text-emerald-300 font-bold">
+                          <option value="shortlisted" className="bg-white text-emerald-800 font-bold">
                             ✓ Shortlisted
                           </option>
-                          <option value="interview" className="bg-slate-900 text-sky-300 font-bold">
+                          <option value="interview" className="bg-white text-sky-800 font-bold">
                             📅 Interview Scheduled
                           </option>
-                          <option value="review" className="bg-slate-900 text-amber-300 font-bold">
+                          <option value="review" className="bg-white text-amber-800 font-bold">
                             ⏳ Under Review
                           </option>
-                          <option value="rejected" className="bg-slate-900 text-rose-300 font-bold">
+                          <option value="rejected" className="bg-white text-rose-800 font-bold">
                             ✕ Rejected
                           </option>
                         </select>
@@ -1099,14 +1102,14 @@ export default function RecruiterPortal() {
                         <div className="flex items-center justify-end gap-1.5">
                           <Link
                             to={`/matches/${c.match_id}`}
-                            className="p-1.5 rounded-lg text-white/50 hover:text-white hover:bg-white/10 transition-colors"
+                            className="p-2 rounded-xl text-slate-600 hover:text-indigo-600 hover:bg-indigo-50 border border-slate-200 bg-white transition-colors"
                             title="Inspect Match"
                           >
                             <Eye className="w-3.5 h-3.5" />
                           </Link>
                           <Link
                             to={`/matches/${c.match_id}/gaps`}
-                            className="p-1.5 rounded-lg text-violet-400 hover:text-violet-300 hover:bg-violet-500/10 transition-colors"
+                            className="p-2 rounded-xl text-indigo-600 hover:text-indigo-800 hover:bg-indigo-100 border border-indigo-200 bg-indigo-50 transition-colors"
                             title="View Gaps & Advisory"
                           >
                             <Sparkles className="w-3.5 h-3.5" />
@@ -1124,21 +1127,21 @@ export default function RecruiterPortal() {
 
       {/* Head-to-Head Comparison Modal */}
       {showCompareModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-4xl glass-card rounded-3xl p-6 sm:p-8 border border-white/15 shadow-2xl bg-slate-950/95 max-h-[90vh] overflow-y-auto">
-            <div className="flex items-center justify-between pb-5 border-b border-white/10 mb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-4xl bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-5 border-b border-slate-200 mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-violet-600/20 border border-violet-500/30 flex items-center justify-center">
-                  <BarChart3 className="w-5 h-5 text-violet-400" />
+                <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center">
+                  <BarChart3 className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-white">Head-to-Head Candidate Matrix</h3>
-                  <p className="text-xs text-white/40">Comparative multi-axis applicant breakdown</p>
+                  <h3 className="text-xl font-black text-slate-900">Head-to-Head Candidate Matrix</h3>
+                  <p className="text-xs text-slate-500 font-medium">Comparative multi-axis applicant breakdown</p>
                 </div>
               </div>
               <button
                 onClick={() => setShowCompareModal(false)}
-                className="p-2 rounded-xl text-white/40 hover:text-white hover:bg-white/10"
+                className="p-2 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1146,42 +1149,42 @@ export default function RecruiterPortal() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {comparedCandidates.map((c) => (
-                <div key={c.match_id} className="p-5 rounded-2xl glass border border-white/10 space-y-4">
-                  <div className="text-center pb-4 border-b border-white/10">
-                    <span className="w-7 h-7 rounded-full bg-violet-500/20 text-violet-300 text-xs font-bold inline-flex items-center justify-center mb-2">
+                <div key={c.match_id} className="p-5 rounded-2xl bg-slate-50/80 border border-slate-200 space-y-4 shadow-sm">
+                  <div className="text-center pb-4 border-b border-slate-200">
+                    <span className="w-7 h-7 rounded-full bg-indigo-100 text-indigo-800 text-xs font-bold inline-flex items-center justify-center mb-2">
                       #{c.rank}
                     </span>
-                    <h4 className="font-bold text-white text-base">{c.candidate_name}</h4>
-                    <p className="text-xs text-white/40 truncate">{c.candidate_email}</p>
-                    <div className="mt-3 text-3xl font-black text-emerald-400">
+                    <h4 className="font-bold text-slate-900 text-base">{c.candidate_name}</h4>
+                    <p className="text-xs text-slate-600 font-medium truncate mt-0.5">{c.candidate_email}</p>
+                    <div className="mt-3 text-3xl font-black text-emerald-600">
                       {Math.round(c.final_match_score * 100)}%
                     </div>
-                    <span className="text-[10px] text-white/40 uppercase tracking-wider">Overall Match</span>
+                    <span className="text-[10px] text-slate-500 uppercase tracking-wider font-bold">Overall Match</span>
                   </div>
 
                   {/* Sub-Scores */}
                   <div className="space-y-2 text-xs">
-                    <div className="flex justify-between text-white/70">
+                    <div className="flex justify-between text-slate-600 font-medium">
                       <span>Dense Semantic Fit:</span>
-                      <span className="font-mono font-bold text-white">{Math.round(c.dense_score * 100)}%</span>
+                      <span className="font-mono font-bold text-slate-900">{Math.round(c.dense_score * 100)}%</span>
                     </div>
-                    <div className="flex justify-between text-white/70">
+                    <div className="flex justify-between text-slate-600 font-medium">
                       <span>Skill Taxonomy Overlap:</span>
-                      <span className="font-mono font-bold text-white">{Math.round(c.skill_overlap_score * 100)}%</span>
+                      <span className="font-mono font-bold text-slate-900">{Math.round(c.skill_overlap_score * 100)}%</span>
                     </div>
-                    <div className="flex justify-between text-white/70">
+                    <div className="flex justify-between text-slate-600 font-medium">
                       <span>Experience Alignment:</span>
-                      <span className="font-mono font-bold text-white">{Math.round(c.experience_score * 100)}%</span>
+                      <span className="font-mono font-bold text-slate-900">{Math.round(c.experience_score * 100)}%</span>
                     </div>
-                    <div className="flex justify-between text-white/70 pt-2 border-t border-white/5">
+                    <div className="flex justify-between text-slate-600 font-medium pt-2 border-t border-slate-200">
                       <span>Pipeline Status:</span>
-                      <span className="font-semibold uppercase text-violet-300">{c.status}</span>
+                      <span className="font-bold uppercase text-indigo-700">{c.status}</span>
                     </div>
                   </div>
 
                   <Link
                     to={`/matches/${c.match_id}`}
-                    className="btn-secondary w-full py-2 text-xs text-center block mt-4"
+                    className="w-full py-2 text-xs font-bold text-center block mt-4 bg-white hover:bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-xl transition-colors shadow-sm"
                   >
                     Open Deep Analysis
                   </Link>
@@ -1194,32 +1197,32 @@ export default function RecruiterPortal() {
 
       {/* AI Generate JD Modal */}
       {showGenerateJdModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-          <div className="relative w-full max-w-lg glass-card rounded-3xl p-6 sm:p-8 border border-white/15 shadow-2xl bg-slate-950">
-            <h3 className="text-xl font-bold text-white mb-1">AI Requisition Generator</h3>
-            <p className="text-xs text-white/40 mb-6">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-fade-in">
+          <div className="relative w-full max-w-lg bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 shadow-2xl">
+            <h3 className="text-xl font-black text-slate-900 mb-1">AI Requisition Generator</h3>
+            <p className="text-xs text-slate-500 mb-6 font-medium">
               Gemini will draft a comprehensive, inclusive corporate Job Description
             </p>
 
             <form onSubmit={handleGenerateJd} className="space-y-4">
               <div>
-                <label className="text-xs font-semibold text-white/60 block mb-1">Role Title *</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Role Title *</label>
                 <input
                   type="text"
                   required
                   value={jdTitle}
                   onChange={(e) => setJdTitle(e.target.value)}
                   placeholder="e.g. Senior Machine Learning Engineer"
-                  className="input-field text-sm w-full"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 text-sm font-medium placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 shadow-sm"
                 />
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-white/60 block mb-1">Seniority Level</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Seniority Level</label>
                 <select
                   value={jdLevel}
                   onChange={(e) => setJdLevel(e.target.value)}
-                  className="input-field text-sm w-full bg-slate-900"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 text-sm font-medium focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 shadow-sm cursor-pointer"
                 >
                   <option value="Junior">Junior (0-2 years)</option>
                   <option value="Mid-Level">Mid-Level (2-5 years)</option>
@@ -1229,28 +1232,28 @@ export default function RecruiterPortal() {
               </div>
 
               <div>
-                <label className="text-xs font-semibold text-white/60 block mb-1">Required Skills (Comma separated)</label>
+                <label className="text-xs font-bold text-slate-700 block mb-1 uppercase tracking-wider">Required Skills (Comma separated)</label>
                 <input
                   type="text"
                   value={jdSkills}
                   onChange={(e) => setJdSkills(e.target.value)}
                   placeholder="e.g. PyTorch, Kubernetes, Python, AWS, Docker"
-                  className="input-field text-sm w-full"
+                  className="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 text-sm font-medium placeholder:text-slate-400 focus:outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-100 shadow-sm"
                 />
               </div>
 
-              <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
+              <div className="flex items-center justify-end gap-3 pt-4 border-t border-slate-200">
                 <button
                   type="button"
                   onClick={() => setShowGenerateJdModal(false)}
-                  className="btn-secondary py-2 px-4 text-xs"
+                  className="px-4 py-2 rounded-xl text-xs font-semibold bg-white text-slate-600 border border-slate-200 hover:bg-slate-100 transition-colors"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
                   disabled={generatingJd}
-                  className="btn-primary py-2 px-5 text-xs font-semibold flex items-center gap-1.5"
+                  className="px-5 py-2 rounded-xl text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white shadow-md shadow-indigo-600/20 flex items-center gap-1.5 transition-all"
                 >
                   {generatingJd ? (
                     <>

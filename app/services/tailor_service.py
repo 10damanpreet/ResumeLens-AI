@@ -138,8 +138,8 @@ Target Job Description:
 
     loop = asyncio.get_running_loop()
     for model_name in GEMINI_MODELS:
-        per_model_timeout = 8.0
-        async_timeout = per_model_timeout + 2.0
+        per_model_timeout = 6.0
+        async_timeout = 7.0
 
         def _sync(name: str, t: float):
             m = genai.GenerativeModel(name)
@@ -192,8 +192,8 @@ Output ONLY valid JSON object.
 
     loop = asyncio.get_running_loop()
     for model_name in GEMINI_MODELS:
-        per_model_timeout = 8.0
-        async_timeout = per_model_timeout + 2.0
+        per_model_timeout = 6.0
+        async_timeout = 7.0
 
         def _sync(name: str, t: float):
             m = genai.GenerativeModel(name)
@@ -241,8 +241,8 @@ Output ONLY valid JSON.
 
     loop = asyncio.get_running_loop()
     for model_name in GEMINI_MODELS:
-        per_model_timeout = 8.0
-        async_timeout = per_model_timeout + 2.0
+        per_model_timeout = 6.0
+        async_timeout = 7.0
 
         def _sync(name: str, t: float):
             m = genai.GenerativeModel(name)

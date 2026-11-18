@@ -41,9 +41,11 @@ export default function CoverLetterModal({
     setLoading(true);
     setError('');
     try {
+      const cleanResumeId = resumeId && !resumeId.includes('demo') ? resumeId : null;
+      const cleanJobId = jobId && !jobId.includes('demo') ? jobId : null;
       const resp = await api.post('/resumes/cover-letter', {
-        resume_id: resumeId,
-        job_id: jobId,
+        resume_id: cleanResumeId,
+        job_id: cleanJobId,
       });
       setLetterData(resp.data);
     } catch (err: any) {

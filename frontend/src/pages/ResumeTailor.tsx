@@ -114,19 +114,32 @@ export default function ResumeTailor() {
       let rId = overrideResumeId || selectedResumeId || routeState?.resume_id;
       let jId = overrideJobId || selectedJobId || routeState?.job_id;
 
-      if (matchId && (!rId || !jId)) {
+      if (matchId && (!rId || !jId || rId.includes('demo') || jId.includes('demo'))) {
         const matchResp = await api.get(`/matches/${matchId}`).catch(() => null);
         if (matchResp?.data) {
-          rId = matchResp.data.resume_id;
-          jId = matchResp.data.job_id;
+          if (matchResp.data.resume_id && !matchResp.data.resume_id.includes('demo')) {
+            rId = matchResp.data.resume_id;
+          }
+          if (matchResp.data.job_id && !matchResp.data.job_id.includes('demo')) {
+            jId = matchResp.data.job_id;
+          }
         }
       }
 
-      if (!rId && availableResumes.length > 0) {
-        rId = availableResumes[0].id;
+      // If rId is not among candidate's uploaded resumes or is demo, pick the first real uploaded resume
+      if (availableResumes.length > 0) {
+        const resumeExists = availableResumes.some((r) => r.id === rId);
+        if (!resumeExists || !rId || rId.includes('demo')) {
+          rId = availableResumes[0].id;
+        }
       }
-      if (!jId && availableJobs.length > 0) {
-        jId = availableJobs[0].id;
+
+      // If jId is not among available jobs or is demo, pick the first real job
+      if (availableJobs.length > 0) {
+        const jobExists = availableJobs.some((j) => j.id === jId);
+        if (!jobExists || !jId || jId.includes('demo')) {
+          jId = availableJobs[0].id;
+        }
       }
 
       setSelectedResumeId(rId || '');
@@ -222,21 +235,21 @@ ${bulletsText}
         <div className="flex items-center gap-3">
           <Link
             to={matchId ? `/matches/${matchId}` : '/'}
-            className="text-white/40 hover:text-white transition-colors p-2.5 rounded-2xl glass hover:bg-white/10"
+            className="text-slate-500 hover:text-slate-900 transition-colors p-2.5 rounded-2xl bg-white border border-slate-200 shadow-xs hover:bg-slate-50"
             title="Back"
           >
             <ArrowLeft className="w-5 h-5" />
           </Link>
           <div>
             <div className="flex items-center gap-2.5 flex-wrap">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
                 AI Resume Tailor & Optimizer
               </h1>
-              <span className="badge-glow bg-emerald-500/15 text-emerald-300 border-emerald-500/30 text-xs">
+              <span className="bg-emerald-50 text-emerald-700 border border-emerald-200 text-xs font-bold px-3 py-1 rounded-full shadow-xs">
                 ATS Re-Writer Active
               </span>
             </div>
-            <p className="text-white/40 text-xs sm:text-sm mt-0.5">
+            <p className="text-slate-600 text-xs sm:text-sm mt-0.5 font-medium">
               Metric-driven bullet rewrites aligned with target employer requirements
             </p>
           </div>
@@ -247,31 +260,31 @@ ${bulletsText}
           <div className="flex items-center gap-2 no-print flex-wrap">
             <button
               onClick={() => loadInitialData(selectedResumeId, selectedJobId)}
-              className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+              className="btn-secondary py-2 px-3 text-xs font-semibold flex items-center gap-1.5"
               title="Re-run AI tailoring"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw className="w-3.5 h-3.5 text-slate-500" />
               Re-Tailor
             </button>
             <button
               onClick={copyAllBullets}
-              className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+              className="btn-secondary py-2 px-3 text-xs font-semibold flex items-center gap-1.5"
             >
-              {copiedAll ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              {copiedAll ? <Check className="w-3.5 h-3.5 text-emerald-600" /> : <Copy className="w-3.5 h-3.5 text-slate-500" />}
               {copiedAll ? 'Copied!' : 'Copy All'}
             </button>
             <button
               onClick={downloadTextResume}
-              className="btn-primary py-2 px-3.5 text-xs flex items-center gap-1.5"
+              className="btn-primary py-2 px-3.5 text-xs font-bold flex items-center gap-1.5 shadow-sm"
             >
               <Download className="w-3.5 h-3.5" />
               Download Resume Text
             </button>
             <button
               onClick={() => window.print()}
-              className="btn-secondary py-2 px-3 text-xs flex items-center gap-1.5"
+              className="btn-secondary py-2 px-3 text-xs font-semibold flex items-center gap-1.5"
             >
-              <Printer className="w-3.5 h-3.5" />
+              <Printer className="w-3.5 h-3.5 text-slate-500" />
               Print
             </button>
           </div>
@@ -279,25 +292,25 @@ ${bulletsText}
       </div>
 
       {/* Target Requisition & Resume Selector Ribbon */}
-      <div className="glass-card rounded-2xl p-4 sm:p-5 mb-8 border border-white/10 bg-slate-900/40 flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="bg-white rounded-2xl p-4 sm:p-5 mb-8 border border-slate-200 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col sm:flex-row sm:items-center gap-4 flex-1">
           {/* Source Resume Picker */}
           <div className="flex-1">
-            <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider block mb-1">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
               Source Resume
             </span>
             <div className="flex items-center gap-2">
-              <FileText className="w-4 h-4 text-violet-400 flex-shrink-0" />
+              <FileText className="w-4 h-4 text-indigo-600 flex-shrink-0" />
               <select
                 value={selectedResumeId}
                 onChange={(e) => handleResumeSelect(e.target.value)}
-                className="bg-white/10 text-white text-xs font-semibold rounded-xl px-3 py-2 border border-white/15 focus:outline-none focus:border-violet-400 w-full"
+                className="bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:border-indigo-500 w-full shadow-xs"
               >
                 {resumes.length === 0 ? (
                   <option value="default">Damanpreet_Singh_Resume.pdf (Active)</option>
                 ) : (
                   resumes.map((r) => (
-                    <option key={r.id} value={r.id} className="bg-slate-900 text-white">
+                    <option key={r.id} value={r.id} className="bg-white text-slate-900">
                       📄 {r.original_filename}
                     </option>
                   ))
@@ -308,21 +321,21 @@ ${bulletsText}
 
           {/* Target Job Requisition Picker */}
           <div className="flex-1">
-            <span className="text-[11px] font-semibold text-white/40 uppercase tracking-wider block mb-1">
+            <span className="text-[11px] font-bold text-slate-500 uppercase tracking-wider block mb-1">
               Target Role Requisition
             </span>
             <div className="flex items-center gap-2">
-              <Building className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+              <Building className="w-4 h-4 text-emerald-600 flex-shrink-0" />
               <select
                 value={selectedJobId}
                 onChange={(e) => handleJobSelect(e.target.value)}
-                className="bg-white/10 text-white text-xs font-semibold rounded-xl px-3 py-2 border border-white/15 focus:outline-none focus:border-emerald-400 w-full"
+                className="bg-slate-50 text-slate-900 text-xs font-semibold rounded-xl px-3 py-2 border border-slate-200 focus:outline-none focus:border-emerald-500 w-full shadow-xs"
               >
                 {jobs.length === 0 ? (
                   <option value="default">Google — Software Development Engineer II</option>
                 ) : (
                   jobs.map((j) => (
-                    <option key={j.id} value={j.id} className="bg-slate-900 text-white">
+                    <option key={j.id} value={j.id} className="bg-white text-slate-900">
                       🏢 {j.company} — {j.title}
                     </option>
                   ))
@@ -333,7 +346,7 @@ ${bulletsText}
         </div>
 
         <div className="flex items-center gap-2 self-end md:self-center">
-          <span className="text-[11px] px-3 py-1.5 rounded-xl bg-violet-500/20 text-violet-300 border border-violet-500/30 font-medium">
+          <span className="text-[11px] px-3 py-1.5 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-200 font-bold">
             Google XYZ Bullet Engine
           </span>
         </div>
@@ -341,12 +354,12 @@ ${bulletsText}
 
       {/* Loading State */}
       {loading && (
-        <div className="glass-card rounded-3xl p-12 text-center max-w-lg mx-auto border-emerald-500/30">
-          <div className="w-12 h-12 rounded-full border-2 border-emerald-500/20 border-t-emerald-500 animate-spin mx-auto mb-4" />
-          <h3 className="text-lg font-bold text-white mb-2">
+        <div className="bg-white rounded-3xl p-12 text-center max-w-lg mx-auto border border-slate-200 shadow-sm">
+          <div className="w-12 h-12 rounded-full border-2 border-emerald-200 border-t-emerald-600 animate-spin mx-auto mb-4" />
+          <h3 className="text-lg font-bold text-slate-900 mb-2">
             Tailoring Resume Bullets with Gemini...
           </h3>
-          <p className="text-xs text-white/50 leading-relaxed">
+          <p className="text-xs text-slate-500 leading-relaxed font-medium">
             Restructuring achievement bullets using Google's XYZ formula and weaving in critical ATS keywords.
           </p>
         </div>
@@ -356,39 +369,39 @@ ${bulletsText}
       {!loading && data && (
         <div className="space-y-6 animate-fade-in">
           {/* Executive Summary & Score Lift Banner */}
-          <div className="glass-card rounded-3xl p-6 sm:p-8 border border-emerald-500/30 relative overflow-hidden bg-gradient-to-br from-emerald-950/20 via-slate-900/50 to-transparent">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
+          <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200 relative overflow-hidden shadow-xs">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-slate-100">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 border border-emerald-500/30 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-emerald-400" />
+                <div className="w-10 h-10 rounded-2xl bg-indigo-50 border border-indigo-200 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-indigo-600" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-white">Targeted Professional Summary</h3>
-                  <p className="text-xs text-white/40">Optimized to pass employer ATS parsing filters</p>
+                  <h3 className="text-base font-bold text-slate-900">Targeted Professional Summary</h3>
+                  <p className="text-xs text-slate-500 font-medium">Optimized to pass employer ATS parsing filters</p>
                 </div>
               </div>
 
               {/* Simulated ATS Lift */}
-              <div className="px-4 py-2 rounded-2xl bg-emerald-500/15 border border-emerald-500/30 text-emerald-300 text-xs font-bold flex items-center gap-2">
-                <Zap className="w-4 h-4 text-emerald-400" />
+              <div className="px-4 py-2 rounded-2xl bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-2">
+                <Zap className="w-4 h-4 text-emerald-600" />
                 <span>Predicted ATS Match Lift: +14%</span>
               </div>
             </div>
 
-            <p className="mt-4 text-sm sm:text-base text-white/90 leading-relaxed bg-white/[0.02] p-4 rounded-2xl border border-white/5 font-sans">
+            <p className="mt-4 text-sm sm:text-base text-slate-800 leading-relaxed bg-slate-50 p-4 rounded-2xl border border-slate-200 font-sans font-medium">
               "{data.tailored_summary}"
             </p>
 
             {/* Injected Keywords Chips */}
             {data.ats_keywords_injected?.length > 0 && (
-              <div className="mt-4 pt-4 border-t border-white/5 flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-semibold text-white/40 uppercase tracking-wider mr-1">
+              <div className="mt-4 pt-4 border-t border-slate-100 flex items-center gap-2 flex-wrap">
+                <span className="text-xs font-bold text-slate-500 uppercase tracking-wider mr-1">
                   ATS Keywords Injected:
                 </span>
                 {data.ats_keywords_injected.map((kw, i) => (
                   <span
                     key={i}
-                    className="px-2.5 py-1 rounded-xl bg-emerald-500/15 text-emerald-300 border border-emerald-500/30 text-[11px] font-semibold"
+                    className="px-2.5 py-1 rounded-xl bg-indigo-50 text-indigo-700 border border-indigo-200 text-[11px] font-bold"
                   >
                     +{kw}
                   </span>
@@ -400,11 +413,11 @@ ${bulletsText}
           {/* Split Screen Bullet Improvements */}
           <div className="space-y-4">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <FileText className="w-4 h-4 text-violet-400" />
+              <h3 className="text-lg font-bold text-slate-900 flex items-center gap-2">
+                <FileText className="w-4 h-4 text-indigo-600" />
                 Before & After Bullet Point Transformations
               </h3>
-              <span className="text-xs text-white/40">
+              <span className="text-xs text-slate-500 font-medium">
                 {data.bullet_improvements.length} Bullets Optimized
               </span>
             </div>
@@ -412,29 +425,29 @@ ${bulletsText}
             {data.bullet_improvements.map((bullet, idx) => (
               <div
                 key={idx}
-                className="glass-card rounded-2xl p-5 border border-white/10 hover:border-emerald-500/30 transition-all space-y-4"
+                className="bg-white rounded-2xl p-5 border border-slate-200 hover:border-slate-300 transition-all space-y-4 shadow-xs"
               >
                 {/* Comparison Grid */}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                   {/* Left: Original */}
-                  <div className="p-4 rounded-xl bg-rose-500/[0.03] border border-rose-500/20">
-                    <span className="text-[11px] font-bold text-rose-300 uppercase tracking-wider block mb-2">
+                  <div className="p-4 rounded-xl bg-rose-50/60 border border-rose-200">
+                    <span className="text-[11px] font-bold text-rose-700 uppercase tracking-wider block mb-2">
                       Original Phrasing (Low ATS Impact)
                     </span>
-                    <p className="text-xs sm:text-sm text-white/60 leading-relaxed font-mono">
+                    <p className="text-xs sm:text-sm text-slate-700 leading-relaxed font-mono">
                       &bull; {bullet.original}
                     </p>
                   </div>
 
                   {/* Right: Tailored */}
-                  <div className="p-4 rounded-xl bg-emerald-500/[0.05] border border-emerald-500/30 relative group">
+                  <div className="p-4 rounded-xl bg-emerald-50/60 border border-emerald-200 relative group">
                     <div className="flex items-center justify-between gap-2 mb-2">
-                      <span className="text-[11px] font-bold text-emerald-300 uppercase tracking-wider">
+                      <span className="text-[11px] font-bold text-emerald-800 uppercase tracking-wider">
                         Tailored Rewrite (Google XYZ Metric Formula)
                       </span>
                       <button
                         onClick={() => copyBullet(bullet.tailored, idx)}
-                        className="px-2 py-1 rounded-lg bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 text-xs font-semibold flex items-center gap-1 transition-colors"
+                        className="px-2 py-1 rounded-lg bg-emerald-100 hover:bg-emerald-200 text-emerald-800 text-xs font-bold flex items-center gap-1 transition-colors"
                       >
                         {copiedIdx === idx ? (
                           <>

@@ -4,7 +4,7 @@ import axios from 'axios';
 // This means no CORS issues and no hardcoded ports
 export const api = axios.create({
   baseURL: '/',
-  timeout: 30000,
+  timeout: 60000,
 });
 
 // Attach JWT token to every request automatically

@@ -3,7 +3,7 @@
 ### Enterprise-Grade Career Intelligence, Recruiter Talent Acquisition & Generative AI Matching Platform
 
 [![CI](https://github.com/10damanpreet/ResumeLens-AI/actions/workflows/ci.yml/badge.svg)](https://github.com/10damanpreet/ResumeLens-AI/actions)
-[![Tests](https://img.shields.io/badge/Tests-21%2F21%20Passing-success.svg)](tests/)
+[![Tests](https://img.shields.io/badge/Tests-27%2F27%20Passing-success.svg)](tests/)
 [![Python 3.12+](https://img.shields.io/badge/python-3.12%20%7C%203.14-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.115+-009688.svg?logo=fastapi)](https://fastapi.tiangolo.com)
 [![React 18](https://img.shields.io/badge/React-18.2-61DAFB.svg?logo=react)](https://react.dev)
@@ -21,7 +21,7 @@ For course instructors, academic evaluators, and recruitment demonstrations, pre
 
 | Role / Portal | Demo Email | Password | Access Capabilities |
 | :--- | :--- | :--- | :--- |
-| **Candidate Portal** (`/`) | `student@resumelens.ai` *(or test@example.com)* | `Password123!` | PII redaction, Tri-factor match, AI Resume Tailor (XYZ), Cover Letter, Application Tracker |
+| **Candidate Portal** (`/`) | `student@resumelens.ai` *(or test@example.com)* | `Password123!` | PII redaction, Tri-factor match, AI Resume Studio (PDF), What-If Simulator, Learning Plan, Opportunities |
 | **Recruiter Suite** (`/recruiter`) | `recruiter@resumelens.ai` | `Password123!` | Tier-1 requisitions (Google, Microsoft, Amazon), Bulk screening, Ranked Leaderboards, Status Workflow |
 
 > **Enterprise Recruiter Keys**: `RECRUITER2026` &nbsp;|&nbsp; `TIET-HR-2026` &nbsp;|&nbsp; `ENTERPRISE-PRO`
@@ -32,7 +32,7 @@ For course instructors, academic evaluators, and recruitment demonstrations, pre
 
 **ResumeLens AI** is an enterprise-grade, end-to-end career intelligence and talent acquisition platform designed and built over a 6-month software engineering development lifecycle. The platform bridges the gap between candidates seeking career progression and technical recruiters screening hundreds of applicants per requisition.
 
-Built with a high-performance **FastAPI (Python 3.12/3.14)** asynchronous backend and a modern **React 18 + TypeScript** dark glassmorphic single-page application, ResumeLens AI combines local dense vector embeddings (`all-MiniLM-L6-v2`), lexical fuzzy matching, ATS compliance auditing, and dual-model generative AI (**Google Gemini 3.6 Flash / Flash Lite**) to deliver real-time career analytics.
+Built with a high-performance **FastAPI (Python 3.12/3.14)** asynchronous backend and a modern **React 18 + TypeScript** clean single-page application with a crisp light theme, ResumeLens AI combines local dense vector embeddings (`all-MiniLM-L6-v2`), lexical fuzzy matching, multi-platform ATS compliance auditing, and dual-model generative AI (**Google Gemini 3.6 Flash / Flash Lite**) to deliver real-time career analytics.
 
 ---
 
@@ -40,7 +40,7 @@ Built with a high-performance **FastAPI (Python 3.12/3.14)** asynchronous backen
 
 The system serves two primary enterprise personas through tailored workspaces:
 
-```
+```text
                                   +-----------------------+
                                   |    ResumeLens AI      |
                                   | Platform Architecture |
@@ -54,11 +54,15 @@ The system serves two primary enterprise personas through tailored workspaces:
 | 1. Privacy-First PII Redaction       |             | 1. Multi-Requisition Overview        |
 | 2. Tri-Factor Hybrid Compatibility   |             | 2. AI Job Description Generator      |
 | 3. Interactive Competency Radar      |             | 3. Bulk Multi-Resume Screening       |
-| 4. ATS Health & Section Hygiene Card |             | 4. Ranked Applicant Leaderboard      |
-| 5. Gemini 3.6 Deep Gap Advisory      |             | 5. Pipeline Kanban Status Workflow   |
-| 6. AI Resume Tailor (XYZ Formula)    |             | 6. Head-to-Head Candidate Matrix     |
-| 7. 1-Click Executive Cover Letter    |             | 7. 1-Click CSV Roster Export         |
-| 8. Job Application Kanban Tracker    |             +--------------------------------------+
+| 4. 6-Platform ATS Engine & Screener  |             | 4. Ranked Applicant Leaderboard      |
+| 5. What-If Strategy & Score Delta    |             | 5. Pipeline Kanban Status Workflow   |
+| 6. Traceable Evidence Matrix         |             | 6. Head-to-Head Candidate Matrix     |
+| 7. HackerRank GitHub & Anti-Cheat    |             | 7. 1-Click CSV Roster Export         |
+| 8. AI Resume Studio (XYZ PDF Builder)|             +--------------------------------------+
+| 9. Learning Plan (LeetCode Links)    |
+| 10. Opportunities & Hackathon Feed   |
+| 11. Application Kanban Job Tracker   |
+| 12. Model Methodology Transparency   |
 +--------------------------------------+
 ```
 
@@ -69,17 +73,23 @@ The system serves two primary enterprise personas through tailored workspaces:
   - **Dense Vector Embeddings**: 384-dimensional dense semantic vectors computed via `all-MiniLM-L6-v2` (Sentence-Transformers).
   - **Lexical Overlap**: Set-theoretic taxonomy intersection across 60+ curated software engineering domains via `RapidFuzz`.
   - **Experience & Seniority Fit**: Automated tenure and project depth heuristic extractor.
-- **Competency Radar Breakdown**: 5-axis interactive visualizer rendered with Recharts.
-- **ATS Health & Section Hygiene**: Evaluates action verbs, quantifiable metric density, formatting compliance, and contact section validity.
-- **Generative AI Skill Gap Advisory**: Powered by Google Gemini 3.6 Flash, identifying candidate strengths with resume citations, critical blind spots with risk justifications, estimated learning curves, and predicted technical interview questions.
-- **AI Resume Bullet Tailor (Google XYZ Formula)**: Side-by-side Before/After resume rewriter following *“Accomplished [X] as measured by [Y] by doing [Z]”* with ATS keyword injection badges and 1-click text/PDF export.
-- **1-Click Executive Cover Letter Generator**: Generates targeted, 3-paragraph executive cover letters highlighting resume accomplishments mapped directly to job requirements.
+- **Competency Radar Breakdown**: 5-axis interactive visualizer rendered with Recharts (Semantic Fit, Technical Skills, Role Readiness, ATS Structure, Experience Fit).
+- **6-Platform Enterprise ATS Simulation Engine**: Real-time simulation across **Workday, Taleo (Oracle), iCIMS, Greenhouse, Lever, and SAP SuccessFactors** with platform-specific keyword parsing strictness, pass/fail screening thresholds, and quirk mitigation strategies.
+- **Interactive What-If Scenario & ATS Score Difference Simulator**: Real-time recalculation sandbox empowering candidates to simulate the exact **difference in ATS score** (`Baseline ATS` &rarr; `Simulated ATS` &bull; `ATS Score Delta`) with a dual-layer progress bar mapped against corporate cutoffs.
+- **Traceable Requirement-to-Evidence Matrix**: Sentence-level JD requirement decomposition mapped to verbatim resume evidence snippets with multi-level confidence scoring (`evidenced`, `partial`, `missing`) and actionable ATS advisory tips.
+- **HackerRank-Grade GitHub Verification & Anti-Cheat LLM Injection Defense**: Live GitHub repository verification, commit/star telemetry, primary language stack extraction, and anti-tamper security scanning detecting invisible white-text, prompt injections, and keyword-stuffing exploits.
+- **AI Resume Revamp Studio & Clean PDF Generator (`/studio`)**: Takes weak or unformatted resumes, rewrites the entire document using Google's XYZ formula (*Accomplished [X] as measured by [Y] by doing [Z]*), injects missing keywords, and compiles a clean vector PDF via ReportLab for instant 1-click download.
+- **Interactive Learning Plan & Practice Arena (`/learning-plan`)**: Targeted technical curriculum with direct problem links to LeetCode, NeetCode, and official documentation to bridge identified skill gaps.
+- **Curated Technical Resources Hub (`/resources`)**: Official library documentation links (Pandas, PyTorch, Docker, FastAPI, React) and verified video masterclasses.
+- **Architectural Project Gap Blueprints (`/projects`)**: Production project templates and step-by-step architectural blueprints to eliminate employer reservations.
+- **Opportunity Engine (`/opportunities`)**: Aggregates live software engineering internships, active corporate jobs, and Google / Unstop hackathons with 1-click application saving.
 - **Job Application Kanban Tracker (`/tracker`)**: Persistent multi-stage tracking board (`Wishlist`, `Applied`, `Interviewing`, `Offer`, `Archived`) with salary, match score, and notes tracking.
+- **Settings & Methodology Transparency (`/settings`, `/methodology`)**: Candidate profile configuration, target seniority settings, and detailed tri-factor algorithm weight inspection.
 
 ### 2. Recruiter / HR Talent Intelligence Suite (`/recruiter`)
-- **Automated Requisition Pipeline**: Instant selection and inspection of active corporate requisitions.
+- **Automated Requisition Pipeline**: Instant selection and inspection of active corporate requisitions (Google, Microsoft, Amazon, Atlassian, Uber).
 - **AI Job Description Generator**: Generates structured, high-conversion job descriptions with roles, responsibilities, required/nice-to-have skills, and qualifications using Gemini AI.
-- **Bulk Candidate Screening & Leaderboard**: Batch-evaluates 10–100+ candidate resumes simultaneously against a target job requisition and ranks applicants in an interactive leaderboard.
+- **Bulk Candidate Screening & Leaderboard**: Batch-evaluates candidate resumes simultaneously against a target job requisition and ranks applicants in an interactive leaderboard.
 - **Pipeline Workflow Management**: In-line status toggling (`review`, `shortlisted`, `interview`, `rejected`) with immediate backend database synchronization (`PATCH /matches/{id}/status`).
 - **Head-to-Head Candidate Comparison Matrix**: Side-by-side multi-candidate modal comparing up to 3 applicants across overall compatibility, semantic fit, technical overlap, and detected strengths.
 - **1-Click Executive CSV Export**: Instant export of applicant leaderboards and scoring metrics for integration into enterprise HRIS/ATS systems (Workday, Greenhouse, Lever).
@@ -126,14 +136,14 @@ To ensure zero downtime and resilience against API rate-limits and network laten
 | Layer | Technologies |
 |---|---|
 | **Frontend Framework** | React 18.2, TypeScript 5.2, Vite 5.4, React Router DOM v6 |
-| **Styling & Design System** | Tailwind CSS 3.4, Lucide React Icons, Glassmorphic Design System |
+| **Styling & Design System** | Tailwind CSS 3.4, Lucide React Icons, Modern Crisp Light Theme (`#f8fafc`), High-Contrast Typography |
 | **Data Visualizations** | Recharts (Radar, Area, Bar charts), Custom Animated SVG Dial Components |
 | **Backend Framework** | FastAPI 0.115+, Uvicorn (ASGI), Pydantic v2, Python 3.12 / 3.14 |
 | **Database & ORM** | SQLite + `aiosqlite` (Default local) / PostgreSQL 16 + `asyncpg` + `pgvector`, SQLAlchemy 2.0 Async |
 | **NLP & Local Machine Learning**| Sentence-Transformers (`all-MiniLM-L6-v2` 384-D), RapidFuzz 3.14+, spaCy 3.7+ |
-| **Document Processing** | PDFPlumber, python-docx, Custom Regular Expression Redactor |
+| **Document Processing & PDF** | ReportLab (Vector PDF Generation), PDFPlumber, python-docx, Custom Regex Redactor |
 | **Generative AI Suite** | Google Generative AI (`gemini-3.6-flash`, `gemini-3.5-flash-lite`, REST Transport) |
-| **Code Quality & CI/CD** | PyTest, PyTest-Asyncio, Ruff (Linter & Formatter), GitHub Actions CI |
+| **Code Quality & CI/CD** | PyTest (27/27 Tests), PyTest-Asyncio, Ruff (Linter & Formatter), GitHub Actions CI |
 
 ---
 
@@ -151,17 +161,22 @@ ResumeLens-AI/
 │   │   ├── gaps.py                # Gemini skill gap advisory & interview predictions
 │   │   ├── health.py              # System health & database probes
 │   │   ├── jobs.py                # Requisition retrieval & AI JD generation
-│   │   ├── matches.py             # Match computation, bulk screening & leaderboard
-│   │   ├── resumes.py             # Document upload, bullet tailoring & cover letters
+│   │   ├── matches.py             # Match computation, bulk screening, what-if & leaderboards
+│   │   ├── resumes.py             # Document upload, bullet tailoring, revamp & PDF download
 │   │   └── tasks.py               # Asynchronous task logging
 │   ├── core/                      # Security (bcrypt, JWT) & dependency injection
 │   ├── models/                    # SQLAlchemy async models (Candidate, Resume, Match, etc.)
 │   ├── schemas/                   # Pydantic v2 request/response schemas
 │   ├── services/                  # Business logic engines
+│   │   ├── ats_engine.py          # 6-platform ATS simulation & what-if delta engine
 │   │   ├── gap_analyzer.py        # Skill gap extraction & study plan generator
+│   │   ├── github_verifier.py     # Live GitHub commit verification & anti-cheat auditor
 │   │   ├── llm_gateway.py         # Dual-model Gemini gateway with automatic failover
 │   │   ├── matcher.py             # Tri-factor hybrid vector matching algorithm
+│   │   ├── pdf_generator.py       # ReportLab ATS-compliant vector PDF compiler
 │   │   ├── pii_redactor.py        # Privacy-first regex PII mask
+│   │   ├── requirement_matrix.py  # Sentence-level JD requirement to evidence mapper
+│   │   ├── revamp_service.py      # Google XYZ resume revamp & keyword optimizer
 │   │   ├── segmenter.py           # Resume section boundary detector
 │   │   └── tailor_service.py      # Google XYZ bullet rewriter & cover letter generator
 │   ├── config.py                  # Pydantic BaseSettings environment loader
@@ -180,36 +195,49 @@ ResumeLens-AI/
 │   ├── src/
 │   │   ├── api/client.ts          # Axios client with JWT auto-injection & error interceptors
 │   │   ├── components/            # Reusable UI component library
-│   │   │   ├── ATSHealthCard.tsx   # ATS section hygiene and metrics inspector
-│   │   │   ├── CompetencyRadar.tsx # Interactive multi-axis Recharts radar chart
-│   │   │   ├── CoverLetterModal.tsx# 1-Click tailored executive cover letter modal
-│   │   │   ├── LiveProgressConsole.tsx# Terminal-style real-time progress stream
-│   │   │   ├── RecentScans.tsx    # Evaluation history widget
-│   │   │   ├── StudyRoadmap.tsx   # Interactive task checklist with localStorage
-│   │   │   └── Toast.tsx          # Floating toast notification system
+│   │   │   ├── ATSScreenerCard.tsx        # 6-platform ATS pass/fail screener
+│   │   │   ├── ATSHealthCard.tsx          # ATS section hygiene and metrics inspector
+│   │   │   ├── CompetencyRadar.tsx        # Interactive multi-axis Recharts radar chart
+│   │   │   ├── CoverLetterModal.tsx       # 1-Click tailored executive cover letter modal
+│   │   │   ├── GitHubAuditCard.tsx        # GitHub signals & anti-cheat transparency card
+│   │   │   ├── LiveProgressConsole.tsx    # Terminal-style real-time progress stream
+│   │   │   ├── RecentScans.tsx            # Evaluation history widget
+│   │   │   ├── RequirementMatrixView.tsx  # Traceable requirement evidence matrix table
+│   │   │   ├── Sidebar.tsx                # Responsive multi-tier sidebar navigation
+│   │   │   ├── StudyRoadmap.tsx           # Interactive task checklist with localStorage
+│   │   │   ├── Toast.tsx                  # Floating toast notification system
+│   │   │   └── WhatIfSimulator.tsx        # Interactive what-if ATS score delta simulator
 │   │   ├── pages/                 # Full-page application views
 │   │   │   ├── Dashboard.tsx      # Candidate landing, upload & match execution
 │   │   │   ├── JobTracker.tsx     # 5-stage application Kanban board
+│   │   │   ├── LearningPlan.tsx   # Study plan with direct LeetCode / NeetCode practice
 │   │   │   ├── Login.tsx          # Dual-portal authentication view
-│   │   │   ├── MatchResults.tsx   # Tri-factor report, score ring & action ribbon
+│   │   │   ├── MatchResults.tsx   # Tri-factor report, score ring & multi-feature tabs
+│   │   │   ├── Opportunities.tsx  # Live internships, jobs, hackathons & saved items
+│   │   │   ├── ProjectsCatalog.tsx# Recommended projects to close resume skill gaps
 │   │   │   ├── RecruiterPortal.tsx# HR suite: bulk screening, leaderboard, matrix
 │   │   │   ├── Register.tsx       # Account creation view
+│   │   │   ├── Resources.tsx      # Curated tech documentation & video lecture hub
+│   │   │   ├── ResumeStudio.tsx   # 1-click ATS resume revamp & clean PDF download
 │   │   │   ├── ResumeTailor.tsx   # Side-by-side XYZ bullet optimizer & selector ribbon
+│   │   │   ├── SettingsPage.tsx   # User profile, seniority, and model methodology
 │   │   │   └── SkillGaps.tsx      # Generative AI advisory & learning curriculum
-│   │   ├── App.tsx                # Dual-role navigation bar & route configuration
-│   │   └── index.css              # Dark glassmorphic design system
+│   │   ├── App.tsx                # Dual-role navigation bar, sidebar layout & router
+│   │   └── index.css              # Modern crisp light theme & global selection styling
 │   ├── package.json               # Node.js dependencies & scripts
 │   ├── tailwind.config.js         # Custom animations, gradients & shadows
 │   └── vite.config.ts             # Vite configuration with chunk splitting
 ├── scripts/                       # Database seeding & taxonomy initialization
 │   └── seed_taxonomy.py           # Core software engineering technology taxonomy
-├── tests/                         # Automated Unit & Integration Test Suite (21 Tests)
+├── tests/                         # Automated Unit & Integration Test Suite (27 Tests)
 │   ├── conftest.py                # Pytest async SQLite fixtures & auto-schema setup
+│   ├── test_ats_and_verifier.py   # Multi-platform ATS engine & GitHub anti-cheat tests
 │   ├── test_auth.py               # Authentication, JWT, and authorization tests
 │   ├── test_embedding.py          # Sentence-Transformers vector generation tests
 │   ├── test_health.py             # System probe tests
 │   ├── test_llm.py                # Gemini gateway resilience & failover tests
 │   ├── test_matcher.py            # Cosine similarity & tri-factor formula tests
+│   ├── test_pdf_and_revamp.py     # PDF generation & resume revamp tests
 │   ├── test_pii_redactor.py       # PII masking tests
 │   ├── test_segmenter.py          # Section segmentation tests
 │   └── test_worker.py             # Background task fallback tests
@@ -301,11 +329,17 @@ docker-compose exec api alembic upgrade head
 | `GET` | `/resumes` | List candidate-scoped resumes | Yes (Bearer) |
 | `POST` | `/resumes/tailor` | AI Resume bullet optimizer (Google XYZ formula) | Yes (Bearer) |
 | `POST` | `/resumes/cover-letter` | Generate tailored 3-paragraph executive cover letter | Yes (Bearer) |
+| `POST` | `/resumes/revamp` | Complete resume makeover with Google XYZ bullets & keywords | Yes (Bearer) |
+| `POST` | `/resumes/download-pdf` | Generate and download clean, ATS-compliant vector PDF | Yes (Bearer) |
 | `GET` | `/jobs` | List active job requisitions (Google, Microsoft, Amazon, etc.) | Yes (Bearer) |
 | `POST` | `/jobs` | Ingest job description & extract required skills | Yes (Bearer) |
 | `POST` | `/jobs/generate` | AI Job Description generator from title & skills | Yes (Recruiter) |
 | `POST` | `/matches` | Compute tri-factor hybrid compatibility score | Yes (Bearer) |
 | `GET` | `/matches/{id}` | Retrieve match score, sub-metrics, and target metadata | Yes (Bearer) |
+| `GET` | `/matches/{id}/ats-screener` | 6-Platform enterprise ATS pass/fail scores & diagnostics | Yes (Bearer) |
+| `POST` | `/matches/{id}/what-if` | Dynamically simulate score lift across ATS platforms | Yes (Bearer) |
+| `GET` | `/matches/{id}/requirements` | Sentence-level requirement-to-evidence matrix | Yes (Bearer) |
+| `GET` | `/matches/{id}/github-audit` | Verified GitHub signals & anti-cheat transparency | Yes (Bearer) |
 | `GET` | `/matches/leaderboard/{job_id}` | Retrieve ranked applicant leaderboard for recruiter | Yes (Recruiter) |
 | `POST` | `/matches/bulk` | Batch-screen candidate pool against requisition | Yes (Recruiter) |
 | `PATCH`| `/matches/{id}/status` | Update candidate pipeline status (`review`, `shortlisted`, etc.) | Yes (Recruiter) |
@@ -334,7 +368,7 @@ For in-depth architectural and developer documentation, explore the `docs/` repo
 The project includes comprehensive automated tests covering unit logic, integration flows, and generative AI resilience:
 
 ```bash
-# Run the complete PyTest test suite (21/21 tests passing)
+# Run the complete PyTest test suite (27/27 tests passing)
 python -m pytest
 
 # Run code style & static analysis with Ruff

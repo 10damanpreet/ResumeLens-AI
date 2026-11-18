@@ -9,13 +9,10 @@ from app.config import get_settings
 
 logger = logging.getLogger(__name__)
 
-# Fallback sequence: Gemini 3.6 Flash first; if it does not respond, immediately fall back to Flash Lite
+# Model priority: Fast, active, quota-healthy models first (Flash Lite responds in 2-5s)
 GEMINI_MODELS = [
-    'gemini-3.6-flash',          # 1st: User-selected primary model
-    'gemini-3.5-flash-lite',     # 2nd: Fast, ultra-responsive fallback
-    'gemini-flash-lite-latest',  # 3rd: Alternate Flash Lite
-    'gemini-3.5-flash',          # 4th: Standard Flash
-    'gemini-flash-latest',       # 5th: Latest Flash
+    'gemini-3.5-flash-lite',     # 1st: Ultra-fast, active, responsive (sub-6s)
+    'gemini-3.5-flash',          # 2nd: Fast standard flash fallback
 ]
 
 
@@ -173,9 +170,9 @@ Format response STRICTLY as a raw JSON object. Do NOT wrap in markdown codeblock
     last_error = None
 
     for model_name in GEMINI_MODELS:
-        # Tight timeout for primary model so it falls back swiftly if Google API has high latency
-        per_model_timeout = 4.5 if model_name == 'gemini-3.6-flash' else 8.5
-        async_timeout = per_model_timeout + 1.5
+        # Tight 6.0s timeout per model ensuring instant failover and sub-7s completion
+        per_model_timeout = 6.0
+        async_timeout = 7.0
 
         def _sync_call(name: str, t: float):
             m = genai.GenerativeModel(name)
