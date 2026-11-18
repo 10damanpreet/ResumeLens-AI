@@ -4,7 +4,7 @@ import re
 import time
 from typing import Any
 
-import requests
+import httpx
 
 logger = logging.getLogger(__name__)
 
@@ -104,12 +104,12 @@ def fetch_github_signals(username: str | None = None) -> dict[str, Any]:
 
     try:
         user_url = f"https://api.github.com/users/{clean_user}"
-        resp = requests.get(user_url, headers=headers, timeout=4.0)
+        resp = httpx.get(user_url, headers=headers, timeout=4.0)
 
         if resp.status_code == 200:
             user_data = resp.json()
             repos_url = f"https://api.github.com/users/{clean_user}/repos?sort=updated&per_page=8"
-            repos_resp = requests.get(repos_url, headers=headers, timeout=4.0)
+            repos_resp = httpx.get(repos_url, headers=headers, timeout=4.0)
             repos_data = repos_resp.json() if repos_resp.status_code == 200 else []
 
             # Aggregate language statistics
