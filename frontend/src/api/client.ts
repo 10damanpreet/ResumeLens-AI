@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-// Use relative URL — Vite dev server proxies /auth, /resumes, /jobs etc. to localhost:8000
-// This means no CORS issues and no hardcoded ports
+// Use environment variable VITE_API_BASE_URL if set (for production deployment on Vercel),
+// otherwise fall back to relative '/' which uses the local Vite proxy to localhost:8000
 export const api = axios.create({
-  baseURL: '/',
+  baseURL: (import.meta as any).env?.VITE_API_BASE_URL || '/',
   timeout: 60000,
 });
 
